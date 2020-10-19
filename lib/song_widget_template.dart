@@ -197,7 +197,7 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                             )
                     ),
 
-                    if(!widget.song.official)
+                    if(widget.song.isOwn)
                       AppCard(
                           color: accentColor(context),
                           child: Text(
@@ -617,12 +617,12 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
-          if(!song.official)
+          if(song.isOwn)
             AppButton(
                 icon: Icon(MdiIcons.trashCanOutline, color: iconEnabledColor(context)),
                 onTap: parent.widget.onDeleteTap,
                 onLongPress: parent.widget.onDeleteLongPress),
-          if(song.official)
+          if(!song.isOwn)
             IconButton(icon: Icon(MdiIcons.alertOutline, color: iconEnabledColor(context)),
                 onPressed: parent.widget.onReportTap),
           IconButton(
@@ -636,7 +636,7 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
               onPressed: parent.widget.onShareTap
           ),
 
-          if(!song.official)
+          if(song.isOwn)
             IconButton(
                 icon: Icon(
                     MdiIcons.sendCircleOutline,
