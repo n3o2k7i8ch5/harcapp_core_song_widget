@@ -107,12 +107,19 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fluttertoast:
+    dependency: transitive
+    description:
+      name: fluttertoast
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "7.1.1"
   harcapp_core:
     dependency: "direct main"
     description:
       path: "."
       ref: HEAD
-      resolved-ref: aa196cca4a4927b2c5eb1a288bd6fb5f63de26a1
+      resolved-ref: "33a2ce85cd9684bdcad7b5b350857bfdf9485114"
       url: "git://github.com/n3o2k7i8ch5/harcapp_core.git"
     source: git
     version: "0.0.1"
@@ -121,7 +128,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4c6a92fc57fef0996d19ea42de4939cadc9d8f6a"
+      resolved-ref: "8823fe012bbd49d3a437845882f5a41256b7f15b"
       url: "git://github.com/n3o2k7i8ch5/harcapp_core_song.git"
     source: git
     version: "0.0.1"
@@ -138,7 +145,7 @@ packages:
       name: material_design_icons_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.5655"
+    version: "4.0.5755"
   meta:
     dependency: transitive
     description:
