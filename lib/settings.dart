@@ -3,25 +3,25 @@ abstract class SongBookSettTempl{
   bool get alwaysOnScreen;
   set alwaysOnScreen(bool value);
 
-  bool get scrollText => false;
-  set scrollText(bool value) => null;
+  bool get scrollText;
+  set scrollText(bool value);
 
-  bool get autoscrollText => false;
-  set autoscrollText(bool value) => null;
+  bool get autoscrollText;
+  set autoscrollText(bool value);
 
-  double get autoscrollTextSpeed => 0;
-  set autoscrollTextSpeed(double value) => null;
+  double get autoscrollTextSpeed;
+  set autoscrollTextSpeed(double value);
 
-  bool get showChords => true;
-  set showChords(bool value) => null;
+  bool get showChords;
+  set showChords(bool value);
 
-  bool get chordsDrawShow => true;
-  set chordsDrawShow(bool value) => null;
+  bool get chordsDrawShow;
+  set chordsDrawShow(bool value);
 
-  bool get pinChordsDraw => false;
-  set pinChordsDraw(bool value) => null;
+  bool get pinChordsDraw;
+  set pinChordsDraw(bool value);
 
-  bool get chordsDrawType => true;
-  set chordsDrawType(bool value) => null;
+  bool get chordsDrawType;
+  set chordsDrawType(bool value);
 
 }
