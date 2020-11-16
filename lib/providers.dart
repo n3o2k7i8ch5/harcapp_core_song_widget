@@ -58,9 +58,8 @@ class TextSizeProvider extends ChangeNotifier{
 
   static const double defFontSize = 18.0;
 
-  double fixedScreenWidth;
-
   double _value;
+  double _wantedValue;
 
   double get value => _value;
   set value(double val){
@@ -70,16 +69,49 @@ class TextSizeProvider extends ChangeNotifier{
 
   TextSizeProvider(double screenWidth, SongCore song){
     _value = calculate(screenWidth, song);
+    _wantedValue = calculate(screenWidth, song);
   }
 
-  double calculate(double screenWidth, SongCore song){
-    double initSize = defFontSize;
+  bool up(double screenWidth, String text, String chords, String lineNum){
+    double scaleFactor = TextSizeProvider.fits(
+        screenWidth,
+        text,
+        chords,
+        lineNum,
+        _value + 0.5);
+
+    bool changedSize = true;
+    if(scaleFactor == 1){
+      if(_value >= 24) changedSize = false;
+      else _value += 0.5;
+    }else
+      changedSize = false;
+
+    _wantedValue = _value;
+    notifyListeners();
+    return changedSize;
+  }
+
+  bool down(){
+
+    bool changedSize = true;
+    if(_value-0.5 >= Dimen.TEXT_SIZE_LIMIT)
+      _value -= 0.5;
+    else
+      changedSize = false;
+
+    _wantedValue = _value;
+    notifyListeners();
+    return changedSize;
+  }
+
+  double calculate(double screenWidth, SongCore song, {double initSize: defFontSize}){
     double scale = fits(screenWidth, song.text, song.chords, getLineNums(song.text), initSize);
     return scale*initSize;
   }
 
-  double recalculate(double screenWidth, SongCore song){
-    _value = calculate(screenWidth, song);
+  double recalculate(double screenWidth, SongCore song, {double fontSize}){
+    _value = calculate(screenWidth, song, initSize: fontSize??_wantedValue);
     notifyListeners();
   }
 
