@@ -464,6 +464,16 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                     ),
                   ),
 
+                  widgetComposer == null?
+                  widgetAuthor
+                      :AnimatedBuilder(
+                    animation: pageNotifier,
+                    builder: (context, _) => Transform.translate(
+                        offset: Offset(MediaQuery.of(context).size.width/8*(pageNotifier.value - index), 0),
+                        child: widgetComposer
+                    ),
+                  ),
+
                   pageNotifier == null?
                   widgetPerformer
                       :
