@@ -8,7 +8,7 @@ import 'get_line_nums.dart';
 
 class ShowChordsProvider extends ChangeNotifier{
 
-  SongBookSettings settings;
+  SongBookSettTempl settings;
   ShowChordsProvider(this.settings);
 
   bool get showChords => settings.showChords;
@@ -20,7 +20,7 @@ class ShowChordsProvider extends ChangeNotifier{
 
 class ChordsDrawTypeProvider extends ChangeNotifier{
 
-  SongBookSettings settings;
+  SongBookSettTempl settings;
   ChordsDrawTypeProvider(this.settings);
 
   bool get chordsDrawType => settings.chordsDrawType;
@@ -32,7 +32,7 @@ class ChordsDrawTypeProvider extends ChangeNotifier{
 
 class ChordsDrawPinnedProvider extends ChangeNotifier{
 
-  SongBookSettings settings;
+  SongBookSettTempl settings;
   ChordsDrawPinnedProvider(this.settings);
 
   bool get pinChordsDraw => settings.pinChordsDraw;
@@ -44,7 +44,7 @@ class ChordsDrawPinnedProvider extends ChangeNotifier{
 
 class ChordsDrawShowProvider extends ChangeNotifier{
 
-  SongBookSettings settings;
+  SongBookSettTempl settings;
   ChordsDrawShowProvider(this.settings);
 
   bool get chordsDrawShow => settings.chordsDrawShow;

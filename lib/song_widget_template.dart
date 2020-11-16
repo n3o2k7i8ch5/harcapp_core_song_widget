@@ -25,7 +25,7 @@ import 'get_line_nums.dart';
 class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 
   final T song;
-  final SongBookSettings settings;
+  final SongBookSettTempl settings;
 
   final double screenWidth;
 
@@ -131,7 +131,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTemplate> with TickerProviderStateMixin {
 
   T get song => widget.song;
-  SongBookSettings get settings => widget.settings;
+  SongBookSettTempl get settings => widget.settings;
 
   List<Widget> widgets = [];
 
@@ -708,7 +708,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
   final ScrollController listView;
 
   T get song => parent.widget.song;
-  SongBookSettings get settings => parent.settings;
+  SongBookSettTempl get settings => parent.settings;
 
   String get text => song.text;
   String get chords => song.chords;
@@ -833,7 +833,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
   const ChordsBarCard(this.parent);
 
   T get song => parent.song;
-  SongBookSettings get settings => parent.settings;
+  SongBookSettTempl get settings => parent.settings;
 
   @override
   Widget build(BuildContext context) {

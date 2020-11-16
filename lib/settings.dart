@@ -1,4 +1,4 @@
-abstract class SongBookSettings{
+abstract class SongBookSettTempl{
 
   bool get alwaysOnScreen;
   set alwaysOnScreen(bool value);
