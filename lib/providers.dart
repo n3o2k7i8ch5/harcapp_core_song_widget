@@ -8,36 +8,48 @@ import 'get_line_nums.dart';
 
 class ShowChordsProvider extends ChangeNotifier{
 
-  bool get showChords => Settings.showChords;
+  SongBookSettings settings;
+  ShowChordsProvider(this.settings);
+
+  bool get showChords => settings.showChords;
   set showChords(bool value){
-    Settings.showChords = value;
+    settings.showChords = value;
     notifyListeners();
   }
 }
 
 class ChordsDrawTypeProvider extends ChangeNotifier{
 
-  bool get chordsDrawType => Settings.chordsDrawType;
+  SongBookSettings settings;
+  ChordsDrawTypeProvider(this.settings);
+
+  bool get chordsDrawType => settings.chordsDrawType;
   set chordsDrawType(bool value){
-    Settings.chordsDrawType = value;
+    settings.chordsDrawType = value;
     notifyListeners();
   }
 }
 
 class ChordsDrawPinnedProvider extends ChangeNotifier{
 
-  bool get pinChordsDraw => Settings.pinChordsDraw;
+  SongBookSettings settings;
+  ChordsDrawPinnedProvider(this.settings);
+
+  bool get pinChordsDraw => settings.pinChordsDraw;
   set pinChordsDraw(bool value){
-    Settings.pinChordsDraw = value;
+    settings.pinChordsDraw = value;
     notifyListeners();
   }
 }
 
 class ChordsDrawShowProvider extends ChangeNotifier{
 
-  bool get chordsDrawShow => Settings.chordsDrawShow;
+  SongBookSettings settings;
+  ChordsDrawShowProvider(this.settings);
+
+  bool get chordsDrawShow => settings.chordsDrawShow;
   set chordsDrawShow(bool value){
-    Settings.chordsDrawShow = value;
+    settings.chordsDrawShow = value;
     notifyListeners();
   }
 }

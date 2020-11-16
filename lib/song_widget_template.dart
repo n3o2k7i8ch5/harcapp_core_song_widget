@@ -25,6 +25,7 @@ import 'get_line_nums.dart';
 class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 
   final T song;
+  final SongBookSettings settings;
 
   final double screenWidth;
 
@@ -33,30 +34,30 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 
   final double topScreenPadding;
 
-  final Function(ScrollController controller) onScroll;
+  final void Function(ScrollController controller) onScroll;
 
-  final Function() onTitleTap;
-  final Function() onAuthorTap;
-  final Function() onPerformerTap;
-  final Function() onComposerTap;
-  final Function(String tag) onTagTap;
+  final void Function() onTitleTap;
+  final void Function() onAuthorTap;
+  final void Function() onPerformerTap;
+  final void Function() onComposerTap;
+  final void Function(String tag) onTagTap;
 
-  final Function(double position) onYTLinkTap;
-  final Function onYTLinkLongPress;
+  final void Function(double position) onYTLinkTap;
+  final void Function() onYTLinkLongPress;
 
-  final Function(BuildContext context, bool changedSize) onMinusTap;
-  final Function(BuildContext context, bool changedSize) onPlusTap;
+  final void Function(BuildContext context, bool changedSize) onMinusTap;
+  final void Function(BuildContext context, bool changedSize) onPlusTap;
 
-  final Function() onAlbumsTap;
+  final void Function() onAlbumsTap;
 
-  final Function(double position) onRateTap;
+  final void Function(double position) onRateTap;
 
-  final Function() onDeleteTap;
-  final Function() onDeleteLongPress;
+  final void Function() onDeleteTap;
+  final void Function() onDeleteLongPress;
 
-  final Function() onReportTap;
+  final void Function() onReportTap;
 
-  final Function(TextSizeProvider) onEditTap;
+  final void Function(TextSizeProvider) onEditTap;
 
   final void Function() onSendSongTap;
 
@@ -74,6 +75,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 
   const SongWidgetTemplate(
       this.song,
+      this.settings,
       {
         this.screenWidth,
         this.pageNotifier,
@@ -129,6 +131,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTemplate> with TickerProviderStateMixin {
 
   T get song => widget.song;
+  SongBookSettings get settings => widget.settings;
 
   List<Widget> widgets = [];
 
@@ -139,13 +142,13 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
   String lineNum;
 
   bool showChords() =>
-      Settings.showChords
+      settings.showChords
           && widget.song.hasChords;
 
   ScrollController scrollController;
 
   void resetDisplayChordDraw() =>
-      setState(() => displayChordDraw = widget.song.hasChords && Settings.showChords && Settings.chordsDrawShow);
+      setState(() => displayChordDraw = widget.song.hasChords && settings.showChords && settings.chordsDrawShow);
 
   bool displayChordDraw;
 
@@ -154,7 +157,7 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
     //wantedFontSize = defFontSize;
     contentCardsKey = GlobalKey();
 
-    displayChordDraw = widget.song.hasChords && Settings.showChords && Settings.chordsDrawShow;
+    displayChordDraw = widget.song.hasChords && settings.showChords && settings.chordsDrawShow;
 
     scrollController = ScrollController();
     if(widget.onScroll != null) scrollController.addListener(() => widget.onScroll(scrollController));
@@ -195,7 +198,7 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                         builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child) =>
                             SizedBox(
                                 height: (chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
-                                ChordWidget.height(Settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
+                                ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
                             )
                     ),
 
@@ -705,6 +708,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
   final ScrollController listView;
 
   T get song => parent.widget.song;
+  SongBookSettings get settings => parent.settings;
 
   String get text => song.text;
   String get chords => song.chords;
@@ -758,7 +762,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       ],
                     ),
                     onTap: (){
-                      if(Settings.scrollText) {
+                      if(settings.scrollText) {
 
                         double scrollDefDelta = MediaQuery.of(context).size.height / 2;
                         double scrollDelta = min(
@@ -776,10 +780,10 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       }
                     },
                     onLongPress: () async {
-                      if(!Settings.autoscrollText) return;
+                      if(!settings.autoscrollText) return;
 
                       double scrollLeft = listView.position.maxScrollExtent - listView.offset;
-                      double duration = scrollLeft*(1.1-Settings.autoscrollTextSpeed)*500;
+                      double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
                       listView.animateTo(
                           listView.position.maxScrollExtent,
                           duration: Duration(milliseconds: duration.round()),
@@ -829,6 +833,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
   const ChordsBarCard(this.parent);
 
   T get song => parent.song;
+  SongBookSettings get settings => parent.settings;
 
   @override
   Widget build(BuildContext context) {
@@ -836,7 +841,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
     Widget chordsBar = Consumer<ChordsDrawTypeProvider>(
       builder: (context, prov, child) => ChordDrawBar(
         song.chords,
-        typeGuitar: PrimitiveWrapper(Settings.chordsDrawType),
+        typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
         onTypeChanged: parent.widget.onChordsTypeChanged,
         elevation: 0,
         chordBackground: Colors.transparent,
