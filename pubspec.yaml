@@ -19,6 +19,10 @@ dependencies:
     git:
       url: git://github.com/n3o2k7i8ch5/harcapp_core.git
 
+  harcapp_core_tags:
+    git:
+      url: git://github.com/n3o2k7i8ch5/harcapp_core_tags.git
+
   harcapp_core_song:
     git:
       url: git://github.com/n3o2k7i8ch5/harcapp_core_song.git

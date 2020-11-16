@@ -62,7 +62,7 @@ class TextSizeProvider extends ChangeNotifier{
 
   double calculate(double screenWidth, SongCore song){
     double initSize = defFontSize;
-    double scale = fits(screenWidth, song.text, song.getChords(), getLineNums(song.text), initSize);
+    double scale = fits(screenWidth, song.text, song.chords, getLineNums(song.text), initSize);
     return scale*initSize;
   }
 

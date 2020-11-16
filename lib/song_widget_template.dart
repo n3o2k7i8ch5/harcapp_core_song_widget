@@ -11,12 +11,12 @@ import 'package:harcapp_core/comm_widgets/app_card.dart';
 import 'package:harcapp_core/comm_widgets/app_button.dart';
 import 'package:harcapp_core/comm_widgets/chord_draw_bar.dart';
 import 'package:harcapp_core/comm_widgets/simple_button.dart';
-import 'package:harcapp_core/comm_widgets/tag_layout.dart';
 import 'package:harcapp_core/dimen.dart';
 import 'package:harcapp_core_song/song_core.dart';
 import 'package:harcapp_core_song_widget/providers.dart';
 import 'package:harcapp_core_song_widget/settings.dart';
 import 'package:harcapp_core_song_widget/song_rate.dart';
+import 'package:harcapp_core_tags/tag_layout.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -38,6 +38,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
   final Function() onTitleTap;
   final Function() onAuthorTap;
   final Function() onPerformerTap;
+  final Function() onComposerTap;
   final Function(String tag) onTagTap;
 
   final Function(double position) onYTLinkTap;
@@ -65,8 +66,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
 
   final void Function(bool isTypeGuitar) onChordsTypeChanged;
 
-  final Function(TextSizeProvider provider) onChordsTap;
-  final Function(TextSizeProvider provider) onChordsLongPress;
+  final void Function(TextSizeProvider provider) onChordsTap;
+  final void Function(TextSizeProvider provider) onChordsLongPress;
 
   final Widget Function(BuildContext, ScrollController) header;
   final Widget Function(BuildContext, ScrollController) footer;
@@ -85,6 +86,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatefulWidget{
         this.onTitleTap,
         this.onAuthorTap,
         this.onPerformerTap,
+        this.onComposerTap,
         this.onTagTap,
 
         this.onYTLinkTap,
@@ -340,6 +342,39 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
       onTap: parent.widget.onAuthorTap,
     );
 
+    Widget widgetComposer = SimpleButton(
+      child: Row(
+        //crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children:[
+          Text(
+            'Kompozyt.: ',
+            style: AppTextStyle(
+              fontSize: Dimen.TEXT_SIZE_SMALL,
+              color: hintEnabled(context),
+            ),
+            textAlign: TextAlign.left,
+          ),
+
+          if(song.composer.length>0)
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Text(
+                  song.composer,
+                  style: AppTextStyle(
+                    fontWeight: weight.halfBold,
+                    fontSize: Dimen.TEXT_SIZE_SMALL,
+                    color: textEnabled(context),
+                  ),
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            )
+        ],),
+      onTap: parent.widget.onComposerTap,
+    );
+
     Widget widgetPerformer = SimpleButton(
       child: Row(
         //crossAxisAlignment: CrossAxisAlignment.start,
@@ -565,7 +600,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 double scaleFactor = TextSizeProvider.fits(
                     parent.widget.screenWidth??MediaQuery.of(context).size.width,
                     song.text,
-                    parent.showChords()?song.getChords():null,
+                    parent.showChords()?song.chords:null,
                     parent.lineNum,
                     prov.value + 0.5);
 
@@ -662,7 +697,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
   T get song => parent.widget.song;
 
   String get text => song.text;
-  String get chords => song.getChords();
+  String get chords => song.chords;
   String get lineNum => parent.lineNum;
 
   static const double lineSpacing = 1.2;
@@ -790,7 +825,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
     Widget chordsBar = Consumer<ChordsDrawTypeProvider>(
       builder: (context, prov, child) => ChordDrawBar(
-        song.getChords(),
+        song.chords,
         typeGuitar: PrimitiveWrapper(Settings.chordsDrawType),
         onTypeChanged: parent.widget.onChordsTypeChanged,
         elevation: 0,
