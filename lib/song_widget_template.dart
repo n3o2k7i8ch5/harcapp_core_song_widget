@@ -464,8 +464,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                     ),
                   ),
 
-                  widgetComposer == null?
-                  widgetAuthor
+                  pageNotifier == null?
+                  widgetComposer
                       :AnimatedBuilder(
                     animation: pageNotifier,
                     builder: (context, _) => Transform.translate(
