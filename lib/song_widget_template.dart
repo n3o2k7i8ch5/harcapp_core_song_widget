@@ -143,7 +143,7 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
 
   bool showChords() =>
       settings.showChords
-          && widget.song.hasChords;
+          && song.hasChords;
 
   ScrollController scrollController;
 
@@ -197,19 +197,22 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                     Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
                         builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child) =>
                             SizedBox(
-                                height: (chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
+                                height: (song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
                                 ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
                             )
                     ),
 
                     if(widget.song.isOwn)
-                      AppCard(
-                          color: accentColor(context),
-                          child: Text(
-                            'Piosenka nieoficjalna.',
-                            style: AppTextStyle(color: accentIcon(context)),
-                            textAlign: TextAlign.center,
-                          )
+                      Padding(
+                        padding: EdgeInsets.all(Dimen.DEF_MARG),
+                        child: Text(
+                          'Piosenka nieoficjalna',
+                          style: AppTextStyle(
+                              color: accentColor(context),
+                              fontWeight: weight.halfBold
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
 
                     if(widget.header!=null) widget.header(context, scrollController),
@@ -264,12 +267,12 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                 listView,
                 Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
                   child: Material(
-                    color: defCardEnabled(context),
+                    color: background(context),
                     elevation: AppCard.bigElevation,
                     child: ChordsBarCard<T>(this),
                   ),
                   builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                    if(chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
+                    if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
                       return child;
                     else
                       return Container();
@@ -838,7 +841,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    Widget chordsBar = Consumer<ChordsDrawTypeProvider>(
+    return Consumer<ChordsDrawTypeProvider>(
       builder: (context, prov, child) => ChordDrawBar(
         song.chords,
         typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
@@ -847,22 +850,6 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
         chordBackground: Colors.transparent,
       ),
     );
-
-    /*
-    bool chordsLocked = Settings.pinChordsDraw;
-
-    if(chordsLocked)
-      return AppCard.Default(
-          padding: EdgeInsets.zero,
-          borderRadius: BorderRadius.vertical(bottom: Radius.circular(AppCard.defRadius)),
-          context: context,
-          margin: EdgeInsets.zero,
-          elevation: AppCard.bigElevation,
-          child: chordsBar
-      );
-
-    else */
-    return chordsBar;
 
   }
 
