@@ -302,7 +302,7 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
 
   }
 
-  void startAutoscroll()async{
+  void startAutoscroll(BuildContext context)async{
     double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
     double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
 
@@ -814,7 +814,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                     onLongPress: () async {
                       if(!settings.autoscrollText) return;
 
-                      parent.startAutoscroll();
+                      parent.startAutoscroll(context);
 
                     }
                 ),
@@ -916,7 +916,7 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
                 inactiveColor: hintDisabled(context),
                 onChanged: (value){
                   settings.autoscrollText?setState(() => settings.autoscrollTextSpeed = value):null;
-                  parent.startAutoscroll();
+                  parent.startAutoscroll(context);
                 },
                 label: 'Szybkość przewijania',
               ),
