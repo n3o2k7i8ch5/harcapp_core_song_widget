@@ -157,6 +157,10 @@ class AutoscrollProvider extends ChangeNotifier{
 
   bool _isScrolling;
 
+  AutoscrollProvider(){
+    _isScrolling = false;
+  }
+
   bool get isScrolling => _isScrolling;
   set isScrolling(bool value){
     _isScrolling = value;
