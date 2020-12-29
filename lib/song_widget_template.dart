@@ -177,8 +177,11 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
   Widget build(BuildContext context) {
 
     double screenWidth = MediaQuery.of(context).size.width;
-    return ChangeNotifierProvider<TextSizeProvider>(
-      create: (context) => TextSizeProvider(widget.screenWidth??screenWidth, song),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => TextSizeProvider(widget.screenWidth??screenWidth, song)),
+        ChangeNotifierProvider(create: (context) => AutoscrollProvider()),
+      ],
       builder: (context, child) => OrientationBuilder(
           builder: (BuildContext context, Orientation orientation) {
             // To po to, żeby tekst został zresetowany po zmianie orientacji.
@@ -525,35 +528,42 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
 
     PageController controller = PageController();
 
-    return Row(
-      children: <Widget>[
-        IconButton(
-          icon: Icon(MdiIcons.dotsHorizontal, color: iconEnabledColor(context)),
-          onPressed: (){
-            controller.animateToPage(
-              (controller.page-1).abs().toInt(),
-              duration: Duration(milliseconds: 150),
-              curve: Curves.easeInOutSine,
-            );
-          },
-        ),
+    return Consumer<AutoscrollProvider>(
+      builder: (context, prov, child){
+        if(prov.isScrolling)
+          return Container();
+        else
+          return Row(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(MdiIcons.dotsHorizontal, color: iconEnabledColor(context)),
+                onPressed: (){
+                  controller.animateToPage(
+                    (controller.page-1).abs().toInt(),
+                    duration: Duration(milliseconds: 150),
+                    curve: Curves.easeInOutSine,
+                  );
+                },
+              ),
 
-        Expanded(
-          child: Container(
-            child: PageView(
-              scrollDirection: Axis.vertical,
-              physics: NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                TopWidget<T>(fragmentState),
-                BottomWidget<T>(fragmentState)
-              ],
-              controller: controller,
-            ),
-            height: Dimen.ICON_SIZE + 2*Dimen.MARG_ICON,
-          ),
-        )
+              Expanded(
+                child: Container(
+                  child: PageView(
+                    scrollDirection: Axis.vertical,
+                    physics: NeverScrollableScrollPhysics(),
+                    children: <Widget>[
+                      TopWidget<T>(fragmentState),
+                      BottomWidget<T>(fragmentState)
+                    ],
+                    controller: controller,
+                  ),
+                  height: Dimen.ICON_SIZE + 2*Dimen.MARG_ICON,
+                ),
+              )
 
-      ],
+            ],
+          );
+      },
     );
   }
 
@@ -787,10 +797,14 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
                       double scrollLeft = listView.position.maxScrollExtent - listView.offset;
                       double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
-                      listView.animateTo(
+
+                      AutoscrollProvider prov = Provider.of(context, listen: false);
+                      prov.isScrolling = true;
+                      await listView.animateTo(
                           listView.position.maxScrollExtent,
                           duration: Duration(milliseconds: duration.round()),
                           curve: Curves.linear);
+                      prov.isScrolling = false;
                     }
                 ),
               ),
