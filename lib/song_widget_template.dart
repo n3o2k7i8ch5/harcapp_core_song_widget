@@ -269,33 +269,36 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
 
                 listView,
 
-                Material(
-                  color: background(context),
-                  elevation: AppCard.bigElevation,
-                  child: AnimatedSize(
-                    vsync: this,
-                    duration: Duration(milliseconds: 300),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Column(
+                Positioned(
+                  top: 0,
+                  child: Material(
+                      color: background(context),
+                      elevation: AppCard.bigElevation,
+                      child: AnimatedSize(
+                        vsync: this,
+                        duration: Duration(milliseconds: 300),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                              child: ChordsBarCard<T>(this),
-                              builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                                if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                                  return child;
-                                else
-                                  return Container();
-                              },
+                            Column(
+                              children: [
+                                Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                                  child: ChordsBarCard<T>(this),
+                                  builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
+                                    if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
+                                      return child;
+                                    else
+                                      return Container();
+                                  },
+                                ),
+                                AutoScrollSpeedWidget(this),
+                              ],
                             ),
-                            AutoScrollSpeedWidget(this),
                           ],
                         ),
-                      ],
-                    ),
-                  )
+                      )
+                  ),
                 )
               ],
             );
