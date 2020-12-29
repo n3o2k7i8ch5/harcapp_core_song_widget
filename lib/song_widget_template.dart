@@ -268,19 +268,29 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
               children: <Widget>[
 
                 listView,
-                Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                  child: Material(
-                    color: background(context),
-                    elevation: AppCard.bigElevation,
-                    child: ChordsBarCard<T>(this),
+
+                Material(
+                  color: background(context),
+                  elevation: AppCard.bigElevation,
+                  child: Column(
+                    children: [
+                      Column(
+                        children: [
+                          Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                            child: ChordsBarCard<T>(this),
+                            builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
+                              if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
+                                return child;
+                              else
+                                return Container();
+                            },
+                          ),
+                          AutoScrollSpeedWidget(this),
+                        ],
+                      ),
+                    ],
                   ),
-                  builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                    if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                      return child;
-                    else
-                      return Container();
-                  },
-                ),
+                )
 
 
               ],
@@ -798,13 +808,19 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       double scrollLeft = listView.position.maxScrollExtent - listView.offset;
                       double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
 
-                      AutoscrollProvider prov = Provider.of(context, listen: false);
-                      prov.isScrolling = true;
+                      try {
+                        Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = true;
+                      }catch(e){}
+
                       await listView.animateTo(
                           listView.position.maxScrollExtent,
                           duration: Duration(milliseconds: duration.round()),
                           curve: Curves.linear);
-                      prov.isScrolling = false;
+
+                      try {
+                        Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = false;
+                      }catch(e){}
+
                     }
                 ),
               ),
@@ -869,4 +885,56 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
 }
 
+class AutoScrollSpeedWidget<T extends SongCore> extends StatefulWidget{
 
+  final SongWidgetTemplateState<T> parent;
+
+  const AutoScrollSpeedWidget(this.parent);
+
+  @override
+  State<StatefulWidget> createState() => AutoScrollSpeedWidgetState();
+
+}
+
+class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
+
+  SongBookSettTempl get settings => widget.parent.settings;
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<AutoscrollProvider>(
+      child: Row(
+        children: [
+
+          Padding(
+            padding: EdgeInsets.all(Dimen.MARG_ICON),
+            child: Icon(MdiIcons.speedometer),
+          ),
+
+          Expanded(
+            child: SliderTheme(
+              child: Slider(
+                value: settings.autoscrollTextSpeed,
+                divisions: 5,
+                activeColor: settings.autoscrollText?accentColor(context):hintEnabled(context),
+                inactiveColor: hintDisabled(context),
+                onChanged: (value) => settings.autoscrollText?setState(() => settings.autoscrollTextSpeed = value):null,
+                label: 'Szybkość przewijania',
+              ),
+              data: SliderTheme.of(context).copyWith(
+                  valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold)
+              ),
+            ),
+          ),
+
+        ],
+      ),
+      builder: (context, prov, child) =>
+      prov.isScrolling?
+      child:
+      Container(),
+    );
+  }
+
+
+}

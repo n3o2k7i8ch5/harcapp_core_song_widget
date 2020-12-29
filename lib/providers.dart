@@ -165,7 +165,6 @@ class AutoscrollProvider extends ChangeNotifier{
   set isScrolling(bool value){
     _isScrolling = value;
     notifyListeners();
-    debugPrint('$_isScrolling');
   }
 
 }
