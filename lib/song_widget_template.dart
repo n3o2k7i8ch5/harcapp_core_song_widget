@@ -273,6 +273,8 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                   color: background(context),
                   elevation: AppCard.bigElevation,
                   child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Column(
                         children: [
