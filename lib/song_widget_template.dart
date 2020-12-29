@@ -276,29 +276,31 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                   child: Material(
                       color: background(context),
                       elevation: AppCard.bigElevation,
-                      child: AnimatedSize(
-                        vsync: this,
-                        duration: Duration(milliseconds: 300),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Column(
-                              children: [
-                                Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                                  child: ChordsBarCard<T>(this),
-                                  builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                                    if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                                      return child;
-                                    else
-                                      return Container();
-                                  },
-                                ),
-                                AutoScrollSpeedWidget(this),
-                              ],
-                            ),
-                          ],
-                        ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Column(
+                            children: [
+                              Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                                child: ChordsBarCard<T>(this),
+                                builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
+                                  if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
+                                    return child;
+                                  else
+                                    return Container();
+                                },
+                              ),
+
+                              AnimatedSize(
+                                  vsync: this,
+                                  duration: Duration(milliseconds: 300),
+                                  child:
+                                  AutoScrollSpeedWidget(this)
+                              ),
+                            ],
+                          ),
+                        ],
                       )
                   ),
                 )
@@ -934,13 +936,9 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with Ticke
         ],
       ),
       builder: (context, prov, child) =>
-      AnimatedSize(
-        duration: Duration(milliseconds: 300),
-        vsync: this,
-        child: prov.isScrolling?
+        prov.isScrolling?
         child:
         Container(),
-      )
       /*
           AnimatedOpacity(
             opacity: prov.isScrolling?1:0,
