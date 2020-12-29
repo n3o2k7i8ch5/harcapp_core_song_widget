@@ -272,29 +272,31 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                 Material(
                   color: background(context),
                   elevation: AppCard.bigElevation,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Column(
-                        children: [
-                          Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                            child: ChordsBarCard<T>(this),
-                            builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                              if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                                return child;
-                              else
-                                return Container();
-                            },
-                          ),
-                          AutoScrollSpeedWidget(this),
-                        ],
-                      ),
-                    ],
-                  ),
+                  child: AnimatedSize(
+                    vsync: this,
+                    duration: Duration(milliseconds: 300),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Column(
+                          children: [
+                            Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                              child: ChordsBarCard<T>(this),
+                              builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
+                                if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
+                                  return child;
+                                else
+                                  return Container();
+                              },
+                            ),
+                            AutoScrollSpeedWidget(this),
+                          ],
+                        ),
+                      ],
+                    ),
+                  )
                 )
-
-
               ],
             );
           }),
@@ -814,12 +816,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                         );
                       }
                     },
-                    onLongPress: () async {
-                      if(!settings.autoscrollText) return;
-
-                      parent.startAutoscroll(context);
-
-                    }
+                    onLongPress: () => parent.startAutoscroll(context)
                 ),
               ),
 
@@ -915,10 +912,10 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
               child: Slider(
                 value: settings.autoscrollTextSpeed,
                 divisions: 5,
-                activeColor: settings.autoscrollText?accentColor(context):hintEnabled(context),
+                activeColor: accentColor(context),
                 inactiveColor: hintDisabled(context),
                 onChanged: (value){
-                  settings.autoscrollText?setState(() => settings.autoscrollTextSpeed = value):null;
+                  setState(() => settings.autoscrollTextSpeed = value);
                   parent.startAutoscroll(context, restart: true);
                 },
                 label: 'Szybkość przewijania',
@@ -934,7 +931,15 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
       builder: (context, prov, child) =>
       prov.isScrolling?
       child:
-      Container(),
+      Container()
+      /*
+          AnimatedOpacity(
+            opacity: prov.isScrolling?1:0,
+            duration: Duration(milliseconds: 300),
+            child: child,
+          )
+
+       */
     );
   }
 

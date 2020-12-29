@@ -6,9 +6,6 @@ abstract class SongBookSettTempl{
   bool get scrollText;
   set scrollText(bool value);
 
-  bool get autoscrollText;
-  set autoscrollText(bool value);
-
   double get autoscrollTextSpeed;
   set autoscrollTextSpeed(double value);
 
