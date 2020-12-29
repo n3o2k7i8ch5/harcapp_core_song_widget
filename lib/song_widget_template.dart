@@ -295,8 +295,8 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                               AnimatedSize(
                                   vsync: this,
                                   duration: Duration(milliseconds: 300),
-                                  child:
-                                  AutoScrollSpeedWidget(this)
+                                  curve: Curves.easeOutQuart,
+                                  child: AutoScrollSpeedWidget(this)
                               ),
                             ],
                           ),
