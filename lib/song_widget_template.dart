@@ -302,11 +302,14 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
 
   }
 
-  void startAutoscroll(BuildContext context)async{
+  void startAutoscroll(BuildContext context, bool restart)async{
     double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
     double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
 
-    Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = true;
+    if(restart)
+      Provider.of<AutoscrollProvider>(context, listen: false).restart = true;
+    else
+      Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = true;
 
     await scrollController.animateTo(
         scrollController.position.maxScrollExtent,

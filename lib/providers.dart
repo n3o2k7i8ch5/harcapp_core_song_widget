@@ -156,13 +156,19 @@ class TextSizeProvider extends ChangeNotifier{
 class AutoscrollProvider extends ChangeNotifier{
 
   bool _isScrolling;
+  bool restart;
 
   AutoscrollProvider(){
     _isScrolling = false;
+    restart = false;
   }
 
   bool get isScrolling => _isScrolling;
   set isScrolling(bool value){
+    if(restart){
+      restart = false;
+      return;
+    }
     _isScrolling = value;
     notifyListeners();
   }
