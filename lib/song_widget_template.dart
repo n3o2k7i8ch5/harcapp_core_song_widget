@@ -302,6 +302,20 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
 
   }
 
+  void startAutoscroll()async{
+    double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
+    double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
+
+    Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = true;
+
+    await scrollController.animateTo(
+        scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: duration.round()),
+        curve: Curves.linear);
+
+    Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = false;
+  }
+
   void notify() => setState((){});
 }
 
@@ -540,42 +554,35 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
 
     PageController controller = PageController();
 
-    return Consumer<AutoscrollProvider>(
-      builder: (context, prov, child){
-        if(prov.isScrolling)
-          return Container();
-        else
-          return Row(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(MdiIcons.dotsHorizontal, color: iconEnabledColor(context)),
-                onPressed: (){
-                  controller.animateToPage(
-                    (controller.page-1).abs().toInt(),
-                    duration: Duration(milliseconds: 150),
-                    curve: Curves.easeInOutSine,
-                  );
-                },
-              ),
+    return Row(
+      children: <Widget>[
+        IconButton(
+          icon: Icon(MdiIcons.dotsHorizontal, color: iconEnabledColor(context)),
+          onPressed: (){
+            controller.animateToPage(
+              (controller.page-1).abs().toInt(),
+              duration: Duration(milliseconds: 150),
+              curve: Curves.easeInOutSine,
+            );
+          },
+        ),
 
-              Expanded(
-                child: Container(
-                  child: PageView(
-                    scrollDirection: Axis.vertical,
-                    physics: NeverScrollableScrollPhysics(),
-                    children: <Widget>[
-                      TopWidget<T>(fragmentState),
-                      BottomWidget<T>(fragmentState)
-                    ],
-                    controller: controller,
-                  ),
-                  height: Dimen.ICON_SIZE + 2*Dimen.MARG_ICON,
-                ),
-              )
+        Expanded(
+          child: Container(
+            child: PageView(
+              scrollDirection: Axis.vertical,
+              physics: NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                TopWidget<T>(fragmentState),
+                BottomWidget<T>(fragmentState)
+              ],
+              controller: controller,
+            ),
+            height: Dimen.ICON_SIZE + 2*Dimen.MARG_ICON,
+          ),
+        )
 
-            ],
-          );
-      },
+      ],
     );
   }
 
@@ -807,21 +814,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                     onLongPress: () async {
                       if(!settings.autoscrollText) return;
 
-                      double scrollLeft = listView.position.maxScrollExtent - listView.offset;
-                      double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
-
-                      try {
-                        Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = true;
-                      }catch(e){}
-
-                      await listView.animateTo(
-                          listView.position.maxScrollExtent,
-                          duration: Duration(milliseconds: duration.round()),
-                          curve: Curves.linear);
-
-                      try {
-                        Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = false;
-                      }catch(e){}
+                      parent.startAutoscroll();
 
                     }
                 ),
@@ -900,7 +893,8 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatefulWidget{
 
 class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
 
-  SongBookSettTempl get settings => widget.parent.settings;
+  SongWidgetTemplateState get parent => widget.parent;
+  SongBookSettTempl get settings => parent.settings;
 
   @override
   Widget build(BuildContext context) {
@@ -920,7 +914,10 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
                 divisions: 5,
                 activeColor: settings.autoscrollText?accentColor(context):hintEnabled(context),
                 inactiveColor: hintDisabled(context),
-                onChanged: (value) => settings.autoscrollText?setState(() => settings.autoscrollTextSpeed = value):null,
+                onChanged: (value){
+                  settings.autoscrollText?setState(() => settings.autoscrollTextSpeed = value):null;
+                  parent.startAutoscroll();
+                },
                 label: 'Szybkość przewijania',
               ),
               data: SliderTheme.of(context).copyWith(
