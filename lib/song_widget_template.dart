@@ -271,6 +271,8 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
 
                 Positioned(
                   top: 0,
+                  left: 0,
+                  right: 0,
                   child: Material(
                       color: background(context),
                       elevation: AppCard.bigElevation,
@@ -894,7 +896,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatefulWidget{
 
 }
 
-class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
+class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with TickerProviderStateMixin{
 
   SongWidgetTemplateState get parent => widget.parent;
   SongBookSettTempl get settings => parent.settings;
@@ -932,9 +934,13 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget>{
         ],
       ),
       builder: (context, prov, child) =>
-      prov.isScrolling?
-      child:
-      Container()
+      AnimatedSize(
+        duration: Duration(milliseconds: 300),
+        vsync: this,
+        child: prov.isScrolling?
+        child:
+        Container(),
+      )
       /*
           AnimatedOpacity(
             opacity: prov.isScrolling?1:0,
