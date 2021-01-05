@@ -1,1 +1,0 @@
-library harcapp_core_song_widget;
