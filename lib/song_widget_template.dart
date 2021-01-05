@@ -474,10 +474,10 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         )
     );
 
-    return AppCard.Default(
+    return AppCard(
         padding: EdgeInsets.zero,
-        context: context,
         elevation: AppCard.bigElevation,
+        radius: AppCard.defBigRadius,
         child:
 
         Stack(
