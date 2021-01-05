@@ -494,7 +494,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                   else AnimatedBuilder(
                     animation: pageNotifier,
                     builder: (context, _) => Transform.translate(
-                        offset: Offset(MediaQuery.of(context).size.width/4*(pageNotifier.value - index), 0),
+                        offset: Offset(MediaQuery.of(context).size.width/2*(pageNotifier.value - index), 0),
                         child: widgetTitle
                     ),
                   ),
@@ -506,7 +506,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                       :AnimatedBuilder(
                     animation: pageNotifier,
                     builder: (context, _) => Transform.translate(
-                        offset: Offset(MediaQuery.of(context).size.width/8*(pageNotifier.value - index), 0),
+                        offset: Offset(MediaQuery.of(context).size.width/6*(pageNotifier.value - index), 0),
                         child: widgetAuthor
                     ),
                   ),
@@ -516,7 +516,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                       :AnimatedBuilder(
                     animation: pageNotifier,
                     builder: (context, _) => Transform.translate(
-                        offset: Offset(MediaQuery.of(context).size.width/8*(pageNotifier.value - index), 0),
+                        offset: Offset(MediaQuery.of(context).size.width/6*(pageNotifier.value - index), 0),
                         child: widgetComposer
                     ),
                   ),
@@ -528,7 +528,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                     animation: pageNotifier,
                     builder: (context, _) =>
                         Transform.translate(
-                            offset: Offset(MediaQuery.of(context).size.width / 8 * (pageNotifier.value - index), 0),
+                            offset: Offset(MediaQuery.of(context).size.width / 6 * (pageNotifier.value - index), 0),
                             child: widgetPerformer
                         ),
                   ),
@@ -539,7 +539,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                         : AnimatedBuilder(
                       animation: pageNotifier,
                       builder: (context, _) => Transform.translate(
-                          offset: Offset(MediaQuery.of(context).size.width/8*(pageNotifier.value - index), 0),
+                          offset: Offset(MediaQuery.of(context).size.width/6*(pageNotifier.value - index), 0),
                           child: widgetTags
                       ),
                     ),
