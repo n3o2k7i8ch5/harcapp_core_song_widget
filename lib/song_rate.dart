@@ -33,9 +33,9 @@ class RateCardState<T extends SongCore> extends State<RateCard>{
 
     return Align(
         alignment: Alignment.topCenter,
-        child: AppCard.Default(
-            context: context,
-            padding: EdgeInsets.all(0),
+        child: AppCard(
+            padding: EdgeInsets.zero,
+            radius: AppCard.defBigRadius,
             elevation: AppCard.bigElevation,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
