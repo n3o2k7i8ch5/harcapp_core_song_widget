@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:harcapp_core/comm_classes/app_text_style.dart';
 import 'package:harcapp_core/comm_classes/color_pack.dart';
+import 'package:harcapp_core/comm_classes/simple_button.dart';
 import 'package:harcapp_core/comm_widgets/app_card.dart';
 import 'package:harcapp_core/comm_widgets/shadow_icon.dart';
 import 'package:harcapp_core/dimen.dart';
@@ -156,9 +157,8 @@ class RateButton extends StatelessWidget{
       ],
     );
 
-    return AppCard.Default(
-      context: context,
-      elevation: 0.0,
+    return SimpleButton(
+      radius: AppCard.defBigRadius,
       padding: EdgeInsets.only(top: Dimen.DEF_MARG, bottom: Dimen.DEF_MARG),
       margin: EdgeInsets.zero,
       child: child,
