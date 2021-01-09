@@ -425,10 +425,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
       onTap: parent.widget.onComposerTap,
     );
 
-    Widget widgetPerformer = SimpleButton(
-      padding: EdgeInsets.all(Dimen.DEF_MARG),
-      radius: AppCard.defBigRadius,
-      child: Row(
+    Widget widgetPerformer = Row(
         mainAxisSize: MainAxisSize.min,
         children:[
           Text(
@@ -443,24 +440,28 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           if(song.performer.length>0)
             Expanded(
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Text(
-                  song.performer,
-                  style: AppTextStyle(
-                    fontWeight: weight.halfBold,
-                    fontSize: Dimen.TEXT_SIZE_SMALL,
-                    color: textEnabled(context),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
+                  scrollDirection: Axis.horizontal,
+                  child: SimpleButton(
+                    padding: EdgeInsets.all(Dimen.DEF_MARG),
+                    radius: AppCard.defBigRadius,
+                    child: Text(
+                      song.performer,
+                      style: AppTextStyle(
+                        fontWeight: weight.halfBold,
+                        fontSize: Dimen.TEXT_SIZE_SMALL,
+                        color: textEnabled(context),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    onTap: parent.widget.onPerformerTap,
+                  )
               ),
             )
-        ],),
-      onTap: parent.widget.onPerformerTap,
+        ]
     );
 
     Widget widgetTags = Container(
-        height: Tag.height,
+        height: Tag.height + 2*Dimen.DEF_MARG,
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
