@@ -484,65 +484,27 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           children: <Widget>[
 
             Padding(
-              padding: AppCard.defMargin,
+              padding: EdgeInsets.all(Dimen.ICON_SIZE),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
 
-                  if(pageNotifier == null) widgetTitle
-                  else AnimatedBuilder(
-                    animation: pageNotifier,
-                    builder: (context, _) => Transform.translate(
-                        offset: Offset(MediaQuery.of(context).size.width/2*(pageNotifier.value - index), 0),
-                        child: widgetTitle
-                    ),
-                  ),
+                  widgetTitle,
+                  
+                  widgetAuthor,
+                  
+                  SizedBox(height: Dimen.MARG_ICON),
 
-                  SizedBox(height: 6,),
+                  widgetComposer,
+                  
+                  SizedBox(height: Dimen.MARG_ICON),
 
-                  pageNotifier == null?
-                  widgetAuthor
-                      :AnimatedBuilder(
-                    animation: pageNotifier,
-                    builder: (context, _) => Transform.translate(
-                        offset: Offset(MediaQuery.of(context).size.width/6*(pageNotifier.value - index), 0),
-                        child: widgetAuthor
-                    ),
-                  ),
+                  widgetPerformer,
+                  
+                  SizedBox(height: Dimen.MARG_ICON),
 
-                  pageNotifier == null?
-                  widgetComposer
-                      :AnimatedBuilder(
-                    animation: pageNotifier,
-                    builder: (context, _) => Transform.translate(
-                        offset: Offset(MediaQuery.of(context).size.width/6*(pageNotifier.value - index), 0),
-                        child: widgetComposer
-                    ),
-                  ),
-
-                  pageNotifier == null?
-                  widgetPerformer
-                      :
-                  AnimatedBuilder(
-                    animation: pageNotifier,
-                    builder: (context, _) =>
-                        Transform.translate(
-                            offset: Offset(MediaQuery.of(context).size.width / 6 * (pageNotifier.value - index), 0),
-                            child: widgetPerformer
-                        ),
-                  ),
-
-
-                  if(song.tags.length != 0)
-                    (pageNotifier == null)? widgetTags
-                        : AnimatedBuilder(
-                      animation: pageNotifier,
-                      builder: (context, _) => Transform.translate(
-                          offset: Offset(MediaQuery.of(context).size.width/6*(pageNotifier.value - index), 0),
-                          child: widgetTags
-                      ),
-                    ),
+                  widgetTags,
 
                 ],
               ),
