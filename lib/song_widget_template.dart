@@ -519,7 +519,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     else return AnimatedBuilder(
         animation: pageNotifier,
         builder: (context, _) => Transform.translate(
-            offset: Offset(-MediaQuery.of(context).size.width/4*(pageNotifier.value - index), 0),
+            offset: Offset(-MediaQuery.of(context).size.width/3*(pageNotifier.value - index), 0),
             child: appCard
         ),
       );
