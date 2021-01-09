@@ -353,12 +353,13 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         maxLines: 1,
         textAlign: TextAlign.center,
       ),
-      padding: EdgeInsets.all(2*Dimen.DEF_MARG),
+      padding: EdgeInsets.all(Dimen.MARG_ICON),
       onTap: parent.widget.onTitleTap,
     );
 
     Widget widgetAuthor = SimpleButton(
-      padding: EdgeInsets.all(Dimen.MARG_ICON),
+      padding: EdgeInsets.all(Dimen.DEF_MARG),
+      radius: AppCard.defBigRadius,
       child: Row(
           mainAxisSize: MainAxisSize.min,
           children:[
@@ -391,7 +392,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetComposer = SimpleButton(
-      padding: EdgeInsets.all(Dimen.MARG_ICON),
+      padding: EdgeInsets.all(Dimen.DEF_MARG),
+      radius: AppCard.defBigRadius,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children:[
@@ -424,7 +426,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetPerformer = SimpleButton(
-      padding: EdgeInsets.all(Dimen.MARG_ICON),
+      padding: EdgeInsets.all(Dimen.DEF_MARG),
+      radius: AppCard.defBigRadius,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children:[
@@ -465,6 +468,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           itemCount: song.tags.length,
           itemBuilder: (BuildContext context, int index) {
             return SimpleButton(
+              padding: EdgeInsets.all(Dimen.DEF_MARG),
+              radius: AppCard.defBigRadius,
               child: Text(
                 song.tags[index],
                 style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnabled(context), fontWeight: weight.halfBold),
@@ -485,7 +490,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           children: <Widget>[
 
             Padding(
-              padding: EdgeInsets.all(Dimen.MARG_ICON),
+              padding: EdgeInsets.all(Dimen.MARG_ICON - Dimen.DEF_MARG),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
