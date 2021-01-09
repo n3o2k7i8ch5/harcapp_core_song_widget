@@ -364,7 +364,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           mainAxisSize: MainAxisSize.min,
           children:[
             Text(
-              'Autor sł.:   ',
+              'Autor sł.: ',
               style: AppTextStyle(
                 fontSize: Dimen.TEXT_SIZE_SMALL,
                 color: hintEnabled(context),
@@ -398,7 +398,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         mainAxisSize: MainAxisSize.min,
         children:[
           Text(
-            'Kompoz.:   ',
+            'Kompoz.: ',
             style: AppTextStyle(
               fontSize: Dimen.TEXT_SIZE_SMALL,
               color: hintEnabled(context),
@@ -429,7 +429,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         mainAxisSize: MainAxisSize.min,
         children:[
           Text(
-            'Wykona.:   ',
+            'Wykona.: ',
             style: AppTextStyle(
               fontSize: Dimen.TEXT_SIZE_SMALL,
               color: hintEnabled(context),
