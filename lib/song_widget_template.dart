@@ -346,6 +346,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
   Widget build(BuildContext context) {
 
     Widget widgetTitle = SimpleButton(
+      radius: AppCard.defBigRadius,
       child: AutoSizeText(
         song.title,
         style: AppTextStyle(fontSize: 24.0, color: textEnabled(context), fontWeight: weight.halfBold, shadow: true),
@@ -357,8 +358,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetAuthor = SimpleButton(
+      padding: EdgeInsets.all(Dimen.MARG_ICON),
       child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children:[
             Text(
@@ -390,8 +391,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetComposer = SimpleButton(
+      padding: EdgeInsets.all(Dimen.MARG_ICON),
       child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children:[
           Text(
@@ -423,8 +424,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetPerformer = SimpleButton(
+      padding: EdgeInsets.all(Dimen.MARG_ICON),
       child: Row(
-        //crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children:[
           Text(
@@ -484,7 +485,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           children: <Widget>[
 
             Padding(
-              padding: EdgeInsets.all(Dimen.ICON_SIZE),
+              padding: EdgeInsets.all(Dimen.MARG_ICON),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -493,16 +494,10 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                   widgetTitle,
                   
                   widgetAuthor,
-                  
-                  SizedBox(height: Dimen.MARG_ICON),
 
                   widgetComposer,
-                  
-                  SizedBox(height: Dimen.MARG_ICON),
 
                   widgetPerformer,
-                  
-                  SizedBox(height: Dimen.MARG_ICON),
 
                   widgetTags,
 
