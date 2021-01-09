@@ -228,10 +228,12 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                         Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
                           child: ChordsBarCard(this),
                           builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                            if(!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                              return child;
-                            else
-                              return Container();
+                            return AnimatedSize(
+                              duration: Duration(milliseconds: 300),
+                              curve: Curves.easeOutQuart,
+                              vsync: this,
+                              child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container();,
+                            );
                           },
                         ),
 
