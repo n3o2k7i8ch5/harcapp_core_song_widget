@@ -16,9 +16,9 @@ class RateCard<T extends SongCore> extends StatefulWidget{
   static const double HEIGHT = 2*AppCard.DEF_MARGIN_VAL + RateButton.HEIGHT;
 
   final T song;
-  final Function(int rate, bool clicked) onClick;
+  final Function(int rate, bool selected) onTap;
 
-  const RateCard(this.song, this.onClick);
+  const RateCard(this.song, {this.onTap});
 
   @override
   State<StatefulWidget> createState() => RateCardState<T>();
@@ -27,7 +27,7 @@ class RateCard<T extends SongCore> extends StatefulWidget{
 class RateCardState<T extends SongCore> extends State<RateCard>{
 
   T get song => widget.song;
-  Function(int rate, bool clicked) get onClick => widget.onClick;
+  Function(int rate, bool selected) get onTap => widget.onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -45,19 +45,19 @@ class RateCardState<T extends SongCore> extends State<RateCard>{
                 Row(
                   children: <Widget>[
                     Expanded(
-                        child: RateButton.from(song, SongRate.TEXT_DISLIKE, SongRate.iconDislike(), SongRate.RATE_DISLIKE, onClick)
+                        child: RateButton.from(song, SongRate.TEXT_DISLIKE, SongRate.iconDislike(), SongRate.RATE_DISLIKE, onTap)
                     ),
                     Expanded(
-                        child: RateButton.from(song, SongRate.TEXT_LIKE_1, SongRate.iconLike1(), SongRate.RATE_LIKE_1, onClick)
+                        child: RateButton.from(song, SongRate.TEXT_LIKE_1, SongRate.iconLike1(), SongRate.RATE_LIKE_1, onTap)
                     ),
                     Expanded(
-                        child: RateButton.from(song, SongRate.TEXT_LIKE_2, SongRate.iconLike2(), SongRate.RATE_LIKE_2, onClick)
+                        child: RateButton.from(song, SongRate.TEXT_LIKE_2, SongRate.iconLike2(), SongRate.RATE_LIKE_2, onTap)
                     ),
                     Expanded(
-                        child: RateButton.from(song, SongRate.TEXT_LIKE_3, SongRate.iconLike3(), SongRate.RATE_LIKE_3, onClick)
+                        child: RateButton.from(song, SongRate.TEXT_LIKE_3, SongRate.iconLike3(), SongRate.RATE_LIKE_3, onTap)
                     ),
                     Expanded(
-                        child: RateButton.from(song, SongRate.TEXT_BOOKMARK, SongRate.iconBookmark(), SongRate.RATE_BOOKMARK, onClick)
+                        child: RateButton.from(song, SongRate.TEXT_BOOKMARK, SongRate.iconBookmark(), SongRate.RATE_BOOKMARK, onTap)
                     ),
                   ],
                 ),
@@ -113,22 +113,22 @@ class RateButton extends StatelessWidget{
   final String title;
   final Icon icon;
   final int rate;
-  final Function(int rate, bool clicked) onClick;
-  final bool clicked;
+  final Function(int rate, bool clicked) onTap;
+  final bool selected;
   final Color background;
   final bool glow;
 
-  const RateButton(this.title, this.icon, this.rate, this.onClick, this.clicked, {this.background, this.glow:true});
+  const RateButton(this.title, this.icon, this.rate, this.selected, {this.background, this.glow:true, this.onTap});
 
-  static RateButton from<T extends SongCore>(T song, String title, Icon icon, int rate, Function(int rate, bool clicked) onClick){
-    return RateButton(title, icon, rate, onClick, song.rate == rate);
+  static RateButton from<T extends SongCore>(T song, String title, Icon icon, int rate, Function(int rate, bool clicked) onTap){
+    return RateButton(title, icon, rate, song.rate == rate, onTap: onTap);
   }
 
   @override
   Widget build(BuildContext context) {
 
     Widget iconChild;
-    if(clicked) {
+    if(selected) {
       Widget shadowIconChild = Center(child: ShadowIcon(icon));
       iconChild =
           glow?
@@ -151,9 +151,9 @@ class RateButton extends StatelessWidget{
             title,
             style: AppTextStyle(
                 fontSize: Dimen.TEXT_SIZE_SMALL,
-                color: clicked?textEnabled(context):hintEnabled(context),
-                fontWeight: clicked?weight.bold:weight.normal,
-                shadow: clicked),
+                color: selected?textEnabled(context):hintEnabled(context),
+                fontWeight: selected?weight.bold:weight.normal,
+                shadow: selected),
             textAlign: TextAlign.center
         )
       ],
@@ -164,7 +164,7 @@ class RateButton extends StatelessWidget{
       padding: EdgeInsets.only(top: Dimen.DEF_MARG, bottom: Dimen.DEF_MARG),
       margin: EdgeInsets.zero,
       child: child,
-      onTap: () => onClick(rate, clicked),
+      onTap: onTap==null?null:() => onTap(rate, selected),
     );
   }
 
