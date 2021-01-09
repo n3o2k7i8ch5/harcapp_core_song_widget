@@ -348,7 +348,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
   Widget build(BuildContext context) {
 
     Widget widgetTitle = SimpleButton(
-      radius: AppCard.defBigRadius,
+      radius: AppCard.BIG_RADIUS,
       child: AutoSizeText(
         song.title,
         style: AppTextStyle(fontSize: 24.0, color: textEnabled(context), fontWeight: weight.halfBold, shadow: true),
@@ -379,7 +379,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                   scrollDirection: Axis.horizontal,
                   child: SimpleButton(
                     padding: EdgeInsets.all(Dimen.DEF_MARG),
-                    radius: AppCard.defBigRadius,
+                    radius: AppCard.BIG_RADIUS,
                     child: Text(
                       song.author,
                       style: AppTextStyle(
@@ -417,7 +417,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
               scrollDirection: Axis.horizontal,
               child: SimpleButton(
                 padding: EdgeInsets.all(Dimen.DEF_MARG),
-                radius: AppCard.defBigRadius,
+                radius: AppCard.BIG_RADIUS,
                 child: Text(
                   song.composer,
                   style: AppTextStyle(
@@ -455,7 +455,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                   scrollDirection: Axis.horizontal,
                   child: SimpleButton(
                     padding: EdgeInsets.all(Dimen.DEF_MARG),
-                    radius: AppCard.defBigRadius,
+                    radius: AppCard.BIG_RADIUS,
                     child: Text(
                       song.performer,
                       style: AppTextStyle(
@@ -482,7 +482,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           itemBuilder: (BuildContext context, int index) {
             return SimpleButton(
               padding: EdgeInsets.all(Dimen.DEF_MARG),
-              radius: AppCard.defBigRadius,
+              radius: AppCard.BIG_RADIUS,
               child: Text(
                 song.tags[index],
                 style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnabled(context), fontWeight: weight.halfBold),
@@ -496,7 +496,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     Widget appCard = AppCard(
         padding: EdgeInsets.zero,
         elevation: AppCard.bigElevation,
-        radius: AppCard.defBigRadius,
+        radius: AppCard.BIG_RADIUS,
         child:
 
         Stack(

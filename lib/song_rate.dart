@@ -13,7 +13,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class RateCard<T extends SongCore> extends StatefulWidget{
 
-  static const double height = 2*Dimen.ICON_SIZE + 2*Dimen.DEF_MARG + 2*AppCard.defRadius + Dimen.TEXT_SIZE_SMALL;
+  static const double HEIGHT = 2*AppCard.DEF_MARGIN_VAL + RateButton.HEIGHT;
 
   final T song;
   final Function(int rate, bool clicked) onClick;
@@ -36,7 +36,7 @@ class RateCardState<T extends SongCore> extends State<RateCard>{
         alignment: Alignment.topCenter,
         child: AppCard(
             padding: EdgeInsets.zero,
-            radius: AppCard.defBigRadius,
+            radius: AppCard.BIG_RADIUS,
             elevation: AppCard.bigElevation,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -160,7 +160,7 @@ class RateButton extends StatelessWidget{
     );
 
     return SimpleButton(
-      radius: AppCard.defBigRadius,
+      radius: AppCard.BIG_RADIUS,
       padding: EdgeInsets.only(top: Dimen.DEF_MARG, bottom: Dimen.DEF_MARG),
       margin: EdgeInsets.zero,
       child: child,
