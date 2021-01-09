@@ -666,7 +666,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
               onPressed: parent.widget.onRateTap==null?null:
                   (){
                 final RenderBox renderBox = parent.contentCardsKey.currentContext.findRenderObject();
-                final position = renderBox.globalToLocal(Offset.zero).dy;// - parent.widget.topScreenPadding;
+                final position = renderBox.localToGlobal(Offset.zero).dy;// - parent.widget.topScreenPadding;
                 parent.widget.onRateTap(position);
               }
           )
