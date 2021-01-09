@@ -357,59 +357,63 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
       onTap: parent.widget.onTitleTap,
     );
 
-    Widget widgetAuthor = SimpleButton(
-      padding: EdgeInsets.all(Dimen.DEF_MARG),
-      radius: AppCard.defBigRadius,
-      child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children:[
-            Text(
-              'Autor sł.: ',
-              style: AppTextStyle(
-                fontSize: Dimen.TEXT_SIZE_SMALL,
-                color: hintEnabled(context),
-              ),
-              textAlign: TextAlign.left,
-            ),
-            if(song.author.length>0)
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Text(
-                    song.author,
-                    style: AppTextStyle(
-                      fontWeight: weight.halfBold,
-                      fontSize: Dimen.TEXT_SIZE_SMALL,
-                      color: textEnabled(context),
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
-                ),
-              )
-          ]
-      ),
-      onTap: parent.widget.onAuthorTap,
-    );
-
-    Widget widgetComposer = SimpleButton(
-      padding: EdgeInsets.all(Dimen.DEF_MARG),
-      radius: AppCard.defBigRadius,
-      child: Row(
+    Widget widgetAuthor = Row(
         mainAxisSize: MainAxisSize.min,
         children:[
+          SizedBox(width: Dimen.DEF_MARG),
+
           Text(
-            'Kompoz.: ',
+            'Autor sł.: ',
             style: AppTextStyle(
               fontSize: Dimen.TEXT_SIZE_SMALL,
               color: hintEnabled(context),
             ),
             textAlign: TextAlign.left,
           ),
-
-          if(song.composer.length>0)
+          if(song.author.length>0)
             Expanded(
               child: SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
+                  scrollDirection: Axis.horizontal,
+                  child: SimpleButton(
+                    padding: EdgeInsets.all(Dimen.DEF_MARG),
+                    radius: AppCard.defBigRadius,
+                    child: Text(
+                      song.author,
+                      style: AppTextStyle(
+                        fontWeight: weight.halfBold,
+                        fontSize: Dimen.TEXT_SIZE_SMALL,
+                        color: textEnabled(context),
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    onTap: parent.widget.onAuthorTap,
+                  )
+              ),
+            )
+        ]
+    );
+
+    Widget widgetComposer = Row(
+      mainAxisSize: MainAxisSize.min,
+      children:[
+        SizedBox(width: Dimen.DEF_MARG),
+
+        Text(
+          'Kompoz.: ',
+          style: AppTextStyle(
+            fontSize: Dimen.TEXT_SIZE_SMALL,
+            color: hintEnabled(context),
+          ),
+          textAlign: TextAlign.left,
+        ),
+
+        if(song.composer.length>0)
+          Expanded(
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: SimpleButton(
+                padding: EdgeInsets.all(Dimen.DEF_MARG),
+                radius: AppCard.defBigRadius,
                 child: Text(
                   song.composer,
                   style: AppTextStyle(
@@ -419,15 +423,19 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                   ),
                   textAlign: TextAlign.left,
                 ),
-              ),
-            )
-        ],),
-      onTap: parent.widget.onComposerTap,
+                onTap: parent.widget.onComposerTap,
+              )
+            ),
+          )
+      ]
     );
 
     Widget widgetPerformer = Row(
         mainAxisSize: MainAxisSize.min,
         children:[
+
+          SizedBox(width: Dimen.DEF_MARG),
+
           Text(
             'Wykona.: ',
             style: AppTextStyle(
@@ -461,7 +469,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetTags = Container(
-        height: Tag.height + 2*Dimen.DEF_MARG,
+        height: Dimen.TEXT_SIZE_SMALL + 2*Dimen.DEF_MARG,
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
