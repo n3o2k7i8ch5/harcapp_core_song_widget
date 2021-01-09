@@ -232,7 +232,7 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
                               duration: Duration(milliseconds: 300),
                               curve: Curves.easeOutQuart,
                               vsync: this,
-                              child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container();,
+                              child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container(),
                             );
                           },
                         ),
