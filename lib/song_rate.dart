@@ -108,7 +108,7 @@ class SongRate{
 
 class RateButton extends StatelessWidget{
 
-  static const double HEIGHT = 2*Dimen.ICON_SIZE /*CHILD*/ + 2* Dimen.DEF_MARG /*PADDING*/;
+  static const double HEIGHT = 2*Dimen.ICON_SIZE /*CHILD*/ + Dimen.TEXT_SIZE_SMALL /*TEXT*/ + 2* Dimen.DEF_MARG /*PADDING*/;
 
   final String title;
   final Icon icon;
