@@ -612,7 +612,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 onLongPress: parent.widget.onYTLinkLongPress,
                 onTap: parent.widget.onYTLinkTap==null?null:(){
                   final RenderBox renderBox = parent.contentCardsKey.currentContext.findRenderObject();
-                  final position = renderBox.localToGlobal(Offset.zero).dy - parent.widget.topScreenPadding;
+                  final position = renderBox.localToGlobal(Offset.zero).dy;// - parent.widget.topScreenPadding;
                   parent.widget.onYTLinkTap(position);
                 }
             ),
