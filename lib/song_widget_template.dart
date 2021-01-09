@@ -360,7 +360,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     Widget widgetAuthor = Row(
         mainAxisSize: MainAxisSize.min,
         children:[
-          SizedBox(width: Dimen.DEF_MARG),
+
+          SizedBox(width: Dimen.DEF_MARG, height: Dimen.TEXT_SIZE_SMALL + 3*Dimen.DEF_MARG),
 
           Text(
             'Autor sł.: ',
@@ -396,7 +397,8 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     Widget widgetComposer = Row(
       mainAxisSize: MainAxisSize.min,
       children:[
-        SizedBox(width: Dimen.DEF_MARG),
+
+        SizedBox(width: Dimen.DEF_MARG, height: Dimen.TEXT_SIZE_SMALL + 3*Dimen.DEF_MARG),
 
         Text(
           'Kompoz.: ',
@@ -434,7 +436,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         mainAxisSize: MainAxisSize.min,
         children:[
 
-          SizedBox(width: Dimen.DEF_MARG),
+          SizedBox(width: Dimen.DEF_MARG, height: Dimen.TEXT_SIZE_SMALL + 3*Dimen.DEF_MARG),
 
           Text(
             'Wykona.: ',
@@ -469,7 +471,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
     );
 
     Widget widgetTags = Container(
-        height: Dimen.TEXT_SIZE_SMALL + 2*Dimen.DEF_MARG,
+        height: Dimen.TEXT_SIZE_SMALL + 3*Dimen.DEF_MARG,
         child: ListView.builder(
           physics: BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
