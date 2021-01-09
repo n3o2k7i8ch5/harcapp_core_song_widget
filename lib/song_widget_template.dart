@@ -666,7 +666,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
               onPressed: parent.widget.onRateTap==null?null:
                   (){
                 final RenderBox renderBox = parent.contentCardsKey.currentContext.findRenderObject();
-                final position = renderBox.localToGlobal(Offset.zero).dy - parent.widget.topScreenPadding;
+                final position = renderBox.globalToLocal(Offset.zero).dy;// - parent.widget.topScreenPadding;
                 parent.widget.onRateTap(position);
               }
           )
@@ -923,14 +923,6 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with Ticke
         prov.isScrolling?
         child:
         Container(),
-      /*
-          AnimatedOpacity(
-            opacity: prov.isScrolling?1:0,
-            duration: Duration(milliseconds: 300),
-            child: child,
-          )
-
-       */
     );
   }
 
