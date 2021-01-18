@@ -355,7 +355,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         maxLines: 1,
         textAlign: TextAlign.center,
       ),
-      padding: EdgeInsets.all(Dimen.MARG_ICON),
+      padding: EdgeInsets.all(Dimen.ICON_MARG),
       onTap: parent.widget.onTitleTap,
     );
 
@@ -503,7 +503,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           children: <Widget>[
 
             Padding(
-              padding: EdgeInsets.all(Dimen.MARG_ICON - Dimen.DEF_MARG),
+              padding: EdgeInsets.all(Dimen.ICON_MARG - Dimen.DEF_MARG),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -574,7 +574,7 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
               ],
               controller: controller,
             ),
-            height: Dimen.ICON_SIZE + 2*Dimen.MARG_ICON,
+            height: Dimen.ICON_SIZE + 2*Dimen.ICON_MARG,
           ),
         )
 
@@ -894,7 +894,7 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with Ticke
         children: [
 
           Padding(
-            padding: EdgeInsets.all(Dimen.MARG_ICON),
+            padding: EdgeInsets.all(Dimen.ICON_MARG),
             child: Icon(MdiIcons.speedometer),
           ),
 
