@@ -10,8 +10,8 @@ environment:
 
 dependencies:
 
-  provider: 4.3.2+3
-  material_design_icons_flutter: 4.0.5755
+  provider: 4.3.3
+  material_design_icons_flutter: 4.0.5855
   avatar_glow: 1.2.0
   auto_size_text: 2.1.0
 
