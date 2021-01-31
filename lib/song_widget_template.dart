@@ -34,28 +34,31 @@ class SongWidgetController<T extends SongCore> extends StatelessWidget{
 
   final Widget Function(BuildContext context, ScrollController controller) builder;
 
+  final ScrollController scrollController;
+
   SongWidgetController({
     @required this.song,
     @required this.settings,
     this.screenWidth,
     this.onScroll,
     @required this.builder,
+    this.scrollController,
   });
 
   @override
   Widget build(BuildContext context) {
 
-    ScrollController scrollController = ScrollController();
-    if(onScroll != null) scrollController.addListener(() => onScroll(scrollController));
+    ScrollController _scrollController = scrollController??ScrollController();
+    if(onScroll != null) _scrollController.addListener(() => onScroll(_scrollController));
 
     double _screenWidth = screenWidth??MediaQuery.of(context).size.width;
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
-        ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings, scrollController)),
+        ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings, _scrollController)),
       ],
-      builder: (context, child) => builder(context, scrollController),
+      builder: (context, child) => builder(context, _scrollController),
     );
   }
 
