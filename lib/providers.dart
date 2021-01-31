@@ -48,6 +48,7 @@ class TextSizeProvider extends ChangeNotifier{
 
   double _value;
   double _wantedValue;
+  double _screenWidth;
 
   double get value => _value;
   set value(double val){
@@ -55,7 +56,10 @@ class TextSizeProvider extends ChangeNotifier{
     notifyListeners();
   }
 
+  double get screenWidth => _screenWidth;
+
   TextSizeProvider(double screenWidth, SongCore song){
+    _screenWidth = screenWidth;
     _value = calculate(screenWidth, song);
     _wantedValue = calculate(screenWidth, song);
   }
@@ -146,11 +150,13 @@ class AutoscrollProvider extends ChangeNotifier{
   bool _isScrolling;
   bool restart;
   SongBookSettTempl settings;
+  ScrollController scrollController;
 
-  AutoscrollProvider(SongBookSettTempl settings){
+  AutoscrollProvider(SongBookSettTempl settings, ScrollController scrollController){
     _isScrolling = false;
     restart = false;
     this.settings = settings;
+    this.scrollController = scrollController;
   }
 
   bool get isScrolling => _isScrolling;

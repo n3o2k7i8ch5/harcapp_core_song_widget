@@ -23,19 +23,55 @@ import 'package:provider/provider.dart';
 
 import 'get_line_nums.dart';
 
-class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
+class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
 
   final T song;
   final SongBookSettTempl settings;
 
   final double screenWidth;
 
+  final void Function(ScrollController controller) onScroll;
+
+  final Widget child;
+
+  SongWidgetTemplateController({
+    @required this.song,
+    @required this.settings,
+    @required this.screenWidth,
+    this.onScroll,
+    @required this.child,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    ScrollController scrollController = ScrollController();
+    if(onScroll != null) scrollController.addListener(() => onScroll(scrollController));
+
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => TextSizeProvider(screenWidth??MediaQuery.of(context).size.width, song)),
+        ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings, scrollController)),
+      ],
+      builder: (context, child) => child,
+    );
+  }
+
+}
+
+class SongWidgetTemplate<T extends SongCore>{
+
+  final T song;
+  final SongBookSettTempl settings;
+
+  //final double screenWidth;
+
   final ValueNotifier pageNotifier;
   final int index;
 
   final double topScreenPadding;
 
-  final void Function(ScrollController controller) onScroll;
+  //final void Function(ScrollController controller) onScroll;
 
   final void Function() onTitleTap;
   final void Function() onAuthorTap;
@@ -78,13 +114,13 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
       this.song,
       this.settings,
       {
-        this.screenWidth,
+        //this.screenWidth,
         this.pageNotifier,
         this.index: -1,
 
         this.topScreenPadding: 0,
 
-        this.onScroll,
+        //this.onScroll,
 
         this.onTitleTap,
         this.onAuthorTap,
@@ -122,135 +158,165 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
         this.header,
         this.footer,
-        Key key
-      }):super(key: key);
+        //Key key
+      });
 
   bool showChords() =>
       settings.showChords
           && song.hasChords;
 
-  @override
-  Widget build(BuildContext context) {
+  //@override
+  List<Widget> buildSlivers(BuildContext context) {
 
-    double screenWidth = MediaQuery.of(context).size.width;
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (context) => TextSizeProvider(screenWidth??screenWidth, song)),
-          ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings)),
-        ],
-        builder: (context, child){
+    ScrollController scrollController = Provider.of<AutoscrollProvider>(context, listen: false).scrollController;
 
-          ScrollController scrollController = ScrollController();
-          if(onScroll != null) scrollController.addListener(() => onScroll(scrollController));
+    GlobalKey contentCardsKey = GlobalKey();
 
-          GlobalKey contentCardsKey = GlobalKey();
+    return [
 
-          return CustomScrollView(
-            physics: BouncingScrollPhysics(),
-            controller: scrollController,
-            slivers: [
+      SliverList(
+        delegate: SliverChildListDelegate([
 
-              SliverList(
-                delegate: SliverChildListDelegate([
-
-                  if(song.isOwn)
-                    Padding(
-                      padding: EdgeInsets.all(Dimen.DEF_MARG),
-                      child: Text(
-                        'Piosenka nieoficjalna',
-                        style: AppTextStyle(
-                            color: accentColor(context),
-                            fontWeight: weight.halfBold
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                  if(header!=null) header(context, scrollController),
-
-                  TitleCard<T>(this),
-
-                ]),
+          if(song.isOwn)
+            Padding(
+              padding: EdgeInsets.all(Dimen.DEF_MARG),
+              child: Text(
+                'Piosenka nieoficjalna',
+                style: AppTextStyle(
+                    color: accentColor(context),
+                    fontWeight: weight.halfBold
+                ),
+                textAlign: TextAlign.center,
               ),
+            ),
 
-              Consumer<AutoscrollProvider>(
-                  builder: (context, prov, child) => SliverPersistentHeader(
-                    delegate: _SliverPersistentHeaderDelegate(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ChordsBarCard(this),
-                            if(prov.isScrolling)
-                              AutoScrollSpeedWidget(this, scrollController)
-                          ],
-                        ),
-                        height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
-                    ),
-                    floating: true,
-                    pinned: true,
+          if(header!=null) header(context, scrollController),
+
+          TitleCard<T>(this),
+
+        ]),
+      ),
+
+      Consumer<AutoscrollProvider>(
+        builder: (context, prov, child) => SliverPersistentHeader(
+          delegate: _SliverPersistentHeaderDelegate(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ChordsBarCard(this),
+                  if(prov.isScrolling)
+                    AutoScrollSpeedWidget(this, scrollController)
+                ],
+              ),
+              height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+          ),
+          floating: true,
+          pinned: true,
+        ),
+      ),
+
+      SliverList(
+        delegate: SliverChildListDelegate([
+
+          ButtonWidget<T>(this, contentCardsKey),
+
+          ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
+
+          if(footer!=null) footer(context, scrollController),
+
+          if(song.addPers.length != 0)
+            Padding(
+              padding: EdgeInsets.all(Dimen.DEF_MARG),
+              child: RichText(
+                  textAlign: TextAlign.start,
+                  text: TextSpan(
+                    children: [
+                      TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
+                      TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
+                    ],
+                  )
+              ),
+            ),
+        ]),
+      ),
+
+    ];
+    /*
+    return CustomScrollView(
+      physics: BouncingScrollPhysics(),
+      controller: scrollController,
+      slivers: [
+
+        SliverList(
+          delegate: SliverChildListDelegate([
+
+            if(song.isOwn)
+              Padding(
+                padding: EdgeInsets.all(Dimen.DEF_MARG),
+                child: Text(
+                  'Piosenka nieoficjalna',
+                  style: AppTextStyle(
+                      color: accentColor(context),
+                      fontWeight: weight.halfBold
                   ),
-              ),
-
-              SliverList(
-                delegate: SliverChildListDelegate([
-
-                  ButtonWidget<T>(this, contentCardsKey),
-
-                  ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
-
-                  if(footer!=null) footer(context, scrollController),
-
-                  if(song.addPers.length != 0)
-                    Padding(
-                      padding: EdgeInsets.all(Dimen.DEF_MARG),
-                      child: RichText(
-                          textAlign: TextAlign.start,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
-                              TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
-                            ],
-                          )
-                      ),
-                    ),
-                ]),
-              ),
-
-            ],
-          );
-
-          return Column(
-            children: <Widget>[
-
-              Material(
-                color: background(context),
-                elevation: AppCard.bigElevation,
-                child: Column(
-                  children: [
-                    /*
-                  Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                    child: ChordsBarCard<T>(this),
-                    builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                      if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                        return child;
-                      else
-                        return Container();
-                    },
-                  ),
-*/
-                    //AutoScrollSpeedWidget(this, scrollController),
-                  ],
+                  textAlign: TextAlign.center,
                 ),
               ),
 
-              //Expanded(
-              //  child: listView,
-              //),
+            if(header!=null) header(context, scrollController),
 
-            ],
-          );
-        }
+            TitleCard<T>(this),
+
+          ]),
+        ),
+
+        Consumer<AutoscrollProvider>(
+          builder: (context, prov, child) => SliverPersistentHeader(
+            delegate: _SliverPersistentHeaderDelegate(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ChordsBarCard(this),
+                    if(prov.isScrolling)
+                      AutoScrollSpeedWidget(this, scrollController)
+                  ],
+                ),
+                height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+            ),
+            floating: true,
+            pinned: true,
+          ),
+        ),
+
+        SliverList(
+          delegate: SliverChildListDelegate([
+
+            ButtonWidget<T>(this, contentCardsKey),
+
+            ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
+
+            if(footer!=null) footer(context, scrollController),
+
+            if(song.addPers.length != 0)
+              Padding(
+                padding: EdgeInsets.all(Dimen.DEF_MARG),
+                child: RichText(
+                    textAlign: TextAlign.start,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
+                        TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
+                      ],
+                    )
+                ),
+              ),
+          ]),
+        ),
+
+      ],
     );
+
+     */
 
   }
 
@@ -272,185 +338,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   }
 
 }
-
-/*
-class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTemplate> with TickerProviderStateMixin {
-
-  T get song => widget.song;
-  SongBookSettTempl get settings => widget.settings;
-
-  List<Widget> widgets = [];
-
-  Orientation oldOrientation;
-
-  GlobalKey contentCardsKey;
-
-  String lineNum;
-
-  bool showChords() =>
-      settings.showChords
-          && song.hasChords;
-
-  ScrollController scrollController;
-
-  //void resetDisplayChordDraw() => setState(() => displayChordDraw = widget.song.hasChords && settings.showChords && settings.chordsDrawShow);
-
-  //bool displayChordDraw;
-
-  @override
-  void initState() {
-    //wantedFontSize = defFontSize;
-    contentCardsKey = GlobalKey();
-
-    //displayChordDraw = widget.song.hasChords && settings.showChords && settings.chordsDrawShow;
-
-    scrollController = ScrollController();
-    if(widget.onScroll != null) scrollController.addListener(() => widget.onScroll(scrollController));
-
-    lineNum = getLineNums(song.text);
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    scrollController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => TextSizeProvider(widget.screenWidth??screenWidth, song)),
-        ChangeNotifierProvider(create: (context) => AutoscrollProvider()),
-      ],
-      builder: (context, child){
-
-        Widget listView = CustomScrollView(
-          physics: BouncingScrollPhysics(),
-          controller: scrollController,
-            slivers: [
-
-              SliverList(
-                delegate: SliverChildListDelegate([
-
-                  if(song.isOwn)
-                    Padding(
-                      padding: EdgeInsets.all(Dimen.DEF_MARG),
-                      child: Text(
-                        'Piosenka nieoficjalna',
-                        style: AppTextStyle(
-                            color: accentColor(context),
-                            fontWeight: weight.halfBold
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-
-                  if(widget.header!=null) widget.header(context, scrollController),
-
-                  TitleCard<T>(this),
-
-                ]),
-              ),
-
-              SliverPersistentHeader(
-                delegate: ChordsBarCard(this),
-                pinned: true,
-              ),
-
-              SliverList(
-                delegate: SliverChildListDelegate([
-
-                  ButtonWidget<T>(this),
-
-                  ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
-
-                  if(widget.footer!=null) widget.footer(context, scrollController),
-
-                  if(song.addPers.length != 0)
-                    Padding(
-                      padding: EdgeInsets.all(Dimen.DEF_MARG),
-                      child: RichText(
-                          textAlign: TextAlign.start,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
-                              TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
-                            ],
-                          )
-                      ),
-                    ),
-                ]),
-              )
-
-            ],
-        );
-
-        return Column(
-          children: <Widget>[
-
-            Material(
-              color: background(context),
-              elevation: AppCard.bigElevation,
-              child: Column(
-                children: [
-                  /*
-                  Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                    child: ChordsBarCard<T>(this),
-                    builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                      if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                        return child;
-                      else
-                        return Container();
-                    },
-                  ),
-*/
-                  AnimatedSize(
-                      vsync: this,
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeOutQuart,
-                      child: AutoScrollSpeedWidget(this)
-                  ),
-                ],
-              ),
-            ),
-
-            Expanded(
-              child: listView,
-            ),
-
-          ],
-        );
-      }
-    );
-
-  }
-
-  void startAutoscroll(BuildContext context, {bool restart: false})async{
-    double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
-    double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
-
-    if(restart)
-      Provider.of<AutoscrollProvider>(context, listen: false).restart = true;
-    else
-      Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = true;
-
-    await scrollController.animateTo(
-        scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: duration.round()),
-        curve: Curves.linear);
-
-    Provider.of<AutoscrollProvider>(context, listen: false).isScrolling = false;
-  }
-
-  void notify() => setState((){});
-}
-*/
-
 
 class TitleCard<T extends SongCore> extends StatelessWidget{
 
@@ -758,7 +645,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 TextSizeProvider prov = Provider.of<TextSizeProvider>(context, listen: false);
 
                 double scaleFactor = TextSizeProvider.fits(
-                    parent.screenWidth??MediaQuery.of(context).size.width,
+                    prov.screenWidth,
                     song.text,
                     parent.showChords()?song.chords:null,
                     getLineNums(song.text),
