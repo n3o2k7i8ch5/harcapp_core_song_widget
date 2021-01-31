@@ -72,6 +72,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   final Widget Function(BuildContext, ScrollController) header;
   final Widget Function(BuildContext, ScrollController) footer;
 
+  final ScrollController scrollController;
+
   const SongWidgetTemplate(
       this.song,
       this.settings,
@@ -120,6 +122,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
         this.header,
         this.footer,
+
+        this.scrollController
         //Key key
       });
 
@@ -129,8 +133,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
-    final scrollController = PrimaryScrollController.of(context);
 
     double _screenWidth = screenWidth??MediaQuery.of(context).size.width;
 
@@ -225,7 +227,10 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   void startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
 
-    final scrollController = PrimaryScrollController.of(context);
+    if(scrollController == null){
+      debugPrint('No scrollController attached.');
+      return;
+    }
 
     double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
     double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
@@ -709,6 +714,11 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       ),
                       onTap: (){
                         if(settings.scrollText) {
+
+                          if(scrollController == null){
+                            debugPrint('No scrollController attached.');
+                            return;
+                          }
 
                           double scrollDefDelta = MediaQuery.of(context).size.height / 2;
                           double scrollDelta = min(
