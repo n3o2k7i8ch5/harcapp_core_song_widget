@@ -974,7 +974,7 @@ class ChordsBarCard<T extends SongCore> extends SliverPersistentHeaderDelegate{
         song.chords,
         typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
         onTypeChanged: parent.onChordsTypeChanged,
-        elevation: 0,
+        elevation: overlapsContent?AppCard.bigElevation:0,
         chordBackground: Colors.transparent,
       ),
     );
