@@ -145,6 +145,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
       ],
       builder: (context, child) => NotificationListener<ScrollNotification>(
         child: CustomScrollView(
+          controller: scrollController,
           physics: BouncingScrollPhysics(),
           slivers: [
 
