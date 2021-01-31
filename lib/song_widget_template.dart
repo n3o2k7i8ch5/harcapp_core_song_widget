@@ -184,81 +184,77 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
       ],
       builder: (context, child){
 
-        Widget listView = SingleChildScrollView(
+        Widget listView = ListView(
           physics: BouncingScrollPhysics(),
           controller: scrollController,
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisSize: MainAxisSize.max,
-              children: [
+            children: [
 
-                Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                    builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child) =>
-                        SizedBox(
-                            height: (song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
-                            ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
-                        )
+              Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                  builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child) =>
+                      SizedBox(
+                          height: (song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
+                          ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
+                      )
+              ),
+
+              if(widget.song.isOwn)
+                Padding(
+                  padding: EdgeInsets.all(Dimen.DEF_MARG),
+                  child: Text(
+                    'Piosenka nieoficjalna',
+                    style: AppTextStyle(
+                        color: accentColor(context),
+                        fontWeight: weight.halfBold
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
 
-                if(widget.song.isOwn)
-                  Padding(
-                    padding: EdgeInsets.all(Dimen.DEF_MARG),
-                    child: Text(
-                      'Piosenka nieoficjalna',
-                      style: AppTextStyle(
-                          color: accentColor(context),
-                          fontWeight: weight.halfBold
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
+              if(widget.header!=null) widget.header(context, scrollController),
+
+              TitleCard<T>(this),
+
+              Column(
+                children: <Widget>[
+
+                  Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                    child: ChordsBarCard(this),
+                    builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
+                      return AnimatedSize(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeOutQuart,
+                        vsync: this,
+                        child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container(),
+                      );
+                    },
                   ),
 
-                if(widget.header!=null) widget.header(context, scrollController),
+                  ButtonWidget<T>(this),
 
-                TitleCard<T>(this),
+                  ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
-                Column(
-                  children: <Widget>[
+                  //SizedBox(height: 18.0),
 
-                    Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                      child: ChordsBarCard(this),
-                      builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                        return AnimatedSize(
-                          duration: Duration(milliseconds: 300),
-                          curve: Curves.easeOutQuart,
-                          vsync: this,
-                          child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container(),
-                        );
-                      },
-                    ),
+                  if(widget.footer!=null) widget.footer(context, scrollController)
 
-                    ButtonWidget<T>(this),
+                ],
+              ),
 
-                    ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
-
-                    //SizedBox(height: 18.0),
-
-                    if(widget.footer!=null) widget.footer(context, scrollController)
-
-                  ],
+              if(widget.song.addPers.length != 0)
+                Padding(
+                  padding: EdgeInsets.all(Dimen.DEF_MARG),
+                  child: RichText(
+                      textAlign: TextAlign.start,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
+                          TextSpan(text: widget.song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
+                        ],
+                      )
+                  ),
                 ),
 
-                if(widget.song.addPers.length != 0)
-                  Padding(
-                    padding: EdgeInsets.all(Dimen.DEF_MARG),
-                    child: RichText(
-                        textAlign: TextAlign.start,
-                        text: TextSpan(
-                          children: [
-                            TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
-                            TextSpan(text: widget.song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
-                          ],
-                        )
-                    ),
-                  ),
-
-              ]
-          ),
+            ]
         );
 
         return Column(
