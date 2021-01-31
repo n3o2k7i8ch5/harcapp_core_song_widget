@@ -679,14 +679,14 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return Container(height: 300, width: double.infinity, color: Colors.blue);
-
     return OrientationBuilder(
         builder: (BuildContext context, Orientation orientation) {
 
           // To po to, żeby tekst został zresetowany po zmianie orientacji.
           //if (parent.oldOrientation != MediaQuery.of(context).orientation)
             //parent.oldOrientation = orientation;
+
+          return Container(height: 600, width: double.infinity, color: Colors.blue);
 
           return Consumer<TextSizeProvider>(
             builder: (context, prov, child) => Row(
