@@ -150,13 +150,11 @@ class AutoscrollProvider extends ChangeNotifier{
   bool _isScrolling;
   bool restart;
   SongBookSettTempl settings;
-  ScrollController scrollController;
 
-  AutoscrollProvider(SongBookSettTempl settings, ScrollController scrollController){
+  AutoscrollProvider(SongBookSettTempl settings){
     _isScrolling = false;
     restart = false;
     this.settings = settings;
-    this.scrollController = scrollController;
   }
 
   bool get isScrolling => _isScrolling;
