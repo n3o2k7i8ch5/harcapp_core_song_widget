@@ -289,7 +289,9 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
               ),
             ),
 
-            listView,
+            Expanded(
+              child: listView,
+            ),
 
           ],
         );
