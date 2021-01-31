@@ -32,7 +32,7 @@ class SongWidgetController<T extends SongCore> extends StatelessWidget{
 
   final void Function(ScrollController controller) onScroll;
 
-  final Widget Function(BuildContext context) builder;
+  final Widget Function(BuildContext context, ScrollController controller) builder;
 
   SongWidgetController({
     @required this.song,
@@ -55,7 +55,7 @@ class SongWidgetController<T extends SongCore> extends StatelessWidget{
         ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
         ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings, scrollController)),
       ],
-      builder: (context, child) => builder(context),
+      builder: (context, child) => builder(context, scrollController),
     );
   }
 
