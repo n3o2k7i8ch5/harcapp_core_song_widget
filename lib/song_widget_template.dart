@@ -124,9 +124,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         Key key
       }):super(key: key);
 
-  //@override
-  //State createState() => SongWidgetTemplateState<T>();
-
   bool showChords() =>
       settings.showChords
           && song.hasChords;
@@ -982,10 +979,10 @@ class ChordsBarCard<T extends SongCore> extends SliverPersistentHeaderDelegate{
   }
 
   @override
-  double get maxExtent => ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt();
+  double get maxExtent => ChordWidget.height(settings.chordsDrawType?6:4);// + Dimen.DEF_MARG.toInt();
 
   @override
-  double get minExtent => ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt();
+  double get minExtent => ChordWidget.height(settings.chordsDrawType?6:4);// + Dimen.DEF_MARG.toInt();
 
   @override
   bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
