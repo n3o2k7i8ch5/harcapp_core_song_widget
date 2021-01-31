@@ -988,7 +988,7 @@ class ChordsBarCard<T extends SongCore> extends SliverPersistentHeaderDelegate{
   double get minExtent => ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt();
 
   @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => false;
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 
 }
 
