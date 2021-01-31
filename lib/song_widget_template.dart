@@ -131,7 +131,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    ScrollController scrollController = ScrollController();
+    final _scr = PrimaryScrollController.of(context);
+
+    ScrollController scrollController = _scr;
     if(onScroll != null) scrollController.addListener(() => onScroll(scrollController));
 
     double _screenWidth = screenWidth??MediaQuery.of(context).size.width;
@@ -144,6 +146,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings)),
       ],
       builder: (context, child) => CustomScrollView(
+        controller: scrollController,
         physics: BouncingScrollPhysics(),
         slivers: [
 
