@@ -178,6 +178,12 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 pinned: true,
               ),
 
+              SliverPersistentHeader(
+                delegate: ChordsBarCard(this),
+                floating: true,
+                pinned: true,
+              ),
+
               Consumer<AutoscrollProvider>(
                 builder: (context, prov, child) =>
                 prov.isScrolling?
