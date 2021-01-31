@@ -173,21 +173,22 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 ]),
               ),
 
-              SliverPersistentHeader(
-                delegate: _SliverPersistentHeaderDelegate(
-                  child: Column(
-                    children: [
-                      ChordsBarCard(this),
-                      Consumer<AutoscrollProvider>(
-                        builder: (context, prov, child) =>
-                            prov.isScrolling?AutoScrollSpeedWidget(this, scrollController):Container()
-                      )
-                    ],
+              Consumer<AutoscrollProvider>(
+                  builder: (context, prov, child) => SliverPersistentHeader(
+                    delegate: _SliverPersistentHeaderDelegate(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ChordsBarCard(this),
+                            if(prov.isScrolling)
+                              AutoScrollSpeedWidget(this, scrollController)
+                          ],
+                        ),
+                        height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+                    ),
+                    floating: true,
+                    pinned: true,
                   ),
-                  height: ChordWidget.height(settings.chordsDrawType?6:4) +  Dimen.ICON_FOOTPRINT
-                ),
-                floating: true,
-                pinned: true,
               ),
 
               SliverList(
@@ -984,7 +985,11 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return child;
+    return Material(
+      color: Colors.transparent,
+      child: child,
+      elevation: overlapsContent?AppCard.bigElevation:0,
+    );
   }
 
 }
