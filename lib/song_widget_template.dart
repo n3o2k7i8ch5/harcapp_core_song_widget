@@ -220,6 +220,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   }
 
   void startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
+
+    final scrollController = PrimaryScrollController.of(context);
+
     double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
     double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
 
