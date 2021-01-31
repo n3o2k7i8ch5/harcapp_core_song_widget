@@ -32,14 +32,14 @@ class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
 
   final void Function(ScrollController controller) onScroll;
 
-  final Widget child;
+  final Widget Function(BuildContext context) builder;
 
   SongWidgetTemplateController({
     @required this.song,
     @required this.settings,
     this.screenWidth,
     this.onScroll,
-    @required this.child,
+    @required this.builder,
   });
 
   @override
@@ -53,7 +53,7 @@ class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
         ChangeNotifierProvider(create: (context) => TextSizeProvider(screenWidth??MediaQuery.of(context).size.width, song)),
         ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings, scrollController)),
       ],
-      builder: (context, child) => child,
+      builder: (context, child) => builder(context),
     );
   }
 
