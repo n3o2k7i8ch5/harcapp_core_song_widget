@@ -171,9 +171,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             ),
 
             Consumer<AutoscrollProvider>(
-              builder: (context, prov, child) => SliverSafeArea(
-                sliver: SliverPersistentHeader(
-                  delegate: _SliverPersistentHeaderDelegate(
+              builder: (context, prov, child) => SliverPersistentHeader(
+                delegate: _SliverPersistentHeaderDelegate(
+                    child: SafeArea(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
@@ -182,11 +182,11 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                             AutoScrollSpeedWidget(this, scrollController)
                         ],
                       ),
-                      height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
-                  ),
-                  floating: true,
-                  pinned: true,
+                    ),
+                    height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
                 ),
+                floating: true,
+                pinned: true,
               ),
             ),
 
