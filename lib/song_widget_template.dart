@@ -686,7 +686,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
           //if (parent.oldOrientation != MediaQuery.of(context).orientation)
             //parent.oldOrientation = orientation;
 
-          return Container(height: 600, width: double.infinity, color: Colors.blue);
+          //return Container(height: 600, width: double.infinity, color: Colors.blue);
 
           return Consumer<TextSizeProvider>(
             builder: (context, prov, child) => Row(
@@ -751,6 +751,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
                       if(!showChordsProv.showChords)
                         return Container();
+
                       return SimpleButton(
                           child: Text(
                             chords,
