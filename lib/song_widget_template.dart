@@ -168,7 +168,7 @@ class SongWidgetTemplate<T extends SongCore>{
   //@override
   List<Widget> buildSlivers(BuildContext context) {
 
-    ScrollController scrollController = ScrollController();//Provider.of<AutoscrollProvider>(context, listen: false).scrollController;
+    ScrollController scrollController = Provider.of<AutoscrollProvider>(context, listen: false).scrollController;
 
     GlobalKey contentCardsKey = GlobalKey();
 
@@ -746,6 +746,8 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                   ),
                 ),
 
+                Container(height: 600, width: 100, color: Colors.blue),
+                /*
                 Consumer<ShowChordsProvider>(
                     builder: (context, showChordsProv, child){
 
@@ -772,6 +774,8 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
                     }
                 )
+
+                 */
               ],
             ),
           );
