@@ -15,9 +15,6 @@ abstract class SongBookSettTempl{
   bool get chordsDrawShow;
   set chordsDrawShow(bool value);
 
-  bool get pinChordsDraw;
-  set pinChordsDraw(bool value);
-
   bool get chordsDrawType;
   set chordsDrawType(bool value);
 

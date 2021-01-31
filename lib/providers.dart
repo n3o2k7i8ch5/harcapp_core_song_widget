@@ -30,18 +30,6 @@ class ChordsDrawTypeProvider extends ChangeNotifier{
   }
 }
 
-class ChordsDrawPinnedProvider extends ChangeNotifier{
-
-  SongBookSettTempl settings;
-  ChordsDrawPinnedProvider(this.settings);
-
-  bool get pinChordsDraw => settings.pinChordsDraw;
-  set pinChordsDraw(bool value){
-    settings.pinChordsDraw = value;
-    notifyListeners();
-  }
-}
-
 class ChordsDrawShowProvider extends ChangeNotifier{
 
   SongBookSettTempl settings;
