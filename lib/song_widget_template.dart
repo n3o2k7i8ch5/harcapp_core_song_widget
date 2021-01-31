@@ -147,7 +147,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
           GlobalKey contentCardsKey = GlobalKey();
 
-          Widget listView = CustomScrollView(
+          return CustomScrollView(
             physics: BouncingScrollPhysics(),
             controller: scrollController,
             slivers: [
@@ -233,9 +233,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 ),
               ),
 
-              Expanded(
-                child: listView,
-              ),
+              //Expanded(
+              //  child: listView,
+              //),
 
             ],
           );
