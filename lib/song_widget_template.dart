@@ -144,81 +144,77 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings)),
       ],
       builder: (context, child) => NotificationListener<ScrollNotification>(
-        child: PrimaryScrollController(
-          controller: scrollController,
-          child: CustomScrollView(
-            primary: true,
-            physics: BouncingScrollPhysics(),
-            slivers: [
+        child: CustomScrollView(
+          physics: BouncingScrollPhysics(),
+          slivers: [
 
-              SliverList(
-                delegate: SliverChildListDelegate([
+            SliverList(
+              delegate: SliverChildListDelegate([
 
-                  if(song.isOwn)
-                    Padding(
-                      padding: EdgeInsets.all(Dimen.DEF_MARG),
-                      child: Text(
-                        'Piosenka nieoficjalna',
-                        style: AppTextStyle(
-                            color: accentColor(context),
-                            fontWeight: weight.halfBold
-                        ),
-                        textAlign: TextAlign.center,
+                if(song.isOwn)
+                  Padding(
+                    padding: EdgeInsets.all(Dimen.DEF_MARG),
+                    child: Text(
+                      'Piosenka nieoficjalna',
+                      style: AppTextStyle(
+                          color: accentColor(context),
+                          fontWeight: weight.halfBold
                       ),
+                      textAlign: TextAlign.center,
                     ),
-
-                  if(header!=null) header(context, scrollController),
-
-                  TitleCard<T>(this),
-
-                ]),
-              ),
-
-              Consumer<AutoscrollProvider>(
-                builder: (context, prov, child) => SliverPersistentHeader(
-                  delegate: _SliverPersistentHeaderDelegate(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ChordsBarCard(this),
-                          if(prov.isScrolling)
-                            AutoScrollSpeedWidget(this, scrollController)
-                        ],
-                      ),
-                      height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
                   ),
-                  floating: true,
-                  pinned: true,
-                ),
-              ),
 
-              SliverList(
-                delegate: SliverChildListDelegate([
+                if(header!=null) header(context, scrollController),
 
-                  ButtonWidget<T>(this, contentCardsKey),
+                TitleCard<T>(this),
 
-                  ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
+              ]),
+            ),
 
-                  if(footer!=null) footer(context, scrollController),
-
-                  if(song.addPers.length != 0)
-                    Padding(
-                      padding: EdgeInsets.all(Dimen.DEF_MARG),
-                      child: RichText(
-                          textAlign: TextAlign.start,
-                          text: TextSpan(
-                            children: [
-                              TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
-                              TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
-                            ],
-                          )
-                      ),
+            Consumer<AutoscrollProvider>(
+              builder: (context, prov, child) => SliverPersistentHeader(
+                delegate: _SliverPersistentHeaderDelegate(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ChordsBarCard(this),
+                        if(prov.isScrolling)
+                          AutoScrollSpeedWidget(this, scrollController)
+                      ],
                     ),
-                ]),
+                    height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+                ),
+                floating: true,
+                pinned: true,
               ),
+            ),
 
-            ],
-          ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+
+                ButtonWidget<T>(this, contentCardsKey),
+
+                ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
+
+                if(footer!=null) footer(context, scrollController),
+
+                if(song.addPers.length != 0)
+                  Padding(
+                    padding: EdgeInsets.all(Dimen.DEF_MARG),
+                    child: RichText(
+                        textAlign: TextAlign.start,
+                        text: TextSpan(
+                          children: [
+                            TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
+                            TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
+                          ],
+                        )
+                    ),
+                  ),
+              ]),
+            ),
+
+          ],
         ),
         onNotification: (ScrollNotification scrollInfo) {
           if(onScroll != null) onScroll(scrollInfo);
@@ -230,8 +226,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   }
 
   void startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
-
-    scrollController = PrimaryScrollController.of(context);
 
     if(scrollController == null){
       debugPrint('No scrollController attached.');
@@ -720,8 +714,6 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       ),
                       onTap: (){
                         if(settings.scrollText) {
-
-                          ScrollController scrollController = PrimaryScrollController.of(context);
 
                           if(scrollController == null){
                             debugPrint('No scrollController attached.');
