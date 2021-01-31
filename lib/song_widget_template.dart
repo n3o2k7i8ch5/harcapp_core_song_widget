@@ -986,7 +986,7 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
-      color: Colors.transparent,
+      color: background(context),
       child: child,
       elevation: overlapsContent?AppCard.bigElevation:0,
     );
