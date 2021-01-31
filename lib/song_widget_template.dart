@@ -216,6 +216,24 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
               ]),
             ),
 
+            Consumer<AutoscrollProvider>(
+              builder: (context, prov, child) => SliverPersistentHeader(
+                delegate: _SliverPersistentHeaderDelegate(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ChordsBarCard(this),
+                        if(prov.isScrolling)
+                          AutoScrollSpeedWidget(this, scrollController)
+                      ],
+                    ),
+                    height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+                ),
+                floating: true,
+                pinned: true,
+              ),
+            ),
+
           ],
         ),
         onNotification: (ScrollNotification scrollInfo) {
