@@ -178,23 +178,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 pinned: true,
               ),
 
-              SliverPersistentHeader(
-                delegate: ChordsBarCard(this),
-                floating: true,
-                pinned: true,
-              ),
-
-              Consumer<AutoscrollProvider>(
-                builder: (context, prov, child) =>
-                prov.isScrolling?
-                SliverPersistentHeader(
-                  delegate: AutoScrollSpeedWidget(this, scrollController),
-                  floating: true,
-                  pinned: true,
-                ):
-                SliverList(delegate: SliverChildListDelegate([])),
-              ),
-
               SliverList(
                 delegate: SliverChildListDelegate([
 
@@ -218,7 +201,18 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                       ),
                     ),
                 ]),
-              )
+              ),
+
+              Consumer<AutoscrollProvider>(
+                builder: (context, prov, child) =>
+                prov.isScrolling?
+                SliverPersistentHeader(
+                  delegate: AutoScrollSpeedWidget(this, scrollController),
+                  floating: true,
+                  pinned: true,
+                ):
+                SliverList(delegate: SliverChildListDelegate([])),
+              ),
 
             ],
           );
