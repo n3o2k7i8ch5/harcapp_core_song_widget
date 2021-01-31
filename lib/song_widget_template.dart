@@ -178,10 +178,15 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 pinned: true,
               ),
 
-              SliverPersistentHeader(
-                delegate: AutoScrollSpeedWidget(this, scrollController),
-                floating: true,
-                pinned: true,
+              Consumer<AutoscrollProvider>(
+                builder: (context, prov, child) =>
+                prov.isScrolling?
+                SliverPersistentHeader(
+                  delegate: AutoScrollSpeedWidget(this, scrollController),
+                  floating: true,
+                  pinned: true,
+                ):
+                Container(),
               ),
 
               SliverList(
@@ -1005,40 +1010,39 @@ class AutoScrollSpeedWidget<T extends SongCore> extends SliverPersistentHeaderDe
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Consumer<AutoscrollProvider>(
-      builder: (context, prov, child) =>
-      prov.isScrolling?
-      Row(
-        children: [
 
-          Padding(
-            padding: EdgeInsets.all(Dimen.ICON_MARG),
-            child: Icon(MdiIcons.speedometer),
-          ),
+    return Row(
+      children: [
 
-          Expanded(
-            child: SliderTheme(
-              child: Slider(
-                value: prov.speed,
-                divisions: 5,
-                activeColor: accentColor(context),
-                inactiveColor: hintDisabled(context),
-                onChanged: (value){
-                  prov.speed = value;
-                  parent.startAutoscroll(context, scrollController, restart: true);
-                },
-                label: 'Szybkość przewijania',
+        Padding(
+          padding: EdgeInsets.all(Dimen.ICON_MARG),
+          child: Icon(MdiIcons.speedometer),
+        ),
+
+        Expanded(
+            child: Consumer<AutoscrollProvider>(
+              builder: (context, prov, child) => SliderTheme(
+                child: Slider(
+                  value: prov.speed,
+                  divisions: 5,
+                  activeColor: accentColor(context),
+                  inactiveColor: hintDisabled(context),
+                  onChanged: (value){
+                    prov.speed = value;
+                    parent.startAutoscroll(context, scrollController, restart: true);
+                  },
+                  label: 'Szybkość przewijania',
+                ),
+                data: SliderTheme.of(context).copyWith(
+                    valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold)
+                ),
               ),
-              data: SliderTheme.of(context).copyWith(
-                  valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold)
-              ),
-            ),
-          ),
+            )
+        ),
 
-        ],
-      ):
-      Container(),
+      ],
     );
+
   }
 
   @override
