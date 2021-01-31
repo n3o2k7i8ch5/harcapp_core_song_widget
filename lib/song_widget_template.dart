@@ -23,7 +23,7 @@ import 'package:provider/provider.dart';
 
 import 'get_line_nums.dart';
 
-class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
+class SongWidgetController<T extends SongCore> extends StatelessWidget{
 
   final T song;
   final SongBookSettTempl settings;
@@ -34,7 +34,7 @@ class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
 
   final Widget Function(BuildContext context) builder;
 
-  SongWidgetTemplateController({
+  SongWidgetController({
     @required this.song,
     @required this.settings,
     this.screenWidth,
@@ -61,19 +61,15 @@ class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
 
 }
 
-class SongWidgetTemplate<T extends SongCore>{
+class SongWidgetSliverBuilder<T extends SongCore>{
 
   final T song;
   final SongBookSettTempl settings;
-
-  //final double screenWidth;
 
   final ValueNotifier pageNotifier;
   final int index;
 
   final double topScreenPadding;
-
-  //final void Function(ScrollController controller) onScroll;
 
   final void Function() onTitleTap;
   final void Function() onAuthorTap;
@@ -112,7 +108,7 @@ class SongWidgetTemplate<T extends SongCore>{
   final Widget Function(BuildContext, ScrollController) header;
   final Widget Function(BuildContext, ScrollController) footer;
 
-  const SongWidgetTemplate(
+  const SongWidgetSliverBuilder(
       this.song,
       this.settings,
       {
@@ -267,7 +263,7 @@ class SongWidgetTemplate<T extends SongCore>{
 
 class TitleCard<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
+  final SongWidgetSliverBuilder<T> parent;
   const TitleCard(this.parent);
 
   T get song => parent.song;
@@ -472,7 +468,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
 
 class ButtonWidget<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> fragmentState;
+  final SongWidgetSliverBuilder<T> fragmentState;
   final GlobalKey contentCardsKey;
   const ButtonWidget(this.fragmentState, this.contentCardsKey);
 
@@ -517,7 +513,7 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
 
 class TopWidget<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
+  final SongWidgetSliverBuilder<T> parent;
   final GlobalKey contentCardsKey;
 
   T get song => parent.song;
@@ -611,7 +607,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
 
 class BottomWidget<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
+  final SongWidgetSliverBuilder<T> parent;
   const BottomWidget(this.parent);
 
   T get song => parent.song;
@@ -664,7 +660,7 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
 
 class ContentWidget<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
+  final SongWidgetSliverBuilder<T> parent;
   final ScrollController scrollController;
 
   T get song => parent.song;
@@ -694,7 +690,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
             builder: (context, prov, child) => Row(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
-                /*
+
                 Expanded(
                   child: SimpleButton(
                       child: Row(
@@ -749,12 +745,6 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                   ),
                 ),
 
-                 */
-
-                Expanded(child: Container(height: 600, color: Colors.green)),
-
-                Container(height: 600, width: 100, color: Colors.blue),
-                /*
                 Consumer<ShowChordsProvider>(
                     builder: (context, showChordsProv, child){
 
@@ -782,7 +772,6 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                     }
                 )
 
-                 */
               ],
             ),
           );
@@ -821,7 +810,7 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
 
 class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
+  final SongWidgetSliverBuilder<T> parent;
 
   const ChordsBarCard(this.parent);
 
@@ -847,7 +836,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
+  final SongWidgetSliverBuilder<T> parent;
   SongBookSettTempl get settings => parent.settings;
   final ScrollController scrollController;
 
