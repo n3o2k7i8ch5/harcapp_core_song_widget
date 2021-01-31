@@ -48,9 +48,11 @@ class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
     ScrollController scrollController = ScrollController();
     if(onScroll != null) scrollController.addListener(() => onScroll(scrollController));
 
+    double _screenWidth = screenWidth??MediaQuery.of(context);
+
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => TextSizeProvider(screenWidth??MediaQuery.of(context).size.width, song)),
+        ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
         ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings, scrollController)),
       ],
       builder: (context, child) => builder(context),
