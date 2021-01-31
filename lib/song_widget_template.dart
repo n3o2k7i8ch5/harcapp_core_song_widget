@@ -145,6 +145,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
       ],
       builder: (context, child) => NotificationListener<ScrollNotification>(
         child: CustomScrollView(
+          primary: true,
           physics: BouncingScrollPhysics(),
           slivers: [
 
@@ -226,6 +227,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   }
 
   void startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
+
+    scrollController = PrimaryScrollController.of(context);
 
     if(scrollController == null){
       debugPrint('No scrollController attached.');
@@ -714,6 +717,8 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       ),
                       onTap: (){
                         if(settings.scrollText) {
+
+                          ScrollController scrollController = PrimaryScrollController.of(context);
 
                           if(scrollController == null){
                             debugPrint('No scrollController attached.');
