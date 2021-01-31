@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harcapp_core/comm_classes/app_text_style.dart';
 import 'package:harcapp_core/comm_classes/color_pack.dart';
@@ -173,7 +174,18 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
               ),
 
               SliverPersistentHeader(
-                delegate: ChordsBarCard(this),
+                delegate: _SliverPersistentHeaderDelegate(
+                  child: Column(
+                    children: [
+                      ChordsBarCard(this),
+                      Consumer<AutoscrollProvider>(
+                        builder: (context, prov, child) =>
+                            prov.isScrolling?AutoScrollSpeedWidget(this, scrollController):Container()
+                      )
+                    ],
+                  ),
+                  height: ChordWidget.height(settings.chordsDrawType?6:4) +  Dimen.ICON_FOOTPRINT
+                ),
                 floating: true,
                 pinned: true,
               ),
@@ -201,17 +213,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                       ),
                     ),
                 ]),
-              ),
-
-              Consumer<AutoscrollProvider>(
-                builder: (context, prov, child) =>
-                prov.isScrolling?
-                SliverPersistentHeader(
-                  delegate: AutoScrollSpeedWidget(this, scrollController),
-                  floating: true,
-                  pinned: true,
-                ):
-                SliverList(delegate: SliverChildListDelegate([])),
               ),
 
             ],
@@ -965,7 +966,30 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
 }
 
-class ChordsBarCard<T extends SongCore> extends SliverPersistentHeaderDelegate{
+class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
+
+  final Widget child;
+  final height;
+
+  const _SliverPersistentHeaderDelegate({this.child, this.height});
+
+  @override
+  double get maxExtent => height;// + Dimen.DEF_MARG.toInt();
+
+  @override
+  double get minExtent => height;// + Dimen.DEF_MARG.toInt();
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return child;
+  }
+
+}
+
+class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
   final SongWidgetTemplate<T> parent;
 
@@ -975,32 +999,23 @@ class ChordsBarCard<T extends SongCore> extends SliverPersistentHeaderDelegate{
   SongBookSettTempl get settings => parent.settings;
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context) {
 
     return Consumer<ChordsDrawTypeProvider>(
       builder: (context, prov, child) => ChordDrawBar(
         song.chords,
         typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
         onTypeChanged: parent.onChordsTypeChanged,
-        elevation: overlapsContent?AppCard.bigElevation:0,
+        elevation: 0,
         chordBackground: Colors.transparent,
       ),
     );
 
   }
 
-  @override
-  double get maxExtent => ChordWidget.height(settings.chordsDrawType?6:4);// + Dimen.DEF_MARG.toInt();
-
-  @override
-  double get minExtent => ChordWidget.height(settings.chordsDrawType?6:4);// + Dimen.DEF_MARG.toInt();
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
-
 }
 
-class AutoScrollSpeedWidget<T extends SongCore> extends SliverPersistentHeaderDelegate{
+class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
   final SongWidgetTemplate<T> parent;
   SongBookSettTempl get settings => parent.settings;
@@ -1009,7 +1024,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends SliverPersistentHeaderDe
   const AutoScrollSpeedWidget(this.parent, this.scrollController);
 
   @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+  Widget build(BuildContext context) {
 
     return Row(
       children: [
@@ -1044,14 +1059,5 @@ class AutoScrollSpeedWidget<T extends SongCore> extends SliverPersistentHeaderDe
     );
 
   }
-
-  @override
-  double get maxExtent => Dimen.ICON_FOOTPRINT;
-
-  @override
-  double get minExtent => Dimen.ICON_FOOTPRINT;
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 
 }
