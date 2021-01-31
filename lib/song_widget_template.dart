@@ -182,133 +182,123 @@ class SongWidgetTemplateState<T extends SongCore> extends State<SongWidgetTempla
         ChangeNotifierProvider(create: (context) => TextSizeProvider(widget.screenWidth??screenWidth, song)),
         ChangeNotifierProvider(create: (context) => AutoscrollProvider()),
       ],
-      builder: (context, child) => OrientationBuilder(
-          builder: (BuildContext context, Orientation orientation) {
-            // To po to, żeby tekst został zresetowany po zmianie orientacji.
-            if (oldOrientation != MediaQuery.of(context).orientation) {
-              oldOrientation = orientation;
-            }
+      builder: (context, child) => Stack(
+        children: <Widget>[
 
-            SingleChildScrollView listView = SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              controller: scrollController,
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
+          SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            controller: scrollController,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.max,
+                children: [
 
-                    Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                        builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child) =>
-                            SizedBox(
-                                height: (song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
-                                ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
-                            )
+                  Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                      builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child) =>
+                          SizedBox(
+                              height: (song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?
+                              ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.DEF_MARG.toInt():0
+                          )
+                  ),
+
+                  if(widget.song.isOwn)
+                    Padding(
+                      padding: EdgeInsets.all(Dimen.DEF_MARG),
+                      child: Text(
+                        'Piosenka nieoficjalna',
+                        style: AppTextStyle(
+                            color: accentColor(context),
+                            fontWeight: weight.halfBold
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
 
-                    if(widget.song.isOwn)
-                      Padding(
-                        padding: EdgeInsets.all(Dimen.DEF_MARG),
-                        child: Text(
-                          'Piosenka nieoficjalna',
-                          style: AppTextStyle(
-                              color: accentColor(context),
-                              fontWeight: weight.halfBold
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
+                  if(widget.header!=null) widget.header(context, scrollController),
+
+                  TitleCard<T>(this),
+
+                  Column(
+                    children: <Widget>[
+
+                      Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
+                        child: ChordsBarCard(this),
+                        builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
+                          return AnimatedSize(
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeOutQuart,
+                            vsync: this,
+                            child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container(),
+                          );
+                        },
                       ),
 
-                    if(widget.header!=null) widget.header(context, scrollController),
+                      ButtonWidget<T>(this),
 
-                    TitleCard<T>(this),
+                      ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
+                      //SizedBox(height: 18.0),
+
+                      if(widget.footer!=null) widget.footer(context, scrollController)
+
+                    ],
+                  ),
+
+                  if(widget.song.addPers.length != 0)
+                    Padding(
+                      padding: EdgeInsets.all(Dimen.DEF_MARG),
+                      child: RichText(
+                          textAlign: TextAlign.start,
+                          text: TextSpan(
+                            children: [
+                              TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
+                              TextSpan(text: widget.song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
+                            ],
+                          )
+                      ),
+                    ),
+
+                ]
+            ),
+          ),
+
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Material(
+                color: background(context),
+                elevation: AppCard.bigElevation,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
                     Column(
-                      children: <Widget>[
-
+                      children: [
                         Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                          child: ChordsBarCard(this),
+                          child: ChordsBarCard<T>(this),
                           builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                            return AnimatedSize(
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeOutQuart,
-                              vsync: this,
-                              child: (!chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)?child:Container(),
-                            );
+                            if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
+                              return child;
+                            else
+                              return Container();
                           },
                         ),
 
-                        ButtonWidget<T>(this),
-
-                        ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
-
-                        //SizedBox(height: 18.0),
-
-                        if(widget.footer!=null) widget.footer(context, scrollController)
-
+                        AnimatedSize(
+                            vsync: this,
+                            duration: Duration(milliseconds: 300),
+                            curve: Curves.easeOutQuart,
+                            child: AutoScrollSpeedWidget(this)
+                        ),
                       ],
                     ),
-
-                    if(widget.song.addPers.length != 0)
-                      Padding(
-                        padding: EdgeInsets.all(Dimen.DEF_MARG),
-                        child: RichText(
-                            textAlign: TextAlign.start,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
-                                TextSpan(text: widget.song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
-                              ],
-                            )
-                        ),
-                      ),
-
-                  ]
-              ),
-            );
-
-            return Stack(
-              children: <Widget>[
-
-                listView,
-
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: Material(
-                      color: background(context),
-                      elevation: AppCard.bigElevation,
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          Column(
-                            children: [
-                              Consumer3<ChordsDrawPinnedProvider, ChordsDrawShowProvider, ShowChordsProvider>(
-                                child: ChordsBarCard<T>(this),
-                                builder: (context, chordsDrawPinProv, chordsDrawShowProv, showChordsProv, child){
-                                  if(song.hasChords && chordsDrawPinProv.pinChordsDraw && chordsDrawShowProv.chordsDrawShow && showChordsProv.showChords)
-                                    return child;
-                                  else
-                                    return Container();
-                                },
-                              ),
-
-                              AnimatedSize(
-                                  vsync: this,
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.easeOutQuart,
-                                  child: AutoScrollSpeedWidget(this)
-                              ),
-                            ],
-                          ),
-                        ],
-                      )
-                  ),
+                  ],
                 )
-              ],
-            );
-          }),
+            ),
+          )
+        ],
+      ),
     );
 
   }
@@ -749,98 +739,101 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: <Widget>[
+    return OrientationBuilder(
+        builder: (BuildContext context, Orientation orientation) {
 
-        Consumer<TextSizeProvider>(
-          builder: (context, prov, child) => Row(
-            mainAxisSize: MainAxisSize.max,
-            children: <Widget>[
-              Expanded(
-                child: SimpleButton(
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      children: <Widget>[
-                        Expanded(
-                            child: Text(
-                              text,
-                              style: TextStyle(
+          // To po to, żeby tekst został zresetowany po zmianie orientacji.
+          if (parent.oldOrientation != MediaQuery.of(context).orientation)
+            parent.oldOrientation = orientation;
+
+          return Consumer<TextSizeProvider>(
+            builder: (context, prov, child) => Row(
+              mainAxisSize: MainAxisSize.max,
+              children: <Widget>[
+                Expanded(
+                  child: SimpleButton(
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        children: <Widget>[
+                          Expanded(
+                              child: Text(
+                                text,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: prov.value, //initial font size
+                                  color: textEnabled(context),
+                                  height: lineSpacing,
+                                ),
+                              )
+                          ),
+                          Text(
+                            lineNum,
+                            textAlign: TextAlign.end,
+                            style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: prov.value, //initial font size
-                                color: textEnabled(context),
-                                height: lineSpacing,
-                              ),
-                            )
-                        ),
-                        Text(
-                          lineNum,
-                          textAlign: TextAlign.end,
-                          style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontSize: prov.value<Dimen.TEXT_SIZE_TINY?
-                              prov.value:
-                              Dimen.TEXT_SIZE_TINY,//initial font size
-                              color: hintDisabled(context),
-                              height: prov.value<Dimen.TEXT_SIZE_TINY?
-                              lineSpacing:
-                              lineSpacing*(prov.value/ Dimen.TEXT_SIZE_TINY)
+                                fontSize: prov.value<Dimen.TEXT_SIZE_TINY?
+                                prov.value:
+                                Dimen.TEXT_SIZE_TINY,//initial font size
+                                color: hintDisabled(context),
+                                height: prov.value<Dimen.TEXT_SIZE_TINY?
+                                lineSpacing:
+                                lineSpacing*(prov.value/ Dimen.TEXT_SIZE_TINY)
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    onTap: (){
-                      if(settings.scrollText) {
+                        ],
+                      ),
+                      onTap: (){
+                        if(settings.scrollText) {
 
-                        double scrollDefDelta = MediaQuery.of(context).size.height / 2;
-                        double scrollDelta = min(
-                            scrollDefDelta,
-                            listView.position.maxScrollExtent - listView.offset
-                        );
+                          double scrollDefDelta = MediaQuery.of(context).size.height / 2;
+                          double scrollDelta = min(
+                              scrollDefDelta,
+                              listView.position.maxScrollExtent - listView.offset
+                          );
 
-                        int scrollDuration = (2000*scrollDelta/scrollDefDelta).round();
+                          int scrollDuration = (2000*scrollDelta/scrollDefDelta).round();
 
-                        listView.animateTo(
-                            listView.offset + scrollDelta,
-                            duration: Duration(milliseconds: scrollDuration),
-                            curve: Curves.ease
-                        );
-                      }
-                    },
-                    onLongPress: () => parent.startAutoscroll(context)
-                ),
-              ),
-
-              Consumer<ShowChordsProvider>(
-                  builder: (context, showChordsProv, child){
-
-                    if(!showChordsProv.showChords)
-                      return Container();
-                    return SimpleButton(
-                        child: Text(
-                          chords,
-                          style: TextStyle(
-                            fontFamily: 'Roboto',
-                            fontSize: prov.value, //initial font size
-                            color: textEnabled(context),
-                            height: lineSpacing,
-                          ),
-                        ),
-                        onTap: parent.widget.onChordsTap==null?null:(){
-                          parent.widget.onChordsTap(prov);
-                        },
-                        onLongPress: parent.widget.onChordsLongPress==null?null:(){
-                          parent.widget.onChordsLongPress(prov);
+                          listView.animateTo(
+                              listView.offset + scrollDelta,
+                              duration: Duration(milliseconds: scrollDuration),
+                              curve: Curves.ease
+                          );
                         }
-                    );
+                      },
+                      onLongPress: () => parent.startAutoscroll(context)
+                  ),
+                ),
 
-                  }
-              )
-            ],
-          ),
-        )
-      ],
-    );
+                Consumer<ShowChordsProvider>(
+                    builder: (context, showChordsProv, child){
+
+                      if(!showChordsProv.showChords)
+                        return Container();
+                      return SimpleButton(
+                          child: Text(
+                            chords,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: prov.value, //initial font size
+                              color: textEnabled(context),
+                              height: lineSpacing,
+                            ),
+                          ),
+                          onTap: parent.widget.onChordsTap==null?null:(){
+                            parent.widget.onChordsTap(prov);
+                          },
+                          onLongPress: parent.widget.onChordsLongPress==null?null:(){
+                            parent.widget.onChordsLongPress(prov);
+                          }
+                      );
+
+                    }
+                )
+              ],
+            ),
+          );
+        });
+
   }
 
 }
