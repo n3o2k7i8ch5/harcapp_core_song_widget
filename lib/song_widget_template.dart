@@ -692,6 +692,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
             builder: (context, prov, child) => Row(
               mainAxisSize: MainAxisSize.max,
               children: <Widget>[
+                /*
                 Expanded(
                   child: SimpleButton(
                       child: Row(
@@ -745,6 +746,10 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                       onLongPress: () => parent.startAutoscroll(context, scrollController)
                   ),
                 ),
+
+                 */
+
+                Expanded(child: Container(height: 600, color: Colors.green)),
 
                 Container(height: 600, width: 100, color: Colors.blue),
                 /*
