@@ -37,7 +37,7 @@ class SongWidgetTemplateController<T extends SongCore> extends StatelessWidget{
   SongWidgetTemplateController({
     @required this.song,
     @required this.settings,
-    @required this.screenWidth,
+    this.screenWidth,
     this.onScroll,
     @required this.child,
   });
