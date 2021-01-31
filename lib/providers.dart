@@ -61,7 +61,7 @@ class TextSizeProvider extends ChangeNotifier{
   TextSizeProvider(double screenWidth, SongCore song){
     _screenWidth = screenWidth;
     _value = calculate(screenWidth, song);
-    _wantedValue = calculate(screenWidth, song);
+    _wantedValue = _value;
   }
 
   bool up(double screenWidth, String text, String chords, String lineNum){
