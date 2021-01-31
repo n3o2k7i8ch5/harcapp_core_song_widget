@@ -135,7 +135,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (context) => TextSizeProvider(screenWidth??screenWidth, song)),
-          ChangeNotifierProvider(create: (context) => AutoscrollProvider()),
+          ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings)),
         ],
         builder: (context, child){
 
@@ -174,6 +174,12 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
               SliverPersistentHeader(
                 delegate: ChordsBarCard(this),
+                floating: true,
+                pinned: true,
+              ),
+
+              SliverPersistentHeader(
+                delegate: AutoScrollSpeedWidget(this, scrollController),
                 floating: true,
                 pinned: true,
               ),
@@ -225,7 +231,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                     },
                   ),
 */
-                    AutoScrollSpeedWidget(this, scrollController),
+                    //AutoScrollSpeedWidget(this, scrollController),
                   ],
                 ),
               ),
@@ -989,28 +995,20 @@ class ChordsBarCard<T extends SongCore> extends SliverPersistentHeaderDelegate{
 
 }
 
-class AutoScrollSpeedWidget<T extends SongCore> extends StatefulWidget{
+class AutoScrollSpeedWidget<T extends SongCore> extends SliverPersistentHeaderDelegate{
 
   final SongWidgetTemplate<T> parent;
+  SongBookSettTempl get settings => parent.settings;
   final ScrollController scrollController;
 
   const AutoScrollSpeedWidget(this.parent, this.scrollController);
 
   @override
-  State<StatefulWidget> createState() => AutoScrollSpeedWidgetState();
-
-}
-
-class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with TickerProviderStateMixin{
-
-  SongWidgetTemplate get parent => widget.parent;
-  SongBookSettTempl get settings => parent.settings;
-  ScrollController get scrollController => widget.scrollController;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Consumer<AutoscrollProvider>(
-      child: Row(
+      builder: (context, prov, child) =>
+      prov.isScrolling?
+      Row(
         children: [
 
           Padding(
@@ -1021,12 +1019,12 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with Ticke
           Expanded(
             child: SliderTheme(
               child: Slider(
-                value: settings.autoscrollTextSpeed,
+                value: prov.speed,
                 divisions: 5,
                 activeColor: accentColor(context),
                 inactiveColor: hintDisabled(context),
                 onChanged: (value){
-                  setState(() => settings.autoscrollTextSpeed = value);
+                  prov.speed = value;
                   parent.startAutoscroll(context, scrollController, restart: true);
                 },
                 label: 'Szybkość przewijania',
@@ -1038,13 +1036,18 @@ class AutoScrollSpeedWidgetState extends State<AutoScrollSpeedWidget> with Ticke
           ),
 
         ],
-      ),
-      builder: (context, prov, child) =>
-        prov.isScrolling?
-        child:
-        Container(),
+      ):
+      Container(),
     );
   }
 
+  @override
+  double get maxExtent => Dimen.ICON_FOOTPRINT;
+
+  @override
+  double get minExtent => Dimen.ICON_FOOTPRINT;
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
 
 }

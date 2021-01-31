@@ -145,10 +145,12 @@ class AutoscrollProvider extends ChangeNotifier{
 
   bool _isScrolling;
   bool restart;
+  SongBookSettTempl settings;
 
-  AutoscrollProvider(){
+  AutoscrollProvider(SongBookSettTempl settings){
     _isScrolling = false;
     restart = false;
+    this.settings = settings;
   }
 
   bool get isScrolling => _isScrolling;
@@ -158,6 +160,13 @@ class AutoscrollProvider extends ChangeNotifier{
       return;
     }
     _isScrolling = value;
+    notifyListeners();
+  }
+
+  double get speed => settings.autoscrollTextSpeed;
+
+  set speed(double value){
+    settings.autoscrollTextSpeed = value;
     notifyListeners();
   }
 
