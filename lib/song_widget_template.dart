@@ -17,7 +17,6 @@ import 'package:harcapp_core_song/song_core.dart';
 import 'package:harcapp_core_song_widget/providers.dart';
 import 'package:harcapp_core_song_widget/settings.dart';
 import 'package:harcapp_core_song_widget/song_rate.dart';
-import 'package:harcapp_core_tags/tag_layout.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:provider/provider.dart';
 
@@ -173,15 +172,13 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             Consumer<AutoscrollProvider>(
               builder: (context, prov, child) => SliverPersistentHeader(
                 delegate: _SliverPersistentHeaderDelegate(
-                    child: SafeArea(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          ChordsBarCard(this),
-                          if(prov.isScrolling)
-                            AutoScrollSpeedWidget(this, scrollController)
-                        ],
-                      ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ChordsBarCard(this),
+                        if(prov.isScrolling)
+                          AutoScrollSpeedWidget(this, scrollController)
+                      ],
                     ),
                     height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
                 ),
