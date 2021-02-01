@@ -834,9 +834,9 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
-  final ScrollController scrollController;
+  final ScrollController Function() scrollController;
 
-  const AutoScrollSpeedWidget(this.scrollController);
+  const AutoScrollSpeedWidget({this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -858,7 +858,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                   inactiveColor: hintDisabled(context),
                   onChanged: (value){
                     prov.speed = value;
-                    SongWidgetTemplate._startAutoscroll(context, scrollController, restart: true);
+                    SongWidgetTemplate._startAutoscroll(context, scrollController(), restart: true);
                   },
                   label: 'Szybkość przewijania',
                 ),
