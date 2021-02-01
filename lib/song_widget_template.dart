@@ -238,6 +238,15 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
           ),
 
           Positioned(
+              child: IgnorePointer(
+                child: Container(
+                    width: double.infinity,
+                    height: Dimen.ICON_FOOTPRINT + 2*Dimen.ICON_MARG
+                ),
+              ),
+          ),
+
+          Positioned(
             left: Dimen.ICON_MARG,
             right: Dimen.ICON_MARG,
             bottom: Dimen.ICON_MARG,
@@ -759,11 +768,12 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
                           int scrollDuration = (2000*scrollDelta/scrollDefDelta).round();
 
-                          scrollController.animateTo(
-                              scrollController.offset + scrollDelta,
-                              duration: Duration(milliseconds: scrollDuration),
-                              curve: Curves.ease
-                          );
+                          if(scrollDuration > 0)
+                            scrollController.animateTo(
+                                scrollController.offset + scrollDelta,
+                                duration: Duration(milliseconds: scrollDuration),
+                                curve: Curves.ease
+                            );
                         }
                       },
                       onLongPress: () => parent.startAutoscroll(context, scrollController)
