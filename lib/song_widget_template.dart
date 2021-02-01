@@ -202,7 +202,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
                           ],
                         ),
-                        height: ChordWidget.height(settings.chordsDrawType?6:4)
+                        height: ChordWidget.height(settings.chordsDrawType?6:4) + Dimen.ICON_FOOTPRINT
                     ),
                     floating: true,
                     pinned: true,
