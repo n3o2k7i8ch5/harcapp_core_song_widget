@@ -179,7 +179,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 Consumer<AutoscrollProvider>(
                   builder: (context, prov, child) => SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
-                        child: ChordsBarCard(this),,
+                        child: ChordsBarCard(this),
                         height: ChordWidget.height(settings.chordsDrawType?6:4)
                     ),
                     floating: true,
