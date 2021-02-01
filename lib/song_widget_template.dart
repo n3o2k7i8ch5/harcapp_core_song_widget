@@ -238,7 +238,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
           ),
 
           Positioned(
-              child: IgnorePointer(
+              child: AbsorbPointer(
                 child: Container(
                     width: double.infinity,
                     height: Dimen.ICON_FOOTPRINT + 2*Dimen.ICON_MARG
