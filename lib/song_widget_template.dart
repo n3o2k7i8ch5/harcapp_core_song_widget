@@ -238,6 +238,28 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
           ),
 
           Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: Material(
+                color: background(context),
+                elevation: AppCard.bigElevation,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Column(
+                      children: [
+
+                        AutoScrollSpeedWidget(this, scrollController)
+                      ],
+                    ),
+                  ],
+                )
+            ),
+          ),
+
+          Positioned(
               left: 0,
               right: 0,
               bottom: 0,
