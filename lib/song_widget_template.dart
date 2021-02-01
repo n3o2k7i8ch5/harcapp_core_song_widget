@@ -189,7 +189,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                   builder: (context, prov, child) => SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
                         child: ChordsBarCard(this),
-                        height: ChordWidget.height(settings.chordsDrawType?6:4)
+                        height: ChordWidget.height(settings.chordsDrawType?6:4) + 2.0
                     ),
                     floating: true,
                     pinned: true,
