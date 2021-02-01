@@ -241,7 +241,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
               left: 0,
               right: 0,
               bottom: 0,
-              child: IgnorePointer(
+              child: AbsorbPointer(
                 child: Container(
                     width: double.infinity,
                     height: Dimen.ICON_FOOTPRINT + 2*Dimen.ICON_MARG,
@@ -255,11 +255,13 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             right: Dimen.ICON_MARG,
             bottom: Dimen.ICON_MARG,
             child: Consumer<AutoscrollProvider>(
-              builder: (context, prov, child) => prov.isScrolling?AppCard(
-                elevation: AppCard.bigElevation,
-                radius: AppCard.BIG_RADIUS,
-                padding: EdgeInsets.zero,
-                child: AutoScrollSpeedWidget(this, scrollController),
+              builder: (context, prov, child) => prov.isScrolling?AbsorbPointer(
+                child: AppCard(
+                  elevation: AppCard.bigElevation,
+                  radius: AppCard.BIG_RADIUS,
+                  padding: EdgeInsets.zero,
+                  child: AutoScrollSpeedWidget(this, scrollController),
+                ),
               ):Container()
             )
           )
