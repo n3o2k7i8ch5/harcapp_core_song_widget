@@ -69,6 +69,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   final void Function(TextSizeProvider provider) onChordsTap;
   final void Function(TextSizeProvider provider) onChordsLongPress;
 
+  final void Function(BuildContext context) onAutoscrollStart;
+  final void Function(BuildContext context) onAutoscrollEnd;
+
   final Widget Function(BuildContext, ScrollController) header;
   final Widget Function(BuildContext, ScrollController) footer;
 
@@ -120,6 +123,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         this.onChordsTap,
         this.onChordsLongPress,
 
+        this.onAutoscrollStart,
+        this.onAutoscrollEnd,
+
         this.header,
         this.footer,
 
@@ -141,7 +147,11 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
-        ChangeNotifierProvider(create: (context) => AutoscrollProvider(settings)),
+        ChangeNotifierProvider(create: (context) => AutoscrollProvider(
+            settings,
+            onAutoscrollStart: () => onAutoscrollStart(context),
+            onAutoscrollEnd: () => onAutoscrollEnd(context)
+        )),
       ],
       builder: (context, child) => Stack(
         children: [
@@ -149,7 +159,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
           NotificationListener<ScrollNotification>(
             child: CustomScrollView(
 
-              //controller: scrollController,
               physics: BouncingScrollPhysics(),
               slivers: [
 

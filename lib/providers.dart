@@ -151,10 +151,21 @@ class AutoscrollProvider extends ChangeNotifier{
   bool restart;
   SongBookSettTempl settings;
 
-  AutoscrollProvider(SongBookSettTempl settings){
+  void Function() onAutoscrollStart;
+  void Function() onAutoscrollEnd;
+
+  AutoscrollProvider(
+      SongBookSettTempl settings,
+      {
+        void Function() onAutoscrollStart,
+        void Function() onAutoscrollEnd
+      }){
     _isScrolling = false;
     restart = false;
     this.settings = settings;
+
+    this.onAutoscrollStart = onAutoscrollStart;
+    this.onAutoscrollEnd = onAutoscrollEnd;
   }
 
   bool get isScrolling => _isScrolling;
@@ -164,6 +175,9 @@ class AutoscrollProvider extends ChangeNotifier{
       return;
     }
     _isScrolling = value;
+    if(_isScrolling) onAutoscrollStart();
+    else onAutoscrollEnd();
+
     notifyListeners();
   }
 
