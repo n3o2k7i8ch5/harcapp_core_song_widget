@@ -22,6 +22,25 @@ import 'package:provider/provider.dart';
 
 import 'get_line_nums.dart';
 
+class SongAutoScrollController extends StatelessWidget{
+
+  final SongBookSettTempl settings;
+  final void Function(BuildContext context) onAutoscrollStart;
+  final void Function(BuildContext context) onAutoscrollEnd;
+
+  const SongAutoScrollController(this.settings, {this.onAutoscrollStart, this.onAutoscrollEnd});
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(create: (context) => AutoscrollProvider(
+        settings,
+        onAutoscrollStart: () => onAutoscrollStart==null?null:onAutoscrollStart(context),
+        onAutoscrollEnd: () => onAutoscrollEnd==null?null:onAutoscrollEnd(context)
+    ));
+  }
+
+}
+
 class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   final T song;
@@ -68,9 +87,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   final void Function(TextSizeProvider provider) onChordsTap;
   final void Function(TextSizeProvider provider) onChordsLongPress;
-
-  final void Function(BuildContext context) onAutoscrollStart;
-  final void Function(BuildContext context) onAutoscrollEnd;
 
   final Widget Function(BuildContext, ScrollController) header;
   final Widget Function(BuildContext, ScrollController) footer;
@@ -123,9 +139,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         this.onChordsTap,
         this.onChordsLongPress,
 
-        this.onAutoscrollStart,
-        this.onAutoscrollEnd,
-
         this.header,
         this.footer,
 
@@ -147,11 +160,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
-        ChangeNotifierProvider(create: (context) => AutoscrollProvider(
-            settings,
-            onAutoscrollStart: () => onAutoscrollStart(context),
-            onAutoscrollEnd: () => onAutoscrollEnd(context)
-        )),
       ],
       builder: (context, child) => Stack(
         children: [
@@ -236,34 +244,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             },
           ),
 
-          Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: AbsorbPointer(
-                child: Container(
-                    width: double.infinity,
-                    height: Dimen.ICON_FOOTPRINT + 2*Dimen.ICON_MARG,
-                  color: Colors.red,
-                ),
-              ),
-          ),
-
-          Positioned(
-            left: Dimen.ICON_MARG,
-            right: Dimen.ICON_MARG,
-            bottom: Dimen.ICON_MARG,
-            child: Consumer<AutoscrollProvider>(
-              builder: (context, prov, child) => prov.isScrolling?AbsorbPointer(
-                child: AppCard(
-                  elevation: AppCard.bigElevation,
-                  radius: AppCard.BIG_RADIUS,
-                  padding: EdgeInsets.zero,
-                  child: AutoScrollSpeedWidget(this, scrollController),
-                ),
-              ):Container()
-            )
-          )
         ],
       ),
     );
@@ -821,33 +801,6 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
 }
 
-class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
-
-  final Widget child;
-  final height;
-
-  const _SliverPersistentHeaderDelegate({this.child, this.height});
-
-  @override
-  double get maxExtent => height;// + Dimen.DEF_MARG.toInt();
-
-  @override
-  double get minExtent => height;// + Dimen.DEF_MARG.toInt();
-
-  @override
-  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
-
-  @override
-  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
-    return Material(
-      color: background(context),
-      child: child,
-      elevation: overlapsContent?AppCard.bigElevation:0,
-    );
-  }
-
-}
-
 class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
   final SongWidgetTemplate<T> parent;
@@ -871,6 +824,7 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
   }
 
 }
+
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
@@ -916,6 +870,33 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
       ],
     );
 
+  }
+
+}
+
+class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
+
+  final Widget child;
+  final height;
+
+  const _SliverPersistentHeaderDelegate({this.child, this.height});
+
+  @override
+  double get maxExtent => height;// + Dimen.DEF_MARG.toInt();
+
+  @override
+  double get minExtent => height;// + Dimen.DEF_MARG.toInt();
+
+  @override
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) => true;
+
+  @override
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    return Material(
+      color: background(context),
+      child: child,
+      elevation: overlapsContent?AppCard.bigElevation:0,
+    );
   }
 
 }
