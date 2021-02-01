@@ -254,12 +254,14 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   }
 
-  void startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
+  static void _startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
 
     if(scrollController == null){
       debugPrint('No scrollController attached.');
       return;
     }
+
+    SongBookSettTempl settings = Provider.of<AutoscrollProvider>(context, listen: false).settings;
 
     double scrollLeft = scrollController.position.maxScrollExtent - scrollController.offset;
     double duration = scrollLeft*(1.1-settings.autoscrollTextSpeed)*500;
@@ -765,7 +767,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                             );
                         }
                       },
-                      onLongPress: () => parent.startAutoscroll(context, scrollController)
+                      onLongPress: () => SongWidgetTemplate._startAutoscroll(context, scrollController)
                   ),
                 ),
 
@@ -832,15 +834,12 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
-  final SongWidgetTemplate<T> parent;
-  SongBookSettTempl get settings => parent.settings;
   final ScrollController scrollController;
 
-  const AutoScrollSpeedWidget(this.parent, this.scrollController);
+  const AutoScrollSpeedWidget(this.scrollController);
 
   @override
   Widget build(BuildContext context) {
-
     return Row(
       children: [
 
@@ -859,7 +858,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                   inactiveColor: hintDisabled(context),
                   onChanged: (value){
                     prov.speed = value;
-                    //parent.startAutoscroll(context, scrollController, restart: true);
+                    SongWidgetTemplate._startAutoscroll(context, scrollController, restart: true);
                   },
                   label: 'Szybkość przewijania',
                 ),
