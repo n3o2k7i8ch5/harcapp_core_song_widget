@@ -842,6 +842,8 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
   Widget build(BuildContext context) {
     return Consumer<AutoscrollProvider>(
         builder: (context, prov, child) => prov.isScrolling?AppCard(
+          elevation: AppCard.bigElevation,
+          radius: AppCard.BIG_RADIUS,
           child: Row(
             children: [
 
