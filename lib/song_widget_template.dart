@@ -907,7 +907,8 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                   label: 'Szybkość przewijania',
                 ),
                 data: SliderTheme.of(context).copyWith(
-                    valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold)
+                    valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold),
+                  valueIndicatorColor: accentColor(context)
                 ),
               ),
             )
