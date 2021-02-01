@@ -27,16 +27,20 @@ class SongAutoScrollController extends StatelessWidget{
   final SongBookSettTempl settings;
   final void Function(BuildContext context) onAutoscrollStart;
   final void Function(BuildContext context) onAutoscrollEnd;
+  final Widget Function(BuildContext context) builder;
 
-  const SongAutoScrollController(this.settings, {this.onAutoscrollStart, this.onAutoscrollEnd});
+  const SongAutoScrollController(this.settings, {this.onAutoscrollStart, this.onAutoscrollEnd, this.builder});
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(create: (context) => AutoscrollProvider(
-        settings,
-        onAutoscrollStart: () => onAutoscrollStart==null?null:onAutoscrollStart(context),
-        onAutoscrollEnd: () => onAutoscrollEnd==null?null:onAutoscrollEnd(context)
-    ));
+    return ChangeNotifierProvider(
+      create: (context) => AutoscrollProvider(
+          settings,
+          onAutoscrollStart: () => onAutoscrollStart==null?null:onAutoscrollStart(context),
+          onAutoscrollEnd: () => onAutoscrollEnd==null?null:onAutoscrollEnd(context)
+      ),
+      builder: (context, child) => builder(context),
+    );
   }
 
 }
