@@ -840,37 +840,39 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
+    return Consumer<AutoscrollProvider>(
+        builder: (context, prov, child) => prov.isScrolling?AppCard(
+          child: Row(
+            children: [
 
-        Padding(
-          padding: EdgeInsets.all(Dimen.ICON_MARG),
-          child: Icon(MdiIcons.speedometer),
-        ),
+              Padding(
+                padding: EdgeInsets.all(Dimen.ICON_MARG),
+                child: Icon(MdiIcons.speedometer),
+              ),
 
-        Expanded(
-            child: Consumer<AutoscrollProvider>(
-              builder: (context, prov, child) => SliderTheme(
-                child: Slider(
-                  value: prov.speed,
-                  divisions: 5,
-                  activeColor: accentColor(context),
-                  inactiveColor: hintDisabled(context),
-                  onChanged: (value){
-                    prov.speed = value;
-                    SongWidgetTemplate._startAutoscroll(context, scrollController(), restart: true);
-                  },
-                  label: 'Szybkość przewijania',
-                ),
-                data: SliderTheme.of(context).copyWith(
-                    valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold),
-                  valueIndicatorColor: accentColor(context)
+              Expanded(
+                child: SliderTheme(
+                  child: Slider(
+                    value: prov.speed,
+                    divisions: 5,
+                    activeColor: accentColor(context),
+                    inactiveColor: hintDisabled(context),
+                    onChanged: (value){
+                      prov.speed = value;
+                      SongWidgetTemplate._startAutoscroll(context, scrollController(), restart: true);
+                    },
+                    label: 'Szybkość przewijania',
+                  ),
+                  data: SliderTheme.of(context).copyWith(
+                      valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold),
+                      valueIndicatorColor: accentColor(context)
+                  ),
                 ),
               ),
-            )
-        ),
 
-      ],
+            ],
+          ),
+        ):Container()
     );
 
   }
