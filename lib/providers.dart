@@ -6,6 +6,12 @@ import 'package:harcapp_core_song_widget/settings.dart';
 
 import 'get_line_nums.dart';
 
+class ChordShiftProvider extends ChangeNotifier{
+
+  void notify() => notifyListeners();
+
+}
+
 class ShowChordsProvider extends ChangeNotifier{
 
   SongBookSettTempl settings;

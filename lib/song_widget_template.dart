@@ -164,6 +164,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
+        ChangeNotifierProvider(create: (context) => ChordShiftProvider())
       ],
       builder: (context, child) => Stack(
         children: [
@@ -792,9 +793,11 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                           ),
                           onTap: parent.onChordsTap==null?null:(){
                             parent.onChordsTap(prov);
+                            Provider.of<ChordShiftProvider>(context, listen: false).notify();
                           },
                           onLongPress: parent.onChordsLongPress==null?null:(){
                             parent.onChordsLongPress(prov);
+                            Provider.of<ChordShiftProvider>(context, listen: false).notify();
                           }
                       );
 
@@ -822,12 +825,14 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return ChordDrawBar(
-      song.chords,
-      typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
-      onTypeChanged: parent.onChordsTypeChanged,
-      elevation: 0,
-      chordBackground: Colors.transparent,
+    return Consumer<ChordShiftProvider>(
+      builder: (context, prov, child) => ChordDrawBar(
+        song.chords,
+        typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
+        onTypeChanged: parent.onChordsTypeChanged,
+        elevation: 0,
+        chordBackground: Colors.transparent,
+      ),
     );
 
   }
