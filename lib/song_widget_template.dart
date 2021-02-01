@@ -902,7 +902,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                   inactiveColor: hintDisabled(context),
                   onChanged: (value){
                     prov.speed = value;
-                    parent.startAutoscroll(context, scrollController, restart: true);
+                    //parent.startAutoscroll(context, scrollController, restart: true);
                   },
                   label: 'Szybkość przewijania',
                 ),
