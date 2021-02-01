@@ -240,8 +240,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             right: Dimen.ICON_MARG,
             bottom: Dimen.ICON_MARG,
             child: AppCard(
+              elevation: AppCard.bigElevation,
               radius: AppCard.BIG_RADIUS,
-              padding: EdgeInsets.all(Dimen.ICON_MARG),
+              padding: EdgeInsets.zero,
               child: AutoScrollSpeedWidget(this, scrollController),
             ),
           )
