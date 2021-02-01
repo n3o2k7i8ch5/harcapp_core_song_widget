@@ -158,7 +158,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
           NotificationListener<ScrollNotification>(
             child: CustomScrollView(
-
+              controller: scrollController,
               physics: BouncingScrollPhysics(),
               slivers: [
 
@@ -235,28 +235,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
               if(onScroll != null) onScroll(scrollInfo);
               return false;
             },
-          ),
-
-          Positioned(
-            top: 0,
-            left: 0,
-            right: 0,
-            child: Material(
-                color: background(context),
-                elevation: AppCard.bigElevation,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Column(
-                      children: [
-
-                        AutoScrollSpeedWidget(this, scrollController)
-                      ],
-                    ),
-                  ],
-                )
-            ),
           ),
 
           Positioned(
