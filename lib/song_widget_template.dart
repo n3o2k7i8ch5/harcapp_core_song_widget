@@ -158,7 +158,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
           NotificationListener<ScrollNotification>(
             child: CustomScrollView(
-              controller: scrollController,
               physics: BouncingScrollPhysics(),
               slivers: [
 
@@ -185,7 +184,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                   ]),
                 ),
 
-                Consumer<AutoscrollProvider>(
+                Consumer<ChordsDrawTypeProvider>(
                   builder: (context, prov, child) => SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
                         child: ChordsBarCard(this),
@@ -861,14 +860,12 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return Consumer<ChordsDrawTypeProvider>(
-      builder: (context, prov, child) => ChordDrawBar(
-        song.chords,
-        typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
-        onTypeChanged: parent.onChordsTypeChanged,
-        elevation: 0,
-        chordBackground: Colors.transparent,
-      ),
+    return ChordDrawBar(
+      song.chords,
+      typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
+      onTypeChanged: parent.onChordsTypeChanged,
+      elevation: 0,
+      chordBackground: Colors.transparent,
     );
 
   }
