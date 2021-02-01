@@ -179,15 +179,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 Consumer<AutoscrollProvider>(
                   builder: (context, prov, child) => SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            ChordsBarCard(this),
-                            if(prov.isScrolling)
-                              AutoScrollSpeedWidget(this, scrollController)
-                          ],
-                        ),
-                        height: ChordWidget.height(settings.chordsDrawType?6:4) + (prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+                        child: ChordsBarCard(this),,
+                        height: ChordWidget.height(settings.chordsDrawType?6:4)
                     ),
                     floating: true,
                     pinned: true,
@@ -222,7 +215,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 Consumer<AutoscrollProvider>(
                     builder: (context, prov, child) => SliverList(
                       delegate: SliverChildListDelegate([
-                        SizedBox(height: prov.isScrolling?Dimen.ICON_FOOTPRINT:0)
+                        SizedBox(height: prov.isScrolling?(Dimen.ICON_FOOTPRINT + Dimen.ICON_MARG):0)
                       ]),
                     )
                 ),
@@ -239,12 +232,14 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             left: Dimen.ICON_MARG,
             right: Dimen.ICON_MARG,
             bottom: Dimen.ICON_MARG,
-            child: AppCard(
-              elevation: AppCard.bigElevation,
-              radius: AppCard.BIG_RADIUS,
-              padding: EdgeInsets.zero,
-              child: AutoScrollSpeedWidget(this, scrollController),
-            ),
+            child: Consumer<AutoscrollProvider>(
+              builder: (context, prov, child) => prov.isScrolling?AppCard(
+                elevation: AppCard.bigElevation,
+                radius: AppCard.BIG_RADIUS,
+                padding: EdgeInsets.zero,
+                child: AutoScrollSpeedWidget(this, scrollController),
+              ):Container(),
+            )
           )
         ],
       ),
