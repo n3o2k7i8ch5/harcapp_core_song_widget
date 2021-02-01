@@ -146,11 +146,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
       builder: (context, child) => Stack(
         children: [
 
-          AppCard(
-            padding: EdgeInsets.zero,
-            child: AutoScrollSpeedWidget(this, scrollController),
-          ),
-
           NotificationListener<ScrollNotification>(
             child: CustomScrollView(
 
@@ -239,6 +234,17 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
               return false;
             },
           ),
+
+          Positioned(
+            left: Dimen.ICON_MARG,
+            right: Dimen.ICON_MARG,
+            bottom: Dimen.ICON_MARG,
+            child: AppCard(
+              radius: AppCard.BIG_RADIUS,
+              padding: EdgeInsets.all(Dimen.ICON_MARG),
+              child: AutoScrollSpeedWidget(this, scrollController),
+            ),
+          )
         ],
       ),
     );
