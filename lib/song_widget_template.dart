@@ -232,6 +232,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                   ]),
                 ),
 
+                /*
                 Consumer<AutoscrollProvider>(
                     builder: (context, prov, child) => SliverList(
                       delegate: SliverChildListDelegate([
@@ -239,6 +240,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                       ]),
                     )
                 ),
+
+                 */
 
               ],
             ),
