@@ -255,12 +255,12 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             right: Dimen.ICON_MARG,
             bottom: Dimen.ICON_MARG,
             child: Consumer<AutoscrollProvider>(
-              builder: (context, prov, child) => prov.isScrolling?AppCard(
+              builder: (context, prov, child) => /*prov.isScrolling?*/AppCard(
                 elevation: AppCard.bigElevation,
                 radius: AppCard.BIG_RADIUS,
                 padding: EdgeInsets.zero,
                 child: AutoScrollSpeedWidget(this, scrollController),
-              ):Container(),
+              )/*:Container(),*/
             )
           )
         ],
