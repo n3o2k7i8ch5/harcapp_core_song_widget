@@ -238,10 +238,14 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
           ),
 
           Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
               child: AbsorbPointer(
                 child: Container(
                     width: double.infinity,
-                    height: Dimen.ICON_FOOTPRINT + 2*Dimen.ICON_MARG
+                    height: Dimen.ICON_FOOTPRINT + 2*Dimen.ICON_MARG,
+                  color: Colors.red,
                 ),
               ),
           ),
