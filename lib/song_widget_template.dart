@@ -203,7 +203,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                     ),
                     floating: true,
                     pinned: true,
-                  ):Container(),
+                  ):SliverList(delegate: SliverChildListDelegate([])),
                 ),
 
                 SliverList(
