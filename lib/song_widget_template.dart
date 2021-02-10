@@ -150,9 +150,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         //Key key
       });
 
-  bool showChords() =>
-      settings.showChords
-          && song.hasChords;
+  bool get showChords => settings.showChords && song.hasChords;
 
   @override
   Widget build(BuildContext context) {
@@ -197,15 +195,15 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                   ]),
                 ),
 
-                Consumer<ChordsDrawTypeProvider>(
-                  builder: (context, prov, child) => SliverPersistentHeader(
+                Consumer2<ChordsDrawTypeProvider, ShowChordsProvider>(
+                  builder: (context, prov1, prov2, child) => showChords?SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
                         child: ChordsBarCard(this),
                         height: ChordWidget.height(settings.chordsDrawType?6:4) + 2.0
                     ),
                     floating: true,
                     pinned: true,
-                  ),
+                  ):Container(),
                 ),
 
                 SliverList(
@@ -593,7 +591,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 double scaleFactor = TextSizeProvider.fits(
                     prov.screenWidth,
                     song.text,
-                    parent.showChords()?song.chords:null,
+                    parent.showChords?song.chords:null,
                     getLineNums(song.text),
                     prov.value + 0.5);
 
