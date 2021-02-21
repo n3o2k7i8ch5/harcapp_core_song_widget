@@ -47,6 +47,9 @@ class SongAutoScrollController extends StatelessWidget{
 
 class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
+  static const IconData ICON_SEND_SONG = MdiIcons.sendCircleOutline;
+  static const IconData ICON_SHARE_SONG = MdiIcons.shareVariant;
+
   final T song;
   final SongBookSettTempl settings;
   final double screenWidth;
@@ -658,14 +661,14 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
           ),
 
           IconButton(
-              icon: Icon(MdiIcons.shareVariant, color: iconEnabledColor(context)),
+              icon: Icon(SongWidgetTemplate.ICON_SHARE_SONG, color: iconEnabledColor(context)),
               onPressed: parent.onShareTap
           ),
 
           if(song.isOwn)
             IconButton(
                 icon: Icon(
-                    MdiIcons.sendCircleOutline,
+                    SongWidgetTemplate.ICON_SEND_SONG,
                     color: iconEnabledColor(context)),
                 onPressed: parent.onSendSongTap
             ),
