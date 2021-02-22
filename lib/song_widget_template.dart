@@ -224,7 +224,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                         child: Row(
                           children: [
 
-                            Icon(MdiIcons.accountEdit, size: Dimen.TEXT_SIZE_SMALL+2),
+                            Icon(MdiIcons.accountEdit, size: Dimen.TEXT_SIZE_SMALL+2, color: hintEnabled(context)),
 
                             SizedBox(width: Dimen.DEF_MARG),
 
