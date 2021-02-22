@@ -221,15 +221,20 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                     if(song.addPers.length != 0)
                       Padding(
                         padding: EdgeInsets.all(Dimen.DEF_MARG),
-                        child: RichText(
-                            textAlign: TextAlign.start,
-                            text: TextSpan(
-                              children: [
-                                TextSpan(text: 'Os. dodająca:\n', style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY)),
-                                TextSpan(text: song.addPers, style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)),
-                              ],
-                            )
-                        ),
+                        child: Row(
+                          children: [
+
+                            Icon(MdiIcons.accountEdit, size: Dimen.TEXT_SIZE_SMALL+2),
+
+                            SizedBox(width: Dimen.DEF_MARG),
+
+                            Text(
+                                song.addPers,
+                                style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)
+                            ),
+
+                          ],
+                        )
                       ),
                   ]),
                 ),
