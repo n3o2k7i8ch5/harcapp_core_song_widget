@@ -149,9 +149,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         this.header,
         this.footer,
 
-        this.scrollController
-        //Key key
-      });
+        this.scrollController,
+        Key key
+      }):super(key: key);
 
   bool get showChords => settings.showChords && song.hasChords;
 
