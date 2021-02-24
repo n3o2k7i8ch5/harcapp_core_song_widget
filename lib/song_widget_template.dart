@@ -312,6 +312,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         textAlign: TextAlign.center,
       ),
       padding: EdgeInsets.all(Dimen.ICON_MARG),
+      margin: EdgeInsets.zero,
       onTap: parent.onTitleTap,
     );
 
@@ -435,17 +436,15 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
           itemCount: song.tags.length,
-          itemBuilder: (BuildContext context, int index) {
-            return SimpleButton(
-              padding: EdgeInsets.all(Dimen.DEF_MARG),
-              radius: AppCard.BIG_RADIUS,
-              child: Text(
-                song.tags[index],
-                style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnabled(context), fontWeight: weight.halfBold),
-              ),
-              onTap: parent.onTagTap==null?null:() => parent.onTagTap(song.tags[index]),
-            );
-          },
+          itemBuilder: (BuildContext context, int index) => SimpleButton(
+            padding: EdgeInsets.all(Dimen.DEF_MARG),
+            radius: AppCard.BIG_RADIUS,
+            child: Text(
+              song.tags[index],
+              style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnabled(context), fontWeight: weight.halfBold),
+            ),
+            onTap: parent.onTagTap==null?null:() => parent.onTagTap(song.tags[index]),
+          ),
         )
     );
 
