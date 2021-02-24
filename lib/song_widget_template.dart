@@ -309,7 +309,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
       radius: AppCard.BIG_RADIUS,
       child: AutoSizeText(
         song.title,
-        style: AppTextStyle(fontSize: 24.0, color: textEnabled(context), fontWeight: weight.halfBold, shadow: true),
+        style: AppTextStyle(fontSize: 24.0, color: textEnab_(context), fontWeight: weight.halfBold, shadow: true),
         maxLines: 1,
         textAlign: TextAlign.center,
       ),
@@ -344,7 +344,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                       style: AppTextStyle(
                         fontWeight: weight.halfBold,
                         fontSize: Dimen.TEXT_SIZE_SMALL,
-                        color: textEnabled(context),
+                        color: textEnab_(context),
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -382,7 +382,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                   style: AppTextStyle(
                     fontWeight: weight.halfBold,
                     fontSize: Dimen.TEXT_SIZE_SMALL,
-                    color: textEnabled(context),
+                    color: textEnab_(context),
                   ),
                   textAlign: TextAlign.left,
                 ),
@@ -420,7 +420,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
                       style: AppTextStyle(
                         fontWeight: weight.halfBold,
                         fontSize: Dimen.TEXT_SIZE_SMALL,
-                        color: textEnabled(context),
+                        color: textEnab_(context),
                       ),
                       textAlign: TextAlign.left,
                     ),
@@ -443,7 +443,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
             radius: AppCard.BIG_RADIUS,
             child: Text(
               song.tags[index],
-              style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnabled(context), fontWeight: weight.halfBold),
+              style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnab_(context), fontWeight: weight.halfBold),
             ),
             onTap: parent.onTagTap==null?null:() => parent.onTagTap(song.tags[index]),
           ),
@@ -511,7 +511,7 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
     return Row(
       children: <Widget>[
         IconButton(
-          icon: Icon(MdiIcons.dotsHorizontal, color: iconEnabledColor(context)),
+          icon: Icon(MdiIcons.dotsHorizontal, color: iconEnab_(context)),
           onPressed: (){
             controller.animateToPage(
               (controller.page-1).abs().toInt(),
@@ -568,7 +568,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
             AppButton(
                 icon: Icon(
                     MdiIcons.playOutline,
-                    color: iconEnabledColor(context)
+                    color: iconEnab_(context)
                 ),
                 onLongPress: parent.onYTLinkLongPress,
                 onTap: parent.onYTLinkTap==null?null:(){
@@ -578,7 +578,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 }
             ),
 
-          IconButton(icon: Icon(MdiIcons.minusCircleOutline, color: iconEnabledColor(context)),
+          IconButton(icon: Icon(MdiIcons.minusCircleOutline, color: iconEnab_(context)),
               onPressed: parent.onMinusTap==null?null:(){
 
                 TextSizeProvider prov = Provider.of<TextSizeProvider>(context, listen: false);
@@ -592,7 +592,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 parent.onMinusTap(context, changedSize);
 
               }),
-          IconButton(icon: Icon(MdiIcons.plusCircleOutline, color: iconEnabledColor(context)),
+          IconButton(icon: Icon(MdiIcons.plusCircleOutline, color: iconEnab_(context)),
               onPressed: parent.onPlusTap==null?null:(){
 
                 TextSizeProvider prov = Provider.of<TextSizeProvider>(context, listen: false);
@@ -616,7 +616,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
           ),
 
           IconButton(
-            icon: Icon(MdiIcons.bookmarkCheckOutline, color: iconEnabledColor(context)),
+            icon: Icon(MdiIcons.bookmarkCheckOutline, color: iconEnab_(context)),
             onPressed: parent.onAlbumsTap,
           ),
 
@@ -654,20 +654,20 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
         children: [
           if(song.isOwn)
             AppButton(
-                icon: Icon(MdiIcons.trashCanOutline, color: iconEnabledColor(context)),
+                icon: Icon(MdiIcons.trashCanOutline, color: iconEnab_(context)),
                 onTap: parent.onDeleteTap,
                 onLongPress: parent.onDeleteLongPress),
           if(!song.isOwn)
-            IconButton(icon: Icon(MdiIcons.alertOutline, color: iconEnabledColor(context)),
+            IconButton(icon: Icon(MdiIcons.alertOutline, color: iconEnab_(context)),
                 onPressed: parent.onReportTap),
           IconButton(
-              icon: Icon(MdiIcons.pencilOutline, color: iconEnabledColor(context)),
+              icon: Icon(MdiIcons.pencilOutline, color: iconEnab_(context)),
               onPressed: parent.onEditTap==null?null:
                   () => parent.onEditTap(Provider.of<TextSizeProvider>(context, listen: false))
           ),
 
           IconButton(
-              icon: Icon(SongWidgetTemplate.ICON_SHARE_SONG, color: iconEnabledColor(context)),
+              icon: Icon(SongWidgetTemplate.ICON_SHARE_SONG, color: iconEnab_(context)),
               onPressed: parent.onShareTap
           ),
 
@@ -675,11 +675,11 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
             IconButton(
                 icon: Icon(
                     SongWidgetTemplate.ICON_SEND_SONG,
-                    color: iconEnabledColor(context)),
+                    color: iconEnab_(context)),
                 onPressed: parent.onSendSongTap
             ),
 
-          IconButton(icon: Icon(MdiIcons.contentCopy, color: iconEnabledColor(context)),
+          IconButton(icon: Icon(MdiIcons.contentCopy, color: iconEnab_(context)),
               onPressed: parent.onCopyTap
           ),
 
@@ -733,7 +733,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                                 style: TextStyle(
                                   fontFamily: 'Roboto',
                                   fontSize: prov.value, //initial font size
-                                  color: textEnabled(context),
+                                  color: textEnab_(context),
                                   height: lineSpacing,
                                 ),
                               )
@@ -746,7 +746,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                                 fontSize: prov.value<Dimen.TEXT_SIZE_TINY?
                                 prov.value:
                                 Dimen.TEXT_SIZE_TINY,//initial font size
-                                color: hintDisabled(context),
+                                color: hintEnabled(context),
                                 height: prov.value<Dimen.TEXT_SIZE_TINY?
                                 lineSpacing:
                                 lineSpacing*(prov.value/ Dimen.TEXT_SIZE_TINY)
@@ -794,7 +794,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                             style: TextStyle(
                               fontFamily: 'Roboto',
                               fontSize: prov.value, //initial font size
-                              color: textEnabled(context),
+                              color: textEnab_(context),
                               height: lineSpacing,
                             ),
                           ),
@@ -874,7 +874,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                     value: prov.speed,
                     divisions: 5,
                     activeColor: accentColor??accent_(context),
-                    inactiveColor: hintDisabled(context),
+                    inactiveColor: hintEnabled(context),
                     onChanged: (value){
                       prov.speed = value;
                       SongWidgetTemplate._startAutoscroll(context, scrollController(), restart: true);
@@ -916,7 +916,7 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
-      color: background(context),
+      color: background_(context),
       child: child,
       elevation: overlapsContent?AppCard.bigElevation:0,
     );

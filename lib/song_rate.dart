@@ -151,7 +151,7 @@ class RateButton extends StatelessWidget{
             title,
             style: AppTextStyle(
                 fontSize: Dimen.TEXT_SIZE_SMALL,
-                color: selected?textEnabled(context):hintEnabled(context),
+                color: selected?textEnab_(context):hintEnabled(context),
                 fontWeight: selected?weight.bold:weight.normal,
                 shadow: selected),
             textAlign: TextAlign.center
@@ -179,13 +179,13 @@ class RateIcon{
 
   static Icon build(BuildContext context, int rate, {bool enabled:true, double size: Dimen.ICON_SIZE}){
     switch(rate){
-      case SongRate.RATE_NULL: return Icon(SongRate.IC_DATA_NULL, color: iconEnabledColor(context));
+      case SongRate.RATE_NULL: return Icon(SongRate.IC_DATA_NULL, color: iconEnab_(context));
       case SongRate.RATE_DISLIKE: return SongRate.iconDislike(enabled: enabled, size: size);
       case SongRate.RATE_LIKE_1: return SongRate.iconLike1(enabled: enabled, size: size);
       case SongRate.RATE_LIKE_2: return SongRate.iconLike2(enabled: enabled, size: size);
       case SongRate.RATE_LIKE_3: return SongRate.iconLike3(enabled: enabled, size: size);
       case SongRate.RATE_BOOKMARK: return SongRate.iconBookmark(enabled: enabled, size: size);
-      default: return Icon(SongRate.IC_DATA_NULL, color: iconEnabledColor(context));
+      default: return Icon(SongRate.IC_DATA_NULL, color: iconEnab_(context));
     }
   }
 
