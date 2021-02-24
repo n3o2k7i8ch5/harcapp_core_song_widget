@@ -99,6 +99,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   final Widget Function(BuildContext, ScrollController) footer;
 
   final ScrollController scrollController;
+  final Color accentColor;
 
   const SongWidgetTemplate(
       this.song,
@@ -150,6 +151,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
         this.footer,
 
         this.scrollController,
+        this.accentColor,
         Key key
       }):super(key: key);
 
@@ -184,7 +186,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                         child: Text(
                           'Piosenka nieoficjalna',
                           style: AppTextStyle(
-                              color: accentColor(context),
+                              color: accentColor??accent_(context),
                               fontWeight: weight.halfBold
                           ),
                           textAlign: TextAlign.center,
@@ -847,9 +849,10 @@ class ChordsBarCard<T extends SongCore> extends StatelessWidget{
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
+  final Color accentColor;
   final ScrollController Function() scrollController;
 
-  const AutoScrollSpeedWidget({this.scrollController});
+  const AutoScrollSpeedWidget({this.accentColor, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -870,7 +873,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                   child: Slider(
                     value: prov.speed,
                     divisions: 5,
-                    activeColor: accentColor(context),
+                    activeColor: accentColor??accent_(context),
                     inactiveColor: hintDisabled(context),
                     onChanged: (value){
                       prov.speed = value;
@@ -879,8 +882,8 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                     label: 'Szybkość przewijania',
                   ),
                   data: SliderTheme.of(context).copyWith(
-                      valueIndicatorTextStyle: AppTextStyle(color: accentIcon(context), fontWeight: weight.halfBold),
-                      valueIndicatorColor: accentColor(context)
+                      valueIndicatorTextStyle: AppTextStyle(color: accentColor??accent_(context), fontWeight: weight.halfBold),
+                      valueIndicatorColor: accentColor??accent_(context)
                   ),
                 ),
               ),
