@@ -256,7 +256,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
             ),
             onNotification: (ScrollNotification scrollInfo) {
               if(onScroll != null) onScroll(scrollInfo);
-              return false;
+              return true;
             },
           ),
 
