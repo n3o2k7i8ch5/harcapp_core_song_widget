@@ -167,7 +167,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => TextSizeProvider(_screenWidth, song)),
-        ChangeNotifierProvider(create: (context) => ChordShiftProvider())
+        ChangeNotifierProvider(create: (context) => ChordShiftProvider()),
       ],
       builder: (context, child) => Stack(
         children: [
@@ -508,21 +508,22 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
 
     PageController controller = PageController();
 
-    return Row(
-      children: <Widget>[
-        IconButton(
-          icon: Icon(MdiIcons.dotsHorizontal, color: iconEnab_(context)),
-          onPressed: (){
-            controller.animateToPage(
-              (controller.page-1).abs().toInt(),
-              duration: Duration(milliseconds: 150),
-              curve: Curves.easeInOutSine,
-            );
-          },
-        ),
+    return SizedBox(
+      height: Dimen.ICON_FOOTPRINT,
+      child: Row(
+        children: <Widget>[
+          IconButton(
+            icon: Icon(MdiIcons.dotsHorizontal, color: iconEnab_(context)),
+            onPressed: (){
+              controller.animateToPage(
+                (controller.page-1).abs().toInt(),
+                duration: Duration(milliseconds: 150),
+                curve: Curves.easeInOutSine,
+              );
+            },
+          ),
 
-        Expanded(
-          child: Container(
+          Expanded(
             child: PageView(
               scrollDirection: Axis.vertical,
               physics: NeverScrollableScrollPhysics(),
@@ -532,11 +533,10 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
               ],
               controller: controller,
             ),
-            height: Dimen.ICON_SIZE + 2*Dimen.ICON_MARG,
-          ),
-        )
+          )
 
-      ],
+        ],
+      ),
     );
   }
 
