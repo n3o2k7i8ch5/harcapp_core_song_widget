@@ -574,6 +574,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
       physics: BouncingScrollPhysics(),
       reverse: true,
       child: Row(
+        mainAxisSize: MainAxisSize.max,
         children: [
 
           if(song.youtubeLink != null && song.youtubeLink.length!=0)
@@ -663,6 +664,7 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
       reverse: true,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.max,
         children: [
           if(song.isOwn)
             AppButton(
