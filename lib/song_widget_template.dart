@@ -336,6 +336,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           if(song.author.length>0)
             Expanded(
               child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   child: SimpleButton(
                     padding: EdgeInsets.all(Dimen.DEF_MARG),
@@ -374,6 +375,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
         if(song.composer.length>0)
           Expanded(
             child: SingleChildScrollView(
+              physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               child: SimpleButton(
                 padding: EdgeInsets.all(Dimen.DEF_MARG),
@@ -412,6 +414,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           if(song.performer.length>0)
             Expanded(
               child: SingleChildScrollView(
+                  physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
                   child: SimpleButton(
                     padding: EdgeInsets.all(Dimen.DEF_MARG),
