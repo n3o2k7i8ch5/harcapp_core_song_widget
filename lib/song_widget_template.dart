@@ -937,9 +937,9 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
     print('shrinkOffset: $shrinkOffset, overlapsContent: $overlapsContent');
 
     return Material(
-      color: overlapsContent?background_(context):Colors.transparent,
+      color: shrinkOffset==0?Colors.transparent:background_(context),
       child: child,
-      elevation: overlapsContent?AppCard.bigElevation:0,
+      elevation: shrinkOffset==0?0:AppCard.bigElevation,
     );
   }
 
