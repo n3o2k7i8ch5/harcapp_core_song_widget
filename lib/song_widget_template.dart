@@ -202,7 +202,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 ),
 
                 Consumer3<ShowChordsProvider, ChordsDrawShowProvider, ChordsDrawTypeProvider>(
-                  builder: (context, prov1, prov2, prov3, child) => showChords?SliverPersistentHeader(
+                  builder: (context, prov1, chordsDrawShowProv, prov3, child) => showChords&&chordsDrawShowProv.chordsDrawShow?SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
                         child: ChordsBarWidget(this),
                         height: ChordWidget.height(settings.chordsDrawType?6:4) + 2.0
@@ -862,8 +862,8 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
     );
 
   }
-
 }
+
 
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
