@@ -204,7 +204,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                 Consumer2<ChordsDrawTypeProvider, ShowChordsProvider>(
                   builder: (context, prov1, prov2, child) => showChords?SliverPersistentHeader(
                     delegate: _SliverPersistentHeaderDelegate(
-                        child: ChordsBarCard(this),
+                        child: ChordsBarWidget(this),
                         height: ChordWidget.height(settings.chordsDrawType?6:4) + 2.0
                     ),
                     floating: true,
@@ -835,11 +835,11 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
 }
 
-class ChordsBarCard<T extends SongCore> extends StatelessWidget{
+class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
 
   final SongWidgetTemplate<T> parent;
 
-  const ChordsBarCard(this.parent);
+  const ChordsBarWidget(this.parent);
 
   T get song => parent.song;
   SongBookSettTempl get settings => parent.settings;
@@ -931,7 +931,7 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Material(
-      color: background_(context),
+      color: overlapsContent?background_(context):Colors.transparent,
       child: child,
       elevation: overlapsContent?AppCard.bigElevation:0,
     );
