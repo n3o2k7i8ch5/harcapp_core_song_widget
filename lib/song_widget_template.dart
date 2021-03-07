@@ -538,6 +538,7 @@ class ButtonWidgetState<T extends SongCore> extends State<ButtonWidget>{
             child: AnimatedChildSlider(
               direction: Axis.vertical,
               duration: Duration(milliseconds: 150),
+              alignment: Alignment.centerRight,
               index: showTop?0:1,
               children: <Widget>[
                 TopWidget<T>(fragmentState, contentCardsKey),
