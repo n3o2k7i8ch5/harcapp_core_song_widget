@@ -934,6 +934,8 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+    print('shrinkOffset: $shrinkOffset, overlapsContent: $overlapsContent');
+
     return Material(
       color: overlapsContent?background_(context):Colors.transparent,
       child: child,
