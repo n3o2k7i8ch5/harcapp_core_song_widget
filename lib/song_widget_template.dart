@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:harcapp_core/comm_classes/app_text_style.dart';
 import 'package:harcapp_core/comm_classes/color_pack.dart';
 import 'package:harcapp_core/comm_classes/primitive_wrapper.dart';
+import 'package:harcapp_core/comm_widgets/animated_child_slider.dart';
 import 'package:harcapp_core/comm_widgets/app_card.dart';
 import 'package:harcapp_core/comm_widgets/app_button.dart';
 import 'package:harcapp_core/comm_widgets/chord_draw_bar.dart';
@@ -497,16 +498,32 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
 
 }
 
-class ButtonWidget<T extends SongCore> extends StatelessWidget{
+class ButtonWidget<T extends SongCore> extends StatefulWidget{
 
   final SongWidgetTemplate<T> fragmentState;
   final GlobalKey contentCardsKey;
   const ButtonWidget(this.fragmentState, this.contentCardsKey);
 
   @override
-  Widget build(BuildContext context) {
+  State<StatefulWidget> createState() => ButtonWidgetState<T>();
 
-    PageController controller = PageController();
+}
+
+class ButtonWidgetState<T extends SongCore> extends State<ButtonWidget>{
+
+  SongWidgetTemplate get fragmentState => widget.fragmentState;
+  GlobalKey get contentCardsKey => widget.contentCardsKey;
+
+  bool showTop;
+
+  @override
+  void initState() {
+    showTop = true;
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
 
     return SizedBox(
       height: Dimen.ICON_FOOTPRINT,
@@ -514,24 +531,18 @@ class ButtonWidget<T extends SongCore> extends StatelessWidget{
         children: <Widget>[
           IconButton(
             icon: Icon(MdiIcons.dotsHorizontal, color: iconEnab_(context)),
-            onPressed: (){
-              controller.animateToPage(
-                (controller.page-1).abs().toInt(),
-                duration: Duration(milliseconds: 150),
-                curve: Curves.easeInOutSine,
-              );
-            },
+            onPressed: () => setState(() => showTop = !showTop),
           ),
 
           Expanded(
-            child: PageView(
-              scrollDirection: Axis.vertical,
-              physics: NeverScrollableScrollPhysics(),
+            child: AnimatedChildSlider(
+              direction: Axis.vertical,
+              duration: Duration(milliseconds: 150),
+              index: showTop?0:1,
               children: <Widget>[
                 TopWidget<T>(fragmentState, contentCardsKey),
                 BottomWidget<T>(fragmentState)
               ],
-              controller: controller,
             ),
           )
 
