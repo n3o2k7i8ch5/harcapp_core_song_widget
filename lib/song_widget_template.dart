@@ -539,6 +539,7 @@ class ButtonWidgetState<T extends SongCore> extends State<ButtonWidget>{
               direction: Axis.vertical,
               duration: Duration(milliseconds: 150),
               alignment: Alignment.centerRight,
+              isCenter: false,
               index: showTop?0:1,
               children: <Widget>[
                 TopWidget<T>(fragmentState, contentCardsKey),
