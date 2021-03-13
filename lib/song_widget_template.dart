@@ -851,14 +851,29 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
   Widget build(BuildContext context) {
 
     return Consumer<ChordShiftProvider>(
-      builder: (context, prov, child) => ChordDrawBar(
-        song.chords,
-        typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
-        onTypeChanged: parent.onChordsTypeChanged,
-        elevation: 0,
-        chordBackground: Colors.transparent,
-        background: Colors.transparent,
-      ),
+      builder: (context, prov, child) => Column(
+        children: [
+
+          ChordDrawBar(
+            song.chords,
+            typeGuitar: PrimitiveWrapper(settings.chordsDrawType),
+            onTypeChanged: parent.onChordsTypeChanged,
+            elevation: 0,
+            chordBackground: Colors.transparent,
+            background: Colors.transparent,
+          ),
+
+          ChordDrawBar2(
+            song.chords,
+            onTap: parent.onChordsTypeChanged,
+            elevation: 0,
+            color: Colors.transparent,
+            //chordBackground: Colors.transparent,
+            //background: Colors.transparent,
+          ),
+
+        ],
+      )
     );
 
   }
