@@ -867,7 +867,7 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
             song.chords,
             onTap: parent.onChordsTypeChanged,
             elevation: 0,
-            color: iconEnab_(context),
+            chordColor: iconEnab_(context),
             //chordBackground: Colors.transparent,
             //background: Colors.transparent,
           ),
