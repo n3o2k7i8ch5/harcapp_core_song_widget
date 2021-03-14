@@ -220,7 +220,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                     ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
                     Padding(
-                      padding: EdgeInsets.all(2*Dimen.DEF_MARG),
+                      padding: EdgeInsets.only(top: 2*Dimen.DEF_MARG, right: Dimen.DEF_MARG),
                       child: Row(
                         children: [
                           Icon(MdiIcons.draw, color: hintEnabled(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
