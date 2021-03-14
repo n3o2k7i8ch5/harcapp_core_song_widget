@@ -221,8 +221,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
                     Align(
                       child: Padding(
-                        padding: EdgeInsets.all(Dimen.DEF_MARG),
-                        child: Text('3 lutego 2014 r.', style: AppTextStyle(color: hintEnabled(context))),
+                        padding: EdgeInsets.all(2*Dimen.DEF_MARG),
+                        child: Text('3 lutego 2014 r.', style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
                       ),
                       alignment: Alignment.centerRight,
                     ),
