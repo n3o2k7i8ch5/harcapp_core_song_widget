@@ -219,12 +219,15 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
                     ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
-                    Align(
-                      child: Padding(
-                        padding: EdgeInsets.all(2*Dimen.DEF_MARG),
-                        child: Text('3 lutego 2014 r.', style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
+                    Padding(
+                      padding: EdgeInsets.all(2*Dimen.DEF_MARG),
+                      child: Row(
+                        children: [
+                          Icon(MdiIcons.draw, color: hintEnabled(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
+                          SizedBox(width: 6.0),
+                          Text('3 lutego 2014 r.', style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
+                        ],
                       ),
-                      alignment: Alignment.centerRight,
                     ),
 
                     if(footer!=null) footer(context, scrollController),
