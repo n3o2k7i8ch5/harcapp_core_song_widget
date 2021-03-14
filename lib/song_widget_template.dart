@@ -60,6 +60,8 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   final double topScreenPadding;
 
+  final bool initDrawChordTypeGuitar;
+
   final void Function(ScrollNotification scrollInfo) onScroll;
 
   final void Function() onTitleTap;
@@ -108,9 +110,11 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
       {
         this.screenWidth,
         this.pageNotifier,
-        this.index: -1,
+        this.index = -1,
 
         this.topScreenPadding: 0,
+
+        this.initDrawChordTypeGuitar = true,
 
         this.onScroll,
 
@@ -874,6 +878,7 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
             onTap: parent.onChordsTypeChanged,
             elevation: 0,
             chordColor: iconEnab_(context),
+            initTypeGuitar: parent.initDrawChordTypeGuitar,
             //chordBackground: Colors.transparent,
             //background: Colors.transparent,
           ),
