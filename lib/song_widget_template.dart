@@ -7,7 +7,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:harcapp_core/comm_classes/app_text_style.dart';
 import 'package:harcapp_core/comm_classes/color_pack.dart';
-import 'package:harcapp_core/comm_classes/primitive_wrapper.dart';
+import 'package:harcapp_core/comm_classes/common.dart';
 import 'package:harcapp_core/comm_widgets/animated_child_slider.dart';
 import 'package:harcapp_core/comm_widgets/app_card.dart';
 import 'package:harcapp_core/comm_widgets/app_button.dart';
@@ -219,17 +219,18 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
                     ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
-                    Padding(
-                      padding: EdgeInsets.only(top: 2*Dimen.DEF_MARG, bottom: 2*Dimen.DEF_MARG, right: Dimen.DEF_MARG),
-                      child: Row(
-                        children: [
-                          Expanded(child: Container()),
-                          Icon(MdiIcons.draw, color: hintEnabled(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
-                          SizedBox(width: 6.0),
-                          Text('3 lutego 2014 r.', style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
-                        ],
+                    if(song.releaseDate != null)
+                      Padding(
+                        padding: EdgeInsets.only(top: 2*Dimen.DEF_MARG, bottom: 2*Dimen.DEF_MARG, right: Dimen.DEF_MARG),
+                        child: Row(
+                          children: [
+                            Expanded(child: Container()),
+                            Icon(MdiIcons.draw, color: hintEnabled(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
+                            SizedBox(width: 6.0),
+                            Text(dateToString(song.releaseDate), style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
+                          ],
+                        ),
                       ),
-                    ),
 
                     if(footer!=null) footer(context, scrollController),
 
