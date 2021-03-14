@@ -220,7 +220,10 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                     ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
                     Align(
-                      child: Text('3 lutego 2014 r.', style: AppTextStyle()),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: Dimen.DEF_MARG, right: Dimen.DEF_MARG),
+                        child: Text('3 lutego 2014 r.', style: AppTextStyle()),
+                      ),
                       alignment: Alignment.centerRight,
                     ),
 
