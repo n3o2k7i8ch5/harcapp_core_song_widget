@@ -941,11 +941,14 @@ class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
 
   @override
   Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
+
+    bool overlaps = shrinkOffset!=0 || overlapsContent;
+
     return Material(
       animationDuration: Duration.zero,
-      color: shrinkOffset==0?Colors.transparent:background_(context),
+      color: overlaps?background_(context):Colors.transparent,
       child: child,
-      elevation: shrinkOffset==0?0:AppCard.bigElevation,
+      elevation: overlaps?AppCard.bigElevation:0,
     );
   }
 
