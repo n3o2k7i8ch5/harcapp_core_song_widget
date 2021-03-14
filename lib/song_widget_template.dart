@@ -227,7 +227,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                             Expanded(child: Container()),
                             Icon(MdiIcons.draw, color: hintEnabled(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
                             SizedBox(width: 6.0),
-                            Text(dateToString(song.releaseDate), style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
+                            Text(
+                                dateToString(song.releaseDate, showMonth: song.showRelDateMonth, showDay: song.showRelDateMonth && song.showRelDateDay),
+                                style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
                           ],
                         ),
                       ),
