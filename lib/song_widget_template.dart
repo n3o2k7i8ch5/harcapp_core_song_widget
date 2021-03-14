@@ -219,6 +219,11 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
                     ContentWidget<T>(this, scrollController, globalKey: contentCardsKey),
 
+                    Align(
+                      child: Text('3 lutego 2014 r.', style: AppTextStyle()),
+                      alignment: Alignment.centerRight,
+                    ),
+
                     if(footer!=null) footer(context, scrollController),
 
                     if(song.addPers.length != 0)
