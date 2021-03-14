@@ -875,9 +875,10 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
   final Color accentColor;
+  final Color accentIconColor;
   final ScrollController Function() scrollController;
 
-  const AutoScrollSpeedWidget({this.accentColor, this.scrollController});
+  const AutoScrollSpeedWidget({this.accentColor, this.accentIconColor, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -907,7 +908,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                     label: 'Szybkość przewijania',
                   ),
                   data: SliderTheme.of(context).copyWith(
-                      valueIndicatorTextStyle: AppTextStyle(color: accentColor??accent_(context), fontWeight: weight.halfBold),
+                      valueIndicatorTextStyle: AppTextStyle(color: accentIconColor??accentIcon_(context), fontWeight: weight.halfBold),
                       valueIndicatorColor: accentColor??accent_(context)
                   ),
                 ),
