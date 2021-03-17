@@ -329,7 +329,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
       radius: AppCard.BIG_RADIUS,
       child: AutoSizeText(
         song.title,
-        style: AppTextStyle(fontSize: 24.0, color: textEnab_(context), fontWeight: weight.halfBold, shadow: true),
+        style: AppTextStyle(fontSize: 24.0, color: textEnab_(context), fontWeight: weight.bold),
         maxLines: 1,
         textAlign: TextAlign.center,
       ),
