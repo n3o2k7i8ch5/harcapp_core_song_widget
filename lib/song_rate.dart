@@ -13,7 +13,7 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 class RateCard<T extends SongCore> extends StatefulWidget{
 
-  static const double HEIGHT = 2*AppCard.DEF_MARGIN_VAL + RateButton.HEIGHT;
+  static const double HEIGHT = RateButton.HEIGHT;
 
   final T song;
   final Function(int rate, bool selected) onTap;

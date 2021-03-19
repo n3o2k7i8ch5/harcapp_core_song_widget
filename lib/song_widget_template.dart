@@ -475,6 +475,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
 
     Widget appCard = AppCard(
         padding: EdgeInsets.zero,
+        margin: EdgeInsets.all(Dimen.DEF_MARG),
         elevation: AppCard.bigElevation,
         radius: AppCard.BIG_RADIUS,
         child:
