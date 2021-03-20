@@ -36,6 +36,7 @@ class RateCardState<T extends SongCore> extends State<RateCard>{
         alignment: Alignment.topCenter,
         child: AppCard(
             padding: EdgeInsets.zero,
+            margin: EdgeInsets.all(Dimen.DEF_MARG),
             radius: AppCard.BIG_RADIUS,
             elevation: AppCard.bigElevation,
             child: Column(
