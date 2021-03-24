@@ -876,7 +876,10 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
 
           ChordDrawBar(
             song.chords,
-            onTap: parent.onChordsTypeChanged,
+            onTap: (chord, typeGuitar){
+              if(parent.onChordsTypeChanged != null)
+                parent.onChordsTypeChanged(typeGuitar);
+            },
             elevation: 0,
             chordColor: iconEnab_(context),
             initTypeGuitar: parent.initDrawChordTypeGuitar,
