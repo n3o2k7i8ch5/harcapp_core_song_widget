@@ -152,7 +152,7 @@ class RateButton extends StatelessWidget{
             title,
             style: AppTextStyle(
                 fontSize: Dimen.TEXT_SIZE_SMALL,
-                color: selected?textEnab_(context):hintEnabled(context),
+                color: selected?textEnab_(context):hintEnab_(context),
                 fontWeight: selected?weight.bold:weight.normal,
                 shadow: selected),
             textAlign: TextAlign.center

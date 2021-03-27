@@ -229,11 +229,11 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                         child: Row(
                           children: [
                             Expanded(child: Container()),
-                            Icon(MdiIcons.draw, color: hintEnabled(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
+                            Icon(MdiIcons.draw, color: hintEnab_(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
                             SizedBox(width: 6.0),
                             Text(
                                 dateToString(song.releaseDate, showMonth: song.showRelDateMonth, showDay: song.showRelDateMonth && song.showRelDateDay),
-                                style: AppTextStyle(color: hintEnabled(context), fontWeight: weight.halfBold)),
+                                style: AppTextStyle(color: hintEnab_(context), fontWeight: weight.halfBold)),
                           ],
                         ),
                       ),
@@ -246,13 +246,13 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                         child: Row(
                           children: [
 
-                            Icon(MdiIcons.accountEdit, size: Dimen.TEXT_SIZE_SMALL+2, color: hintEnabled(context)),
+                            Icon(MdiIcons.accountEdit, size: Dimen.TEXT_SIZE_SMALL+2, color: hintEnab_(context)),
 
                             SizedBox(width: Dimen.DEF_MARG),
 
                             Text(
                                 song.addPers,
-                                style: AppTextStyle(color: hintEnabled(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)
+                                style: AppTextStyle(color: hintEnab_(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)
                             ),
 
                           ],
@@ -348,7 +348,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
             'Autor sł.: ',
             style: AppTextStyle(
               fontSize: Dimen.TEXT_SIZE_SMALL,
-              color: hintEnabled(context),
+              color: hintEnab_(context),
             ),
             textAlign: TextAlign.left,
           ),
@@ -386,7 +386,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           'Kompoz.: ',
           style: AppTextStyle(
             fontSize: Dimen.TEXT_SIZE_SMALL,
-            color: hintEnabled(context),
+            color: hintEnab_(context),
           ),
           textAlign: TextAlign.left,
         ),
@@ -425,7 +425,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
             'Wykona.: ',
             style: AppTextStyle(
               fontSize: Dimen.TEXT_SIZE_SMALL,
-              color: hintEnabled(context),
+              color: hintEnab_(context),
             ),
             textAlign: TextAlign.left,
           ),
@@ -784,7 +784,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                                 fontSize: prov.value<Dimen.TEXT_SIZE_TINY?
                                 prov.value:
                                 Dimen.TEXT_SIZE_TINY,//initial font size
-                                color: hintEnabled(context),
+                                color: hintEnab_(context),
                                 height: prov.value<Dimen.TEXT_SIZE_TINY?
                                 lineSpacing:
                                 lineSpacing*(prov.value/ Dimen.TEXT_SIZE_TINY)
@@ -877,6 +877,7 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
           ChordDrawBar(
             song.chords,
             onTap: (chord, typeGuitar){
+
               if(parent.onChordsTypeChanged != null)
                 parent.onChordsTypeChanged(typeGuitar);
             },
@@ -924,7 +925,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                     value: prov.speed,
                     divisions: 5,
                     activeColor: accentColor??accent_(context),
-                    inactiveColor: hintEnabled(context),
+                    inactiveColor: hintEnab_(context),
                     onChanged: (value){
                       prov.speed = value;
                       SongWidgetTemplate._startAutoscroll(context, scrollController(), restart: true);
