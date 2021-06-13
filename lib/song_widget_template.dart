@@ -65,9 +65,9 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
   final void Function(ScrollNotification scrollInfo) onScroll;
 
   final void Function() onTitleTap;
-  final void Function() onAuthorTap;
-  final void Function() onPerformerTap;
-  final void Function() onComposerTap;
+  final void Function(String) onAuthorTap;
+  final void Function(String) onPerformerTap;
+  final void Function(String) onComposerTap;
   final void Function(String tag) onTagTap;
 
   final void Function(double position) onYTLinkTap;
@@ -240,7 +240,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
                     if(footer!=null) footer(context, scrollController),
 
-                    if(song.addPers.length != 0)
+                    if(song.addPers.isNotEmpty)
                       Padding(
                         padding: EdgeInsets.all(Dimen.DEF_MARG),
                         child: Row(
@@ -251,7 +251,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                             SizedBox(width: Dimen.DEF_MARG),
 
                             Text(
-                                song.addPers,
+                                song.addPersString,
                                 style: AppTextStyle(color: hintEnab_(context), fontSize: Dimen.TEXT_SIZE_TINY, fontWeight: weight.halfBold)
                             ),
 
@@ -352,24 +352,16 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
             ),
             textAlign: TextAlign.left,
           ),
-          if(song.author.length>0)
+          if(song.authors.isNotEmpty)
             Expanded(
               child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  child: SimpleButton(
-                    padding: EdgeInsets.all(Dimen.DEF_MARG),
-                    radius: AppCard.BIG_RADIUS,
-                    child: Text(
-                      song.author,
-                      style: AppTextStyle(
-                        fontWeight: weight.halfBold,
-                        fontSize: Dimen.TEXT_SIZE_SMALL,
-                        color: textEnab_(context),
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    onTap: parent.onAuthorTap,
+                  child: Row(
+                    children: song.authors.map((author) => ContribPersonWidget(
+                      author,
+                      onTap: () => parent.onAuthorTap?.call(author),
+                    )).toList(),
                   )
               ),
             )
@@ -391,24 +383,16 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
           textAlign: TextAlign.left,
         ),
 
-        if(song.composer.length>0)
+        if(song.composers.isNotEmpty)
           Expanded(
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              child: SimpleButton(
-                padding: EdgeInsets.all(Dimen.DEF_MARG),
-                radius: AppCard.BIG_RADIUS,
-                child: Text(
-                  song.composer,
-                  style: AppTextStyle(
-                    fontWeight: weight.halfBold,
-                    fontSize: Dimen.TEXT_SIZE_SMALL,
-                    color: textEnab_(context),
-                  ),
-                  textAlign: TextAlign.left,
-                ),
-                onTap: parent.onComposerTap,
+              child: Row(
+                children: song.composers.map((composer) => ContribPersonWidget(
+                  composer,
+                  onTap: () => parent.onComposerTap?.call(composer),
+                )).toList(),
               )
             ),
           )
@@ -430,24 +414,16 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
             textAlign: TextAlign.left,
           ),
 
-          if(song.performer.length>0)
+          if(song.performers.isNotEmpty)
             Expanded(
               child: SingleChildScrollView(
                   physics: BouncingScrollPhysics(),
                   scrollDirection: Axis.horizontal,
-                  child: SimpleButton(
-                    padding: EdgeInsets.all(Dimen.DEF_MARG),
-                    radius: AppCard.BIG_RADIUS,
-                    child: Text(
-                      song.performer,
-                      style: AppTextStyle(
-                        fontWeight: weight.halfBold,
-                        fontSize: Dimen.TEXT_SIZE_SMALL,
-                        color: textEnab_(context),
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    onTap: parent.onPerformerTap,
+                  child: Row(
+                    children: song.performers.map((performer) => ContribPersonWidget(
+                          performer,
+                          onTap: () => parent.onPerformerTap?.call(performer),
+                        )).toList(),
                   )
               ),
             )
@@ -517,6 +493,33 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
             child: appCard
         ),
       );
+  }
+
+}
+
+class ContribPersonWidget extends StatelessWidget{
+
+  final String text;
+  final void Function() onTap;
+
+  const ContribPersonWidget(this.text, {this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleButton(
+      padding: EdgeInsets.all(Dimen.DEF_MARG),
+      radius: AppCard.BIG_RADIUS,
+      child: Text(
+        text,
+        style: AppTextStyle(
+          fontWeight: weight.halfBold,
+          fontSize: Dimen.TEXT_SIZE_SMALL,
+          color: textEnab_(context),
+        ),
+        textAlign: TextAlign.left,
+      ),
+      onTap: onTap,
+    );
   }
 
 }
