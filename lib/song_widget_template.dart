@@ -261,17 +261,6 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                   ]),
                 ),
 
-                /*
-                Consumer<AutoscrollProvider>(
-                    builder: (context, prov, child) => SliverList(
-                      delegate: SliverChildListDelegate([
-                        SizedBox(height: prov.isScrolling?(Dimen.ICON_FOOTPRINT + Dimen.ICON_MARG):0)
-                      ]),
-                    )
-                ),
-
-                 */
-
               ],
             ),
             onNotification: (ScrollNotification scrollInfo) {
@@ -624,7 +613,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 TextSizeProvider prov = Provider.of<TextSizeProvider>(context, listen: false);
 
                 bool changedSize = true;
-                if(prov.value!-0.5 >= Dimen.TEXT_SIZE_LIMIT)
+                if(prov.value-0.5 >= Dimen.TEXT_SIZE_LIMIT)
                   prov.value -= 0.5;
                 else
                   changedSize = false;
@@ -642,11 +631,11 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                     song.text,
                     parent.showChords?song.chords:null,
                     getLineNums(song.text),
-                    prov.value! + 0.5);
+                    prov.value + 0.5);
 
                 bool changedSize = true;
                 if(scaleFactor == 1){
-                  if(prov.value! >= 24) changedSize = false;
+                  if(prov.value >= 24) changedSize = false;
                   else prov.value += 0.5;
                 }else
                   changedSize = false;
@@ -784,13 +773,13 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: prov.value!<Dimen.TEXT_SIZE_TINY?
+                                fontSize: prov.value<Dimen.TEXT_SIZE_TINY?
                                 prov.value:
                                 Dimen.TEXT_SIZE_TINY,//initial font size
                                 color: hintEnab_(context),
-                                height: prov.value!<Dimen.TEXT_SIZE_TINY?
+                                height: prov.value<Dimen.TEXT_SIZE_TINY?
                                 lineSpacing:
-                                lineSpacing*(prov.value!/ Dimen.TEXT_SIZE_TINY)
+                                lineSpacing*(prov.value/ Dimen.TEXT_SIZE_TINY)
                             ),
                           ),
                         ],
