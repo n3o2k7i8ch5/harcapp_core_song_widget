@@ -26,9 +26,9 @@ import 'get_line_nums.dart';
 class SongAutoScrollController extends StatelessWidget{
 
   final SongBookSettTempl settings;
-  final void Function(BuildContext context) onAutoscrollStart;
-  final void Function(BuildContext context) onAutoscrollEnd;
-  final Widget Function(BuildContext context) builder;
+  final void Function(BuildContext context)? onAutoscrollStart;
+  final void Function(BuildContext context)? onAutoscrollEnd;
+  final Widget Function(BuildContext context)? builder;
 
   const SongAutoScrollController(this.settings, {this.onAutoscrollStart, this.onAutoscrollEnd, this.builder});
 
@@ -37,10 +37,10 @@ class SongAutoScrollController extends StatelessWidget{
     return ChangeNotifierProvider(
       create: (context) => AutoscrollProvider(
           settings,
-          onAutoscrollStart: () => onAutoscrollStart==null?null:onAutoscrollStart(context),
-          onAutoscrollEnd: () => onAutoscrollEnd==null?null:onAutoscrollEnd(context)
+          onAutoscrollStart: () => onAutoscrollStart==null?null:onAutoscrollStart!(context),
+          onAutoscrollEnd: () => onAutoscrollEnd==null?null:onAutoscrollEnd!(context)
       ),
-      builder: (context, child) => builder(context),
+      builder: (context, child) => builder!(context),
     );
   }
 
@@ -53,56 +53,56 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   final T song;
   final SongBookSettTempl settings;
-  final double screenWidth;
+  final double? screenWidth;
 
-  final ValueNotifier pageNotifier;
+  final ValueNotifier? pageNotifier;
   final int index;
 
   final double topScreenPadding;
 
   final bool initDrawChordTypeGuitar;
 
-  final void Function(ScrollNotification scrollInfo) onScroll;
+  final void Function(ScrollNotification scrollInfo)? onScroll;
 
-  final void Function() onTitleTap;
-  final void Function(String) onAuthorTap;
-  final void Function(String) onPerformerTap;
-  final void Function(String) onComposerTap;
-  final void Function(String tag) onTagTap;
+  final void Function()? onTitleTap;
+  final void Function(String)? onAuthorTap;
+  final void Function(String)? onPerformerTap;
+  final void Function(String)? onComposerTap;
+  final void Function(String tag)? onTagTap;
 
-  final void Function(double position) onYTLinkTap;
-  final void Function() onYTLinkLongPress;
+  final void Function(double position)? onYTLinkTap;
+  final void Function()? onYTLinkLongPress;
 
-  final void Function(BuildContext context, bool changedSize) onMinusTap;
-  final void Function(BuildContext context, bool changedSize) onPlusTap;
+  final void Function(BuildContext context, bool changedSize)? onMinusTap;
+  final void Function(BuildContext context, bool changedSize)? onPlusTap;
 
-  final void Function() onAlbumsTap;
+  final void Function()? onAlbumsTap;
 
-  final void Function(double position) onRateTap;
+  final void Function(double position)? onRateTap;
 
-  final void Function() onDeleteTap;
-  final void Function() onDeleteLongPress;
+  final void Function()? onDeleteTap;
+  final void Function()? onDeleteLongPress;
 
-  final void Function() onReportTap;
+  final void Function()? onReportTap;
 
-  final void Function(TextSizeProvider) onEditTap;
+  final void Function(TextSizeProvider)? onEditTap;
 
-  final void Function() onSendSongTap;
+  final void Function()? onSendSongTap;
 
-  final void Function() onShareTap;
+  final void Function()? onShareTap;
 
-  final void Function() onCopyTap;
+  final void Function()? onCopyTap;
 
-  final void Function(bool isTypeGuitar) onChordsTypeChanged;
+  final void Function(bool? isTypeGuitar)? onChordsTypeChanged;
 
-  final void Function(TextSizeProvider provider) onChordsTap;
-  final void Function(TextSizeProvider provider) onChordsLongPress;
+  final void Function(TextSizeProvider provider)? onChordsTap;
+  final void Function(TextSizeProvider provider)? onChordsLongPress;
 
-  final Widget Function(BuildContext, ScrollController) header;
-  final Widget Function(BuildContext, ScrollController) footer;
+  final Widget Function(BuildContext, ScrollController?)? header;
+  final Widget Function(BuildContext, ScrollController?)? footer;
 
-  final ScrollController scrollController;
-  final Color accentColor;
+  final ScrollController? scrollController;
+  final Color? accentColor;
 
   const SongWidgetTemplate(
       this.song,
@@ -157,7 +157,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
         this.scrollController,
         this.accentColor,
-        Key key
+        Key? key
       }):super(key: key);
 
   bool get showChords => settings.showChords && song.hasChords;
@@ -198,7 +198,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                         ),
                       ),
 
-                    if(header!=null) header(context, scrollController),
+                    if(header!=null) header!(context, scrollController),
 
                     TitleCard<T>(this),
 
@@ -232,13 +232,13 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
                             Icon(MdiIcons.draw, color: hintEnab_(context), size: Dimen.TEXT_SIZE_NORMAL + 2),
                             SizedBox(width: 6.0),
                             Text(
-                                dateToString(song.releaseDate, showMonth: song.showRelDateMonth, showDay: song.showRelDateMonth && song.showRelDateDay),
+                                dateToString(song.releaseDate!, showMonth: song.showRelDateMonth, showDay: song.showRelDateMonth && song.showRelDateDay),
                                 style: AppTextStyle(color: hintEnab_(context), fontWeight: weight.halfBold)),
                           ],
                         ),
                       ),
 
-                    if(footer!=null) footer(context, scrollController),
+                    if(footer!=null) footer!(context, scrollController),
 
                     if(song.addPers.isNotEmpty)
                       Padding(
@@ -275,7 +275,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
               ],
             ),
             onNotification: (ScrollNotification scrollInfo) {
-              if(onScroll != null) onScroll(scrollInfo);
+              if(onScroll != null) onScroll!(scrollInfo);
               return true;
             },
           ),
@@ -286,7 +286,7 @@ class SongWidgetTemplate<T extends SongCore> extends StatelessWidget{
 
   }
 
-  static void _startAutoscroll(BuildContext context, ScrollController scrollController, {bool restart: false})async{
+  static void _startAutoscroll(BuildContext context, ScrollController? scrollController, {bool restart: false})async{
 
     if(scrollController == null){
       debugPrint('No scrollController attached.');
@@ -319,7 +319,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
   const TitleCard(this.parent);
 
   T get song => parent.song;
-  ValueNotifier get pageNotifier => parent.pageNotifier;
+  ValueNotifier? get pageNotifier => parent.pageNotifier;
   int get index => parent.index;
 
   @override
@@ -444,7 +444,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
               song.tags[index],
               style: AppTextStyle(fontSize: Dimen.TEXT_SIZE_SMALL, color: textEnab_(context), fontWeight: weight.halfBold),
             ),
-            onTap: parent.onTagTap==null?null:() => parent.onTagTap(song.tags[index]),
+            onTap: parent.onTagTap==null?null:() => parent.onTagTap!(song.tags[index]),
           ),
         )
     );
@@ -487,9 +487,9 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
 
     if(pageNotifier == null) return appCard;
     else return AnimatedBuilder(
-        animation: pageNotifier,
+        animation: pageNotifier!,
         builder: (context, _) => Transform.translate(
-            offset: Offset(-MediaQuery.of(context).size.width/3*(pageNotifier.value - index), 0),
+            offset: Offset(-MediaQuery.of(context).size.width/3*(pageNotifier!.value - index), 0),
             child: appCard
         ),
       );
@@ -500,7 +500,7 @@ class TitleCard<T extends SongCore> extends StatelessWidget{
 class ContribPersonWidget extends StatelessWidget{
 
   final String text;
-  final void Function() onTap;
+  final void Function()? onTap;
 
   const ContribPersonWidget(this.text, {this.onTap});
 
@@ -540,7 +540,7 @@ class ButtonWidgetState<T extends SongCore> extends State<ButtonWidget>{
   SongWidgetTemplate get fragmentState => widget.fragmentState;
   GlobalKey get contentCardsKey => widget.contentCardsKey;
 
-  bool showTop;
+  late bool showTop;
 
   @override
   void initState() {
@@ -568,8 +568,8 @@ class ButtonWidgetState<T extends SongCore> extends State<ButtonWidget>{
               isCenter: false,
               index: showTop?0:1,
               children: <Widget>[
-                TopWidget<T>(fragmentState, contentCardsKey),
-                BottomWidget<T>(fragmentState)
+                TopWidget<T>(fragmentState as SongWidgetTemplate<T>, contentCardsKey),
+                BottomWidget<T>(fragmentState as SongWidgetTemplate<T>)
               ],
             ),
           )
@@ -604,7 +604,7 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
         mainAxisSize: MainAxisSize.max,
         children: [
 
-          if(song.youtubeLink != null && song.youtubeLink.length!=0)
+          if(song.youtubeLink != null && song.youtubeLink!.length!=0)
             AppButton(
                 icon: Icon(
                     MdiIcons.playOutline,
@@ -612,9 +612,9 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 ),
                 onLongPress: parent.onYTLinkLongPress,
                 onTap: parent.onYTLinkTap==null?null:(){
-                  final RenderBox renderBox = contentCardsKey.currentContext.findRenderObject();
+                  final RenderBox renderBox = contentCardsKey.currentContext!.findRenderObject() as RenderBox;
                   final position = renderBox.localToGlobal(Offset.zero).dy;// - parent.widget.topScreenPadding;
-                  parent.onYTLinkTap(position);
+                  parent.onYTLinkTap!(position);
                 }
             ),
 
@@ -624,12 +624,12 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                 TextSizeProvider prov = Provider.of<TextSizeProvider>(context, listen: false);
 
                 bool changedSize = true;
-                if(prov.value-0.5 >= Dimen.TEXT_SIZE_LIMIT)
+                if(prov.value!-0.5 >= Dimen.TEXT_SIZE_LIMIT)
                   prov.value -= 0.5;
                 else
                   changedSize = false;
 
-                parent.onMinusTap(context, changedSize);
+                parent.onMinusTap!(context, changedSize);
 
               }),
           IconButton(icon: Icon(MdiIcons.plusCircleOutline, color: iconEnab_(context)),
@@ -642,16 +642,16 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
                     song.text,
                     parent.showChords?song.chords:null,
                     getLineNums(song.text),
-                    prov.value + 0.5);
+                    prov.value! + 0.5);
 
                 bool changedSize = true;
                 if(scaleFactor == 1){
-                  if(prov.value >= 24) changedSize = false;
+                  if(prov.value! >= 24) changedSize = false;
                   else prov.value += 0.5;
                 }else
                   changedSize = false;
 
-                parent.onPlusTap(context, changedSize);
+                parent.onPlusTap!(context, changedSize);
               }
           ),
 
@@ -664,9 +664,9 @@ class TopWidget<T extends SongCore> extends StatelessWidget{
               icon: RateIcon.build(context, song.rate),
               onPressed: parent.onRateTap==null?null:
                   (){
-                final RenderBox renderBox = contentCardsKey.currentContext.findRenderObject();
+                final RenderBox renderBox = contentCardsKey.currentContext!.findRenderObject() as RenderBox;
                 final position = renderBox.localToGlobal(Offset.zero).dy;// - parent.widget.topScreenPadding;
-                parent.onRateTap(position);
+                parent.onRateTap!(position);
               }
           )
         ],
@@ -696,7 +696,7 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
           if(song.isOwn)
             AppButton(
                 icon: Icon(MdiIcons.trashCanOutline, color: iconEnab_(context)),
-                onTap: parent.onDeleteTap,
+                onTap: parent.onDeleteTap!,
                 onLongPress: parent.onDeleteLongPress),
           if(!song.isOwn)
             IconButton(icon: Icon(MdiIcons.alertOutline, color: iconEnab_(context)),
@@ -704,7 +704,7 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
           IconButton(
               icon: Icon(MdiIcons.pencilOutline, color: iconEnab_(context)),
               onPressed: parent.onEditTap==null?null:
-                  () => parent.onEditTap(Provider.of<TextSizeProvider>(context, listen: false))
+                  () => parent.onEditTap!(Provider.of<TextSizeProvider>(context, listen: false))
           ),
 
           IconButton(
@@ -733,7 +733,7 @@ class BottomWidget<T extends SongCore> extends StatelessWidget{
 class ContentWidget<T extends SongCore> extends StatelessWidget{
 
   final SongWidgetTemplate<T> parent;
-  final ScrollController scrollController;
+  final ScrollController? scrollController;
 
   T get song => parent.song;
   SongBookSettTempl get settings => parent.settings;
@@ -744,7 +744,7 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
 
   static const double lineSpacing = 1.2;
 
-  const ContentWidget(this.parent, this.scrollController, {GlobalKey globalKey}):super(key: globalKey);
+  const ContentWidget(this.parent, this.scrollController, {GlobalKey? globalKey}):super(key: globalKey);
 
   @override
   Widget build(BuildContext context) {
@@ -784,13 +784,13 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                             textAlign: TextAlign.end,
                             style: TextStyle(
                                 fontFamily: 'Roboto',
-                                fontSize: prov.value<Dimen.TEXT_SIZE_TINY?
+                                fontSize: prov.value!<Dimen.TEXT_SIZE_TINY?
                                 prov.value:
                                 Dimen.TEXT_SIZE_TINY,//initial font size
                                 color: hintEnab_(context),
-                                height: prov.value<Dimen.TEXT_SIZE_TINY?
+                                height: prov.value!<Dimen.TEXT_SIZE_TINY?
                                 lineSpacing:
-                                lineSpacing*(prov.value/ Dimen.TEXT_SIZE_TINY)
+                                lineSpacing*(prov.value!/ Dimen.TEXT_SIZE_TINY)
                             ),
                           ),
                         ],
@@ -806,14 +806,14 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                           double scrollDefDelta = MediaQuery.of(context).size.height / 2;
                           double scrollDelta = min(
                               scrollDefDelta,
-                              scrollController.position.maxScrollExtent - scrollController.offset
+                              scrollController!.position.maxScrollExtent - scrollController!.offset
                           );
 
                           int scrollDuration = (2000*scrollDelta/scrollDefDelta).round();
 
                           if(scrollDuration > 0)
-                            scrollController.animateTo(
-                                scrollController.offset + scrollDelta,
+                            scrollController!.animateTo(
+                                scrollController!.offset + scrollDelta,
                                 duration: Duration(milliseconds: scrollDuration),
                                 curve: Curves.ease
                             );
@@ -840,11 +840,11 @@ class ContentWidget<T extends SongCore> extends StatelessWidget{
                             ),
                           ),
                           onTap: parent.onChordsTap==null?null:(){
-                            parent.onChordsTap(prov);
+                            parent.onChordsTap!(prov);
                             Provider.of<ChordShiftProvider>(context, listen: false).notify();
                           },
                           onLongPress: parent.onChordsLongPress==null?null:(){
-                            parent.onChordsLongPress(prov);
+                            parent.onChordsLongPress!(prov);
                             Provider.of<ChordShiftProvider>(context, listen: false).notify();
                           }
                       );
@@ -882,7 +882,7 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
             onTap: (chord, typeGuitar){
 
               if(parent.onChordsTypeChanged != null)
-                parent.onChordsTypeChanged(typeGuitar);
+                parent.onChordsTypeChanged!(typeGuitar);
             },
             elevation: 0,
             chordColor: iconEnab_(context),
@@ -902,16 +902,16 @@ class ChordsBarWidget<T extends SongCore> extends StatelessWidget{
 
 class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
-  final Color accentColor;
-  final Color accentIconColor;
-  final ScrollController Function() scrollController;
+  final Color? accentColor;
+  final Color? accentIconColor;
+  final ScrollController Function()? scrollController;
 
   const AutoScrollSpeedWidget({this.accentColor, this.accentIconColor, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AutoscrollProvider>(
-        builder: (context, prov, child) => prov.isScrolling?AppCard(
+        builder: (context, prov, child) => prov.isScrolling!?AppCard(
           elevation: AppCard.bigElevation,
           radius: AppCard.BIG_RADIUS,
           child: Row(
@@ -931,7 +931,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
                     inactiveColor: hintEnab_(context),
                     onChanged: (value){
                       prov.speed = value;
-                      SongWidgetTemplate._startAutoscroll(context, scrollController(), restart: true);
+                      SongWidgetTemplate._startAutoscroll(context, scrollController!(), restart: true);
                     },
                     label: 'Szybkość przewijania',
                   ),
@@ -953,7 +953,7 @@ class AutoScrollSpeedWidget<T extends SongCore> extends StatelessWidget{
 
 class _SliverPersistentHeaderDelegate extends SliverPersistentHeaderDelegate{
 
-  final Widget child;
+  final Widget? child;
   final height;
 
   const _SliverPersistentHeaderDelegate({this.child, this.height});

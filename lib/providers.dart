@@ -52,9 +52,9 @@ class TextSizeProvider extends ChangeNotifier{
 
   static const double defFontSize = 18.0;
 
-  double _value;
-  double _wantedValue;
-  double _screenWidth;
+  late double _value;
+  late double _wantedValue;
+  late double _screenWidth;
 
   double get value => _value;
   set value(double val){
@@ -108,12 +108,13 @@ class TextSizeProvider extends ChangeNotifier{
     return scale*initSize;
   }
 
-  double recalculate(double screenWidth, SongCore song, {double fontSize}){
+  double recalculate(double screenWidth, SongCore song, {double? fontSize}){
     _value = calculate(screenWidth, song, initSize: fontSize??_wantedValue);
     notifyListeners();
+    return _value;
   }
 
-  static double fits(double screenWidth, String text, String chords, String nums, double fontSize){
+  static double fits(double? screenWidth, String text, String? chords, String nums, double fontSize){
 
     TextStyle style = TextStyle(fontSize: fontSize, fontFamily: 'Roboto');
 
@@ -122,7 +123,7 @@ class TextSizeProvider extends ChangeNotifier{
     );
     wordWrapText.layout();
 
-    var wordWrapChords;
+    late var wordWrapChords;
     if(chords!=null) {
       wordWrapChords = TextPainter(text: TextSpan(style: style, text: chords),
         textDirection: TextDirection.ltr,
@@ -139,9 +140,9 @@ class TextSizeProvider extends ChangeNotifier{
     double numsWidth = wordWrapNums.width;
 
     if(chords!=null)
-      screenWidth = screenWidth - Dimen.DEF_MARG - 4*Dimen.DEF_MARG - 2*4;
+      screenWidth = screenWidth! - Dimen.DEF_MARG - 4*Dimen.DEF_MARG - 2*4;
     else
-      screenWidth = screenWidth - Dimen.DEF_MARG - 2*Dimen.DEF_MARG - 2*2;
+      screenWidth = screenWidth! - Dimen.DEF_MARG - 2*Dimen.DEF_MARG - 2*2;
 
     if(screenWidth < textWidth + chordsWidth + numsWidth)
       return screenWidth/(textWidth + chordsWidth + numsWidth);
@@ -153,18 +154,18 @@ class TextSizeProvider extends ChangeNotifier{
 
 class AutoscrollProvider extends ChangeNotifier{
 
-  bool _isScrolling;
-  bool restart;
-  SongBookSettTempl settings;
+  bool? _isScrolling;
+  late bool restart;
+  late SongBookSettTempl settings;
 
-  void Function() onAutoscrollStart;
-  void Function() onAutoscrollEnd;
+  void Function()? onAutoscrollStart;
+  void Function()? onAutoscrollEnd;
 
   AutoscrollProvider(
       SongBookSettTempl settings,
       {
-        void Function() onAutoscrollStart,
-        void Function() onAutoscrollEnd
+        void Function()? onAutoscrollStart,
+        void Function()? onAutoscrollEnd
       }){
     _isScrolling = false;
     restart = false;
@@ -174,15 +175,15 @@ class AutoscrollProvider extends ChangeNotifier{
     this.onAutoscrollEnd = onAutoscrollEnd;
   }
 
-  bool get isScrolling => _isScrolling;
-  set isScrolling(bool value){
+  bool? get isScrolling => _isScrolling;
+  set isScrolling(bool? value){
     if(restart){
       restart = false;
       return;
     }
     _isScrolling = value;
-    if(_isScrolling) onAutoscrollStart();
-    else onAutoscrollEnd();
+    if(_isScrolling!) onAutoscrollStart!();
+    else onAutoscrollEnd!();
 
     notifyListeners();
   }

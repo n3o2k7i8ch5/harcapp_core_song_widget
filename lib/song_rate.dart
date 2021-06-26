@@ -16,7 +16,7 @@ class RateCard<T extends SongCore> extends StatefulWidget{
   static const double HEIGHT = RateButton.HEIGHT;
 
   final T song;
-  final Function(int rate, bool selected) onTap;
+  final Function(int rate, bool selected)? onTap;
 
   const RateCard(this.song, {this.onTap});
 
@@ -26,8 +26,8 @@ class RateCard<T extends SongCore> extends StatefulWidget{
 
 class RateCardState<T extends SongCore> extends State<RateCard>{
 
-  T get song => widget.song;
-  Function(int rate, bool selected) get onTap => widget.onTap;
+  T get song => widget.song as T;
+  Function(int rate, bool selected)? get onTap => widget.onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -114,14 +114,14 @@ class RateButton extends StatelessWidget{
   final String title;
   final Icon icon;
   final int rate;
-  final Function(int rate, bool clicked) onTap;
+  final Function(int rate, bool clicked)? onTap;
   final bool selected;
-  final Color background;
+  final Color? background;
   final bool glow;
 
   const RateButton(this.title, this.icon, this.rate, this.selected, {this.background, this.glow:true, this.onTap});
 
-  static RateButton from<T extends SongCore>(T song, String title, Icon icon, int rate, Function(int rate, bool clicked) onTap){
+  static RateButton from<T extends SongCore>(T song, String title, Icon icon, int rate, Function(int rate, bool clicked)? onTap){
     return RateButton(title, icon, rate, song.rate == rate, onTap: onTap);
   }
 
@@ -135,7 +135,7 @@ class RateButton extends StatelessWidget{
           glow?
           AvatarGlow(
               child: shadowIconChild,
-              endRadius: Dimen.ICON_SIZE, glowColor: defCardElevation(context),
+              endRadius: Dimen.ICON_SIZE, glowColor: defCardElevation(context)!,
               repeatPauseDuration: Duration(seconds: 1),
           ):shadowIconChild;
     }else
@@ -165,7 +165,7 @@ class RateButton extends StatelessWidget{
       padding: EdgeInsets.only(top: Dimen.DEF_MARG, bottom: Dimen.DEF_MARG),
       margin: EdgeInsets.zero,
       child: child,
-      onTap: onTap==null?null:() => onTap(rate, selected),
+      onTap: onTap==null?null:() => onTap!(rate, selected),
     );
   }
 
